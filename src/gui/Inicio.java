@@ -46,7 +46,6 @@ public class Inicio extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 102, 204));
         jPanel1.setForeground(new java.awt.Color(0, 0, 0));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/producto 05.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -56,8 +55,6 @@ public class Inicio extends javax.swing.JFrame {
         jButton2.setText("VENTAS");
 
         jButton3.setText("PROVEEDOR");
-
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/empleado02.png"))); // NOI18N
 
         jButton5.setText("usuarios");
 

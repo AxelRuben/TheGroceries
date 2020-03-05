@@ -25,7 +25,7 @@ public class Splash extends javax.swing.JFrame {
      */
     public Splash() {
         initComponents();
-//        setIconImage(new ImageIcon(this.getClass().getResource("/img/icono.png")).getImage());
+        setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         
         Login login = new Login();
         UIManager.put( "nimbusOrange", new Color( 128, 155, 255 ) );

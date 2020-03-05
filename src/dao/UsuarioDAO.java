@@ -67,9 +67,9 @@ public class UsuarioDAO {
 
         Usuario POJO = new Usuario();
         try {
-            POJO.setIdUsuario(rs.getInt("idusuario"));
+            POJO.setIdUsuario(rs.getInt("idusuarios"));
             POJO.setNombre(rs.getString("nombre"));
-            POJO.setContrasena(rs.getString("contrasena"));
+            POJO.setContrasena(rs.getString("contrasenia"));
             //POJO.setImage(rs.getString("phone"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo Dueño: " + ex);

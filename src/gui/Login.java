@@ -25,6 +25,8 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         setTitle("The Groceries");
+        setSize(310, 390);
+        setResizable(false);
         this.setLocationRelativeTo(null);
         usuario = new Usuario();
         usuarioDAO = new UsuarioDAO();

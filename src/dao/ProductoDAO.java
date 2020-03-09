@@ -12,13 +12,18 @@ import java.sql.SQLException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
+
 /**
  *
- * @author Bienvenido
+ * @author lizbe
  */
+
+
 public class ProductoDAO {
     String sex="";
     public int insertar(Cliente pojo) throws SQLException {
+        
+    
         Connection con = null;
         PreparedStatement st = null;
         int id = 0;
@@ -46,7 +51,7 @@ public class ProductoDAO {
             Conexion.close(st);
         }
         return id;
-    }
+       }
     public boolean actualizar_cliente(Cliente POJO) {
         
         Connection con = null;
@@ -240,3 +245,4 @@ public class ProductoDAO {
         return POJO;
     }
 }
+

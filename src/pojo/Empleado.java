@@ -10,7 +10,7 @@ package pojo;
  * @author lizbe
  */
 public class Empleado {
-    
+    private int idempleado;
     private String nombre;
     private int telefono;
     private int direccion;
@@ -19,19 +19,26 @@ public class Empleado {
     public Empleado() {
     }
 
-    public Empleado(String nombre, int telefono, int direccion, String estudios) {
+    public Empleado(int idempleado, String nombre, int telefono, int direccion, String estudios) {
+        this.idempleado = idempleado;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.estudios = estudios;
+    }
+public Empleado( String nombre, int telefono, int direccion, String estudios) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
         this.estudios = estudios;
     }
 
-    public String getEstudios() {
-        return estudios;
+    public int getIdempleado() {
+        return idempleado;
     }
 
-    public void setEstudios(String estudios) {
-        this.estudios = estudios;
+    public void setIdempleado(int idempleado) {
+        this.idempleado = idempleado;
     }
 
     public String getNombre() {
@@ -57,6 +64,14 @@ public class Empleado {
     public void setDireccion(int direccion) {
         this.direccion = direccion;
     }
-    
-    
+
+    public String getEstudios() {
+        return estudios;
+    }
+
+    public void setEstudios(String estudios) {
+        this.estudios = estudios;
+    }
+
+  
 }

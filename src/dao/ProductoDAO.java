@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
+import pojo.Producto;
 
 
 /**
@@ -20,23 +21,20 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class ProductoDAO {
-    String sex="";
-    public int insertar(Cliente pojo) throws SQLException {
-        
     
+    public int insertar(Producto pojo) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("CALL insert_cliente(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("insert into producto(nom,tipo,cod_bar,stock,proveedor_idproveedor,costo) values(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, pojo.getNombre());
-            st.setString(2, sexoDM(pojo));
-            st.setDate(3, pojo.getCumpleani());
-            st.setString(4, pojo.getContacto());
-            st.setString(5, pojo.getCorreo());
-            st.setString(6, pojo.getDireccion());
-            
+            st.setInt(2, pojo.getTipo());
+            st.setString(3, pojo.getCodigo_barra());
+            st.setInt(4, pojo.getStock());
+            st.setInt(5, pojo.getProveedor_idProveedor());
+            st.setDouble(6, pojo.getCosto());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -44,7 +42,7 @@ public class ProductoDAO {
                 System.out.println("ID insertada "+id);
             }
         } catch (Exception e) {
-            System.out.println("Error al insertar Dueño " + e);
+            System.out.println("Error al insertar producto " + e);
 
         } finally {
             Conexion.close(con);
@@ -52,29 +50,26 @@ public class ProductoDAO {
         }
         return id;
        }
-    public boolean actualizar_cliente(Cliente POJO) {
-        
+    public boolean actualizar_producto(Producto pojo) {
         Connection con = null;
         PreparedStatement st = null;
-        Cliente cliente = POJO;
+        Producto producto = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("CALL update_cliente(?,?,?,?,?,?,?,?)");
-            st.setInt(1, cliente.getIdcliente());
-            st.setString(2, cliente.getNombre());
-            st.setString(3, sexoDM(POJO));
-            st.setDate(4, cliente.getCumpleani());
-            st.setString(5, cliente.getContacto());
-            st.setString(6, cliente.getCorreo());
-            st.setString(7, cliente.getDireccion());
-            st.setBoolean(8, cliente.isActivo());
+            st = con.prepareStatement("update producto set nombre=?,tipo=?,cod_bar=?, stock=?,proveedor_idproveedor=?, costo=?");
+            st.setString(1, pojo.getNombre());
+            st.setInt(2, pojo.getTipo());
+            st.setString(3, pojo.getCodigo_barra());
+            st.setInt(4, pojo.getStock());
+            st.setInt(5, pojo.getProveedor_idProveedor());
+            st.setDouble(6, pojo.getCosto());
 
             int x = st.executeUpdate();
             if (x == 0) {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("Error al actualizar Cliente " + e);
+            System.out.println("Error al actualizar producto " + e);
 
         } finally {
             Conexion.close(con);
@@ -82,42 +77,8 @@ public class ProductoDAO {
         }
         return true;
     }
-    public DefaultComboBoxModel cargarCombo() {
-        Connection con = null;
-        PreparedStatement st = null;
-        DefaultComboBoxModel dt = null;
-        try {
-            con = Conexion.getConnection();
-            st = con.prepareStatement("select * from cliente");
-            dt = new DefaultComboBoxModel();
-            ResultSet rs = st.executeQuery();
-            dt.addElement("Seleccione a su Cliente");
-            while (rs.next()) {
-                Cliente pojo = inflaPOJO(rs);
-                dt.addElement(pojo);
-            }
-            rs.close();
-        } catch (Exception e) {
-            System.out.println("Error al cargar el modelo cliente " + e);
-        } finally {
-            Conexion.close(con);
-            Conexion.close(st);
-        }
-        return dt;
-    }
-    
-    public String sexoDM(Cliente pojo) {
-        String sexA = pojo.getSexo();
-        String sex = "";
-        if (sexA.equalsIgnoreCase("Femenino")) {
-            sex = "F";
-        } else if (sexA.equalsIgnoreCase("Masculino")) {
-            sex = "M";
-        }
-        return sex;
-    }
-    
-    public boolean delete_cliente(int id) {
+  
+    public boolean delete_producto(int id) {
         Connection con = null;
         PreparedStatement st = null;
         try {
@@ -129,7 +90,7 @@ public class ProductoDAO {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("Error al eliminar Cliente: " + e);
+            System.out.println("Error al eliminar producto: " + e);
             return false;
         } finally {
             Conexion.close(con);
@@ -138,109 +99,75 @@ public class ProductoDAO {
         return true;
     }
     
-    public DefaultTableModel cargarModeloA(boolean activo) {
+    public DefaultTableModel cargarModeloA(int op) {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre", "Contacto", "Estado"};
+        String encabezados[] = {"Id", "Nombre","Tipo", "Stock","Costo"};
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from cliente where activo=?");
-            st.setBoolean(1, activo);
+            if (op==0) {
+                st = con.prepareStatement("select*from producto");
+            } else if(op==1){
+                st = con.prepareStatement("select*from producto where stock!=0");
+            } else if(op==2){
+                st = con.prepareStatement("select*from producto where stock==0");
+            }
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Object ob[] = new Object[4];
-                Cliente pojo = inflaPOJO(rs);
-                ob[0] = pojo.getIdcliente();
-                ob[1] = pojo.getNombre().toUpperCase();
-                ob[2] = pojo.getContacto();
-            if (pojo.isActivo()) {
-                ob[3] = "Activo";
-                }else{
-                ob[3] = "Inactivo";
-                }
-
+                Producto pojo = inflaPOJO(rs);
+                ob[1] = pojo.getIdProducto();
+                ob[2] = pojo.getNombre().toUpperCase();
+                ob[3] = pojo.getTipo();
+                ob[4] = pojo.getStock();
+                ob[5] = pojo.getCosto();
                 dt.addRow(ob);
             }          
             rs.close();
         } catch (Exception e) {
-            System.out.println("Error al cargar la tabla Cliente " + e);
+            System.out.println("Error al cargar la tabla producto " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return dt;
     }
-    public DefaultTableModel cargarModelo() {
+     public Producto selectedProducto(int id) {
         Connection con = null;
         PreparedStatement st = null;
-        DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre", "Contacto", "Estado"};
+         Producto pojo = new Producto();
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from cliente");
-            dt = new DefaultTableModel();
-            dt.setColumnIdentifiers(encabezados);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                Object ob[] = new Object[4];
-                Cliente pojo = inflaPOJO(rs);
-                ob[0] = pojo.getIdcliente();
-                ob[1] = pojo.getNombre().toUpperCase();
-                ob[2] = pojo.getContacto();
-                if (pojo.isActivo()) {
-                ob[3] = "Activo";
-                }else{
-                ob[3] = "Inactivo";
-                }
-
-                dt.addRow(ob);
-            }
-            rs.close();
-        } catch (Exception e) {
-            System.out.println("Error al cargar la tabla Dueño " + e);
-        } finally {
-            Conexion.close(con);
-            Conexion.close(st);
-        }
-        return dt;
-    }
-     public Cliente selectedCliente(int id) {
-        Connection con = null;
-        PreparedStatement st = null;
-         Cliente pojo = new Cliente();
-        try {
-            con = Conexion.getConnection();
-            st = con.prepareStatement("CALL select_a_cliente(?)");
+            st = con.prepareStatement("select*from producto where idprocucto==0");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 pojo = inflaPOJO(rs);
             }
         } catch (Exception e) {
-            System.out.println("Error al consultar Dueno " + e);
+            System.out.println("Error al consultar producto " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return pojo;
     }
-    private static Cliente inflaPOJO(ResultSet rs) {
+    private static Producto inflaPOJO(ResultSet rs) {
 
-        Cliente POJO = new Cliente();
+        Producto POJO= new Producto();
         try {
-            POJO.setIdcliente(rs.getInt("idcliente"));
-            POJO.setNombre(rs.getString("nombre"));
-            POJO.setSexo(rs.getString("sexo"));
-            POJO.setCumpleani(rs.getDate("cumplea"));
-            POJO.setContacto(rs.getString("contacto"));
-            POJO.setCorreo(rs.getString("correo"));
-            POJO.setDireccion(rs.getString("direccion"));
-            POJO.setActivo(rs.getBoolean("activo"));
+            POJO.setIdProducto(rs.getInt("idproducto"));
+            POJO.setNombre(rs.getString("nom"));
+            POJO.setTipo(rs.getInt("tipo"));
+            POJO.setCodigo_barra(rs.getString("cod_bar"));
+            POJO.setStock(rs.getInt("sotck"));
+            POJO.setProveedor_idProveedor(rs.getInt("proveedor_idproveedor"));
+            POJO.setCosto(rs.getDouble("costo"));
         } catch (SQLException ex) {
-            System.out.println("Error al inflar pojo Dueño: " + ex);
+            System.out.println("Error al inflar pojo producto: " + ex);
         }
         return POJO;
     }

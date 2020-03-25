@@ -22,19 +22,6 @@ public class Ventas {
         this.total = total;
         this.empleado_idempleado = empleado_idempleado;
     }
-    
-     public Ventas( double total, int empleado_idempleado) {
-        this.total = total;
-        this.empleado_idempleado = empleado_idempleado;
-    }
-
-    public int getEmpleado_idempleado() {
-        return empleado_idempleado;
-    }
-
-    public void setEmpleado_idempleado(int empleado_idempleado) {
-        this.empleado_idempleado = empleado_idempleado;
-    }
 
     public int getIdventas() {
         return idventas;
@@ -51,7 +38,14 @@ public class Ventas {
     public void setTotal(double total) {
         this.total = total;
     }
-     
-     
+
+    public int getEmpleado_idempleado() {
+        return empleado_idempleado;
+    }
+
+    public void setEmpleado_idempleado(int empleado_idempleado) {
+        this.empleado_idempleado = empleado_idempleado;
+    }
+    
     
 }

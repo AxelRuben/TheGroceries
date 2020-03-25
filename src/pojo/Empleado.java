@@ -13,20 +13,20 @@ public class Empleado {
     private int idempleado;
     private String nombre;
     private int telefono;
-    private int direccion;
+    private String direccion;
     private String estudios;
 
     public Empleado() {
     }
 
-    public Empleado(int idempleado, String nombre, int telefono, int direccion, String estudios) {
+    public Empleado(int idempleado, String nombre, int telefono, String direccion, String estudios) {
         this.idempleado = idempleado;
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
         this.estudios = estudios;
     }
-public Empleado( String nombre, int telefono, int direccion, String estudios) {
+public Empleado( String nombre, int telefono, String direccion, String estudios) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
@@ -57,11 +57,11 @@ public Empleado( String nombre, int telefono, int direccion, String estudios) {
         this.telefono = telefono;
     }
 
-    public int getDireccion() {
+    public String getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(int direccion) {
+    public void setDireccion(String direccion) {
         this.direccion = direccion;
     }
 

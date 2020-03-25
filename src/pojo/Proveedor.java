@@ -10,23 +10,29 @@ package pojo;
  * @author lizbe
  */
 public class Proveedor {
+    private int idproveedor;
     private String nombre;
     private String telefono;
 
     public Proveedor() {
     }
 
-    public Proveedor(String nombre, String telefono) {
+    public Proveedor(int idproveedor, String nombre, String telefono) {
+        this.idproveedor = idproveedor;
+        this.nombre = nombre;
+        this.telefono = telefono;
+    }
+     public Proveedor( String nombre, String telefono) {
         this.nombre = nombre;
         this.telefono = telefono;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public int getIdproveedor() {
+        return idproveedor;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setIdproveedor(int idproveedor) {
+        this.idproveedor = idproveedor;
     }
 
     public String getNombre() {
@@ -36,7 +42,16 @@ public class Proveedor {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-    
-    
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+     
+
+
+  
 }

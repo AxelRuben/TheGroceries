@@ -24,13 +24,11 @@ public class EmpleadoDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("insert into producto(nom,tipo,cod_bar,stock,proveedor_idproveedor,costo) values(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("insert into empleados(nombreC,telefono,direccion,esturdios) values(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, pojo.getNombre());
-            st.setInt(2, pojo.getTipo());
-            st.setString(3, pojo.getCodigo_barra());
-            st.setInt(4, pojo.getStock());
-            st.setInt(5, pojo.getProveedor_idProveedor());
-            st.setDouble(6, pojo.getCosto());
+            st.setInt(2, pojo.getTelefono());
+            st.setString(3, pojo.getDireccion());
+            st.setString(4, pojo.getEstudios());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -46,48 +44,26 @@ public class EmpleadoDAO {
         }
         return id;
        }
-    public boolean actualizar_producto(Producto pojo) {
+    public boolean actualizar_producto(Empleado pojo) {
         Connection con = null;
         PreparedStatement st = null;
-        Producto producto = pojo;
+        Empleado empleado = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update producto set nombre=?,tipo=?,cod_bar=?, stock=?,proveedor_idproveedor=?, costo=?");
+            st = con.prepareStatement("update empleados set nombreC=?,telefono=?,direccion=?, estudios=? where idempleado=?");
             st.setString(1, pojo.getNombre());
-            st.setInt(2, pojo.getTipo());
-            st.setString(3, pojo.getCodigo_barra());
-            st.setInt(4, pojo.getStock());
-            st.setInt(5, pojo.getProveedor_idProveedor());
-            st.setDouble(6, pojo.getCosto());
+            st.setInt(2, pojo.getTelefono());
+            st.setString(3, pojo.getDireccion());
+            st.setString(4, pojo.getEstudios());
+            st.setInt(5, pojo.getIdempleado());
 
             int x = st.executeUpdate();
             if (x == 0) {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("Error al actualizar producto " + e);
+            System.out.println("Error al actualizar Empleado " + e);
 
-        } finally {
-            Conexion.close(con);
-            Conexion.close(st);
-        }
-        return true;
-    }
-  
-    public boolean delete_producto(int id) {
-        Connection con = null;
-        PreparedStatement st = null;
-        try {
-            con = Conexion.getConnection();
-            st = con.prepareStatement("CALL desactive_cliente(?)");
-            st.setInt(1, id);
-            int num = st.executeUpdate();
-            if (num == 0) {
-                return false;
-            }
-        } catch (Exception e) {
-            System.out.println("Error al eliminar producto: " + e);
-            return false;
         } finally {
             Conexion.close(con);
             Conexion.close(st);
@@ -95,75 +71,65 @@ public class EmpleadoDAO {
         return true;
     }
     
-    public DefaultTableModel cargarModeloA(int op) {
+    public DefaultTableModel cargarModelo() {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre","Tipo", "Stock","Costo"};
+        String encabezados[] = {"Id", "Nombre","Telefono"};
         try {
             con = Conexion.getConnection();
-            if (op==0) {
-                st = con.prepareStatement("select*from producto");
-            } else if(op==1){
-                st = con.prepareStatement("select*from producto where stock!=0");
-            } else if(op==2){
-                st = con.prepareStatement("select*from producto where stock==0");
-            }
+            st = con.prepareStatement("select*from empleados");
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Object ob[] = new Object[4];
-                Producto pojo = inflaPOJO(rs);
-                ob[1] = pojo.getIdProducto();
+                Empleado pojo = inflaPOJO(rs);
+                ob[1] = pojo.getIdempleado();
                 ob[2] = pojo.getNombre().toUpperCase();
-                ob[3] = pojo.getTipo();
-                ob[4] = pojo.getStock();
-                ob[5] = pojo.getCosto();
+                ob[3] = pojo.getTelefono();
                 dt.addRow(ob);
             }          
             rs.close();
         } catch (Exception e) {
-            System.out.println("Error al cargar la tabla producto " + e);
+            System.out.println("Error al cargar la tabla empleado " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return dt;
     }
-     public Producto selectedProducto(int id) {
+     public Empleado selectedEmpleado(int id) {
         Connection con = null;
         PreparedStatement st = null;
-         Producto pojo = new Producto();
+         Empleado pojo = new Empleado();
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from producto where idprocucto==0");
+            st = con.prepareStatement("select*from empleados where idempleado==0");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 pojo = inflaPOJO(rs);
             }
         } catch (Exception e) {
-            System.out.println("Error al consultar producto " + e);
+            System.out.println("Error al consultar empleado " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return pojo;
     }
-    private static Producto inflaPOJO(ResultSet rs) {
+    private static Empleado inflaPOJO(ResultSet rs) {
 
-        Producto POJO= new Producto();
+        Empleado POJO= new Empleado();
         try {
-            POJO.setIdProducto(rs.getInt("idproducto"));
-            POJO.setNombre(rs.getString("nom"));
-            POJO.setTipo(rs.getInt("tipo"));
-            POJO.setCodigo_barra(rs.getString("cod_bar"));
-            POJO.setStock(rs.getInt("sotck"));
-            POJO.setProveedor_idProveedor(rs.getInt("proveedor_idproveedor"));
-            POJO.setCosto(rs.getDouble("costo"));
+            POJO.setIdempleado(rs.getInt("idempleados"));
+            POJO.setNombre(rs.getString("nombreC"));
+            POJO.setTelefono(rs.getInt("telefono"));
+            POJO.setDireccion(rs.getString("direccion"));
+            POJO.setEstudios(rs.getString("estudios"));
         } catch (SQLException ex) {
-            System.out.println("Error al inflar pojo producto: " + ex);
+            System.out.println("Error al inflar pojo Empleado: " + ex);
         }
         return POJO;
     }

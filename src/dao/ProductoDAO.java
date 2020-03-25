@@ -163,7 +163,7 @@ public class ProductoDAO {
             POJO.setNombre(rs.getString("nom"));
             POJO.setTipo(rs.getInt("tipo"));
             POJO.setCodigo_barra(rs.getString("cod_bar"));
-            POJO.setStock(rs.getInt("sotck"));
+            POJO.setStock(rs.getInt("stock"));
             POJO.setProveedor_idProveedor(rs.getInt("proveedor_idproveedor"));
             POJO.setCosto(rs.getDouble("costo"));
         } catch (SQLException ex) {

@@ -10,22 +10,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
-import pojo.Ventas;
+import pojo.Surtido;
 
 /**
  *
  * @author lizbe
  */
-public class VentasDAO {
-     public int insertar(Ventas pojo) throws SQLException {
+public class SurtidoDAO {
+     public int insertar(Surtido pojo) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("insert into ventas(idventas,total) values(?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            st.setInt(1, pojo.getIdventas());
-            st.setDouble(2, pojo.getTotal());
+            st = con.prepareStatement("insert into surtido(total) values(?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st.setDouble(1, pojo.getTotal());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -33,7 +32,7 @@ public class VentasDAO {
                 System.out.println("ID insertada "+id);
             }
         } catch (Exception e) {
-            System.out.println("Error al insertar proveedor " + e);
+            System.out.println("Error al insertar surtido " + e);
 
         } finally {
             Conexion.close(con);
@@ -41,21 +40,20 @@ public class VentasDAO {
         }
         return id;
        }
-    public boolean actualizar_Ventas(Ventas pojo) {
+    public boolean actualizar_Surtido(Surtido pojo) {
         Connection con = null;
         PreparedStatement st = null;
-       Ventas ventas = pojo;
+        Surtido surtido = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update ventas set idventas=?,total=?");
-            st.setInt(1, pojo.getIdventas());
-            st.setDouble(2, pojo.getTotal());
+            st = con.prepareStatement("update surtido set total =? where idsurtido=?");
+            st.setDouble(1, pojo.getTotal());
             int x = st.executeUpdate();
             if (x == 0) {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("Error al actualizar ventas " + e);
+            System.out.println("Error al surtido " + e);
 
         } finally {
             Conexion.close(con);
@@ -71,54 +69,54 @@ public class VentasDAO {
         String encabezados[] = {"Id", "Total"};
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from ventas");
+            st = con.prepareStatement("select*from surtido");
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Object ob[] = new Object[4];
-                Ventas pojo = inflaPOJO(rs);
-                ob[1] = pojo.getIdventas();
+                Surtido pojo = inflaPOJO(rs);
+                ob[1] = pojo.getIdSurtido();
                 ob[2] = pojo.getTotal();
                 dt.addRow(ob);
             }          
             rs.close();
         } catch (Exception e) {
-            System.out.println("Error al cargar la tabla ventas " + e);
+            System.out.println("Error al cargar la tabla surtido " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return dt;
     }
-     public Ventas selectedVentas(int id) {
+     public Surtido selectedSurtido(int id) {
         Connection con = null;
         PreparedStatement st = null;
-         Ventas pojo = new Ventas();
+         Surtido pojo = new Surtido();
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from ventas where idventas==0");
+            st = con.prepareStatement("select*from surtido where idsurtido==0");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 pojo = inflaPOJO(rs);
             }
         } catch (Exception e) {
-            System.out.println("Error al consultar ventas " + e);
+            System.out.println("Error al consultar surtido" + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return pojo;
     }
-    private static Ventas inflaPOJO(ResultSet rs) {
+    private static Surtido inflaPOJO(ResultSet rs) {
 
-       Ventas POJO= new Ventas();
+        Surtido POJO= new Surtido ();
         try {
-            POJO.setIdventas(rs.getInt("idVentas"));
+            POJO.setIdSurtido(rs.getInt("idSurtido"));
             POJO.setTotal(rs.getDouble("Total"));
         } catch (SQLException ex) {
-            System.out.println("Error al inflar pojo VentasS: " + ex);
+            System.out.println("Error al inflar pojo Surtido: " + ex);
         }
         return POJO;
     }

@@ -10,23 +10,24 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
-import pojo.Producto_has_Surtido;
+import pojo.Ventas_has_Producto;
 
 /**
  *
  * @author lizbe
  */
 public class Ventas_has_producto {
-     public int insertar(Ventas_has_producto pojo) throws SQLException {
+     public int insertar( Ventas_has_Producto  pojo) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
         int id = 0;
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("insert into Ventas_has_producto (Ventas_idventas,producto_idproducto,cantidad,subtotal) values(?,?,?,?", PreparedStatement.RETURN_GENERATED_KEYS);
-            st.setInt(1, pojo.getProducto_idProducto());
-            st.setInt(2, pojo.getSurtido_idSurtido());
-            st.setInt(3, pojo.getCantidad());
+            st.setInt(1, pojo.getVentas_idventas());
+            st.setInt(2, pojo.getProducto_idproducto());
+            st.setDouble(3, pojo.getCantidad());
+            st.setDouble(4, pojo.getSubtotal());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -34,7 +35,7 @@ public class Ventas_has_producto {
                 System.out.println("ID insertada "+id);
             }
         } catch (Exception e) {
-            System.out.println("Error al insertar producto_has_surtido " + e);
+            System.out.println("Error al insertar Ventas_has_Productos " + e);
 
         } finally {
             Conexion.close(con);
@@ -42,22 +43,23 @@ public class Ventas_has_producto {
         }
         return id;
        }
-    public boolean actualizar_Producto_has_Surtido(Producto_has_Surtido pojo) {
+    public boolean actualizar_Ventas_has_Producto (Ventas_has_Producto pojo) {
         Connection con = null;
         PreparedStatement st = null;
-        Producto_has_Surtido producto_has_Surtido = pojo;
+        Ventas_has_Producto ventas_has_Producto  = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update roducto_has_Surtido set producto_idproducto=?,surtido_idsurtido=?,cantidad=?");
-            st.setInt(1, pojo.getProducto_idProducto());
-            st.setInt(2, pojo.getSurtido_idSurtido());
-            st.setInt(3, pojo.getCantidad());
+            st = con.prepareStatement("update Ventas_has_Producto set Ventas_idventas=?,producto_idproducto=?,cantidad=?,subtotal=?");
+            st.setInt(1, pojo.getVentas_idventas());
+            st.setInt(2, pojo.getProducto_idproducto());
+            st.setDouble(3, pojo.getCantidad());
+            st.setDouble(4, pojo.getSubtotal());
             int x = st.executeUpdate();
             if (x == 0) {
                 return false;
             }
         } catch (Exception e) {
-            System.out.println("Error al actualizar Producto_has_Surtido " + e);
+            System.out.println("Error al actualizar Ventas_has_Producto  " + e);
 
         } finally {
             Conexion.close(con);
@@ -70,60 +72,60 @@ public class Ventas_has_producto {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Surtido","Cantidad"};
+        String encabezados[] = {"Id", "Subtotal","Cantidad"};
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from Producto_has_Surtido");
+            st = con.prepareStatement("select*from Ventas_has_Producto");
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Object ob[] = new Object[4];
-                Producto_has_Surtido pojo = inflaPOJO(rs);
-                ob[1] = pojo.getProducto_idProducto();
-                ob[2] = pojo.getSurtido_idSurtido();
+                Ventas_has_Producto pojo = inflaPOJO(rs);
+                ob[1] = pojo.getVentas_idventas();
+                ob[2] = pojo.getProducto_idproducto();
                 ob[3] = pojo.getCantidad();
+                ob[4] = pojo.getCantidad();
                 dt.addRow(ob);
             }          
             rs.close();
         } catch (Exception e) {
-            System.out.println("Error al cargar la tabla Producto_has_Surtido" + e);
+            System.out.println("Error al cargar la tabla Ventas_has_Producto" + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return dt;
     }
-     public Producto_has_Surtido selectedProducto_has_Surtido(int id) {
+     public Ventas_has_Producto selectedVentas_has_Producto(int id) {
         Connection con = null;
         PreparedStatement st = null;
-         Producto_has_Surtido pojo = new Producto_has_Surtido();
+         Ventas_has_Producto = new Ventas_has_Producto();
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from Producto_has_Surtido where idproducto==0");
+            st = con.prepareStatement("select*from Ventas_has_Producto where idventas==0");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 pojo = inflaPOJO(rs);
             }
         } catch (Exception e) {
-            System.out.println("Error al consultar Producto_has_Surtido " + e);
+            System.out.println("Error al consultar Ventas_has_Producto " + e);
         } finally {
             Conexion.close(con);
             Conexion.close(st);
         }
         return pojo;
     }
-    private static Producto_has_Surtido inflaPOJO(ResultSet rs) {
-
-        Producto_has_Surtido POJO= new Producto_has_Surtido();
+    private static Ventas_has_Producto inflaPOJO(ResultSet rs) {
+        Ventas_has_Producto POJO= new Ventas_has_Producto;
         try {
-            POJO.setProducto_idProducto(rs.getInt("Producto_idproducto"));
-            POJO.setSurtido_idSurtido(rs.getInt("surtido_idsurtido"));
-            POJO.setCantidad(rs.getInt("cantidad"));
- 
+            POJO.setVentas_idventas(rs.getInt("Ventas_idventas"));
+            POJO.setProducto_idproducto(rs.getInt("Producto_idproducto"));
+            POJO.setCantidad(rs.getDouble("cantidad"));
+            POJO.setSubtotal(rs.getDouble("subtotal"));
         } catch (SQLException ex) {
-            System.out.println("Error al inflar pojo Producto_has_Surtido: " + ex);
+            System.out.println("Error al inflar  Ventas_has_Producto: " + ex);
         }
         return POJO;
     }

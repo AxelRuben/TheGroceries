@@ -49,7 +49,7 @@ public class Producto_has_surtidoDAO {
         Producto_has_Surtido producto_has_Surtido = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update roducto_has_Surtido set producto_idproducto=?,surtido_idsurtido=?,cantidad=?");
+            st = con.prepareStatement("update Producto_has_Surtido set producto_idproducto=?,surtido_idsurtido=?,cantidad=?");
             st.setInt(1, pojo.getProducto_idProducto());
             st.setInt(2, pojo.getSurtido_idSurtido());
             st.setInt(3, pojo.getCantidad());

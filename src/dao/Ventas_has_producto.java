@@ -100,7 +100,7 @@ public class Ventas_has_producto {
      public Ventas_has_Producto selectedVentas_has_Producto(int id) {
         Connection con = null;
         PreparedStatement st = null;
-         Ventas_has_Producto = new Ventas_has_Producto();
+         Ventas_has_Producto pojo = new Ventas_has_Producto();
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("select*from Ventas_has_Producto where idventas==0");
@@ -118,7 +118,7 @@ public class Ventas_has_producto {
         return pojo;
     }
     private static Ventas_has_Producto inflaPOJO(ResultSet rs) {
-        Ventas_has_Producto POJO= new Ventas_has_Producto;
+        Ventas_has_Producto POJO= new Ventas_has_Producto();
         try {
             POJO.setVentas_idventas(rs.getInt("Ventas_idventas"));
             POJO.setProducto_idproducto(rs.getInt("Producto_idproducto"));

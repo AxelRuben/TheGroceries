@@ -9,16 +9,16 @@ package pojo;
  *
  * @author lizbe
  */
-public class Venta_has_Producto {
+public class Ventas_has_Producto {
     private int ventas_idventas;
     private int producto_idproducto;
     private double cantidad;
     private double subtotal;
 
-    public Venta_has_Producto() {
+    public Ventas_has_Producto() {
     }
 
-    public Venta_has_Producto(int ventas_idventas, int producto_idproducto, double cantidad, double subtotal) {
+    public Ventas_has_Producto(int ventas_idventas, int producto_idproducto, double cantidad, double subtotal) {
         this.ventas_idventas = ventas_idventas;
         this.producto_idproducto = producto_idproducto;
         this.cantidad = cantidad;

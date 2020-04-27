@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import pojo.Proveedor;
 
@@ -23,7 +24,7 @@ public class ProveedorDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("insert into proveedor(nombre,telefono) values(?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insintoprov(?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, pojo.getNombre());
             st.setString(2, pojo.getTelefono());
             id = st.executeUpdate();
@@ -78,9 +79,9 @@ public class ProveedorDAO {
             while (rs.next()) {
                 Object ob[] = new Object[4];
                 Proveedor pojo = inflaPOJO(rs);
-                ob[1] = pojo.getIdproveedor();
-                ob[2] = pojo.getNombre().toUpperCase();
-                ob[3] = pojo.getTelefono();
+                ob[0] = pojo.getIdproveedor();
+                ob[1] = pojo.getNombre().toUpperCase();
+                ob[2] = pojo.getTelefono();
                 dt.addRow(ob);
             }          
             rs.close();
@@ -112,12 +113,37 @@ public class ProveedorDAO {
         }
         return pojo;
     }
+     
+     public DefaultComboBoxModel cargarCombo() {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultComboBoxModel dt = null;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("select * from proveedor");
+            dt = new DefaultComboBoxModel();
+            ResultSet rs = st.executeQuery();
+            dt.addElement("Seleccione a su Proveedor");
+            while (rs.next()) {
+                Proveedor pojo = inflaPOJO(rs);
+                dt.addElement(pojo);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar el modelo Proveedor " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
+     
     private static Proveedor inflaPOJO(ResultSet rs) {
 
         Proveedor POJO= new Proveedor();
         try {
-            POJO.setIdproveedor(rs.getInt("idempleados"));
-            POJO.setNombre(rs.getString("nombreC"));
+            POJO.setIdproveedor(rs.getInt("idproveedor"));
+            POJO.setNombre(rs.getString("nombre"));
             POJO.setTelefono(rs.getString("telefono"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo Proveedor: " + ex);

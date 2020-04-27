@@ -24,7 +24,7 @@ public class Producto_has_surtidoDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("insert into Producto_has_Surtido(producto_idproducto,surtido_idsurtido,cantidad) values(?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call procedure insintoprodhsurt(?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setInt(1, pojo.getProducto_idProducto());
             st.setInt(2, pojo.getSurtido_idSurtido());
             st.setInt(3, pojo.getCantidad());

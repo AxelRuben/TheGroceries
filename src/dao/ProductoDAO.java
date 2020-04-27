@@ -13,33 +13,39 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import pojo.Producto;
 
-
 /**
  *
  * @author lizbe
  */
-
-
 public class ProductoDAO {
-    
-    public int insertar(Producto pojo) throws SQLException {
+
+    public int insertar(Producto pojo, boolean ccd) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("insert into producto(nom,tipo,cod_bar,stock,proveedor_idproveedor,costo) values(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            st.setString(1, pojo.getNombre());
-            st.setInt(2, pojo.getTipo());
-            st.setString(3, pojo.getCodigo_barra());
-            st.setInt(4, pojo.getStock());
-            st.setInt(5, pojo.getProveedor_idProveedor());
-            st.setDouble(6, pojo.getCosto());
+            if (ccd) {
+                st = con.prepareStatement("call insintoprod(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                st.setString(1, pojo.getNombre());
+                st.setInt(2, pojo.getTipo());
+                st.setString(3, pojo.getCodigo_barra());
+                st.setInt(4, pojo.getStock());
+                st.setInt(5, pojo.getProveedor_idProveedor());
+                st.setDouble(6, pojo.getCosto());
+            } else {
+                st = con.prepareStatement("call insintoprodsc(?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                st.setString(1, pojo.getNombre());
+                st.setInt(2, pojo.getTipo());
+                st.setInt(3, pojo.getStock());
+                st.setInt(4, pojo.getProveedor_idProveedor());
+                st.setDouble(5, pojo.getCosto());
+            }
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
                 id = rs.getInt(1);
-                System.out.println("ID insertada "+id);
+                System.out.println("ID insertada " + id);
             }
         } catch (Exception e) {
             System.out.println("Error al insertar producto " + e);
@@ -49,7 +55,8 @@ public class ProductoDAO {
             Conexion.close(st);
         }
         return id;
-       }
+    }
+
     public boolean actualizar_producto(Producto pojo) {
         Connection con = null;
         PreparedStatement st = null;
@@ -77,7 +84,7 @@ public class ProductoDAO {
         }
         return true;
     }
-  
+
     public boolean delete_producto(int id) {
         Connection con = null;
         PreparedStatement st = null;
@@ -98,20 +105,20 @@ public class ProductoDAO {
         }
         return true;
     }
-    
+
     public DefaultTableModel cargarModeloA(int op) {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre","Tipo", "Stock","Costo"};
+        String encabezados[] = {"Id", "Nombre", "Tipo", "Stock", "Costo"};
         try {
             con = Conexion.getConnection();
-            if (op==0) {
+            if (op == 0) {
                 st = con.prepareStatement("select*from producto");
-            } else if(op==1){
+            } else if (op == 1) {
                 st = con.prepareStatement("select*from producto where stock!=0");
-            } else if(op==2){
-                st = con.prepareStatement("select*from producto where stock==0");
+            } else if (op == 2) {
+                st = con.prepareStatement("select*from producto where stock=0");
             }
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
@@ -125,7 +132,7 @@ public class ProductoDAO {
                 ob[4] = pojo.getStock();
                 ob[5] = pojo.getCosto();
                 dt.addRow(ob);
-            }          
+            }
             rs.close();
         } catch (Exception e) {
             System.out.println("Error al cargar la tabla producto " + e);
@@ -135,10 +142,42 @@ public class ProductoDAO {
         }
         return dt;
     }
-     public Producto selectedProducto(int id) {
+
+    public DefaultTableModel cargarModeloP(int idproveedor) {
         Connection con = null;
         PreparedStatement st = null;
-         Producto pojo = new Producto();
+        DefaultTableModel dt = null;
+        String encabezados[] = {"Id", "Nombre", "Stock", "Costo"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("select*from producto where proveedor_idproveedor=?");
+            st.setInt(1, idproveedor);
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[4];
+                Producto pojo = inflaPOJO(rs);
+                ob[1] = pojo.getIdProducto();
+                ob[2] = pojo.getNombre().toUpperCase();
+                ob[3] = pojo.getStock();
+                ob[4] = pojo.getCosto();
+                dt.addRow(ob);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla producto " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
+
+    public Producto selectedProducto(int id) {
+        Connection con = null;
+        PreparedStatement st = null;
+        Producto pojo = new Producto();
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("select*from producto where idprocucto==0");
@@ -155,12 +194,13 @@ public class ProductoDAO {
         }
         return pojo;
     }
+
     private static Producto inflaPOJO(ResultSet rs) {
 
-        Producto POJO= new Producto();
+        Producto POJO = new Producto();
         try {
             POJO.setIdProducto(rs.getInt("idproducto"));
-            POJO.setNombre(rs.getString("nom"));
+            POJO.setNombre(rs.getString("nombre"));
             POJO.setTipo(rs.getInt("tipo"));
             POJO.setCodigo_barra(rs.getString("cod_bar"));
             POJO.setStock(rs.getInt("stock"));
@@ -172,4 +212,3 @@ public class ProductoDAO {
         return POJO;
     }
 }
-

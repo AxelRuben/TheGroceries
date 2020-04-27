@@ -23,7 +23,7 @@ public class Ventas_has_producto {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("insert into Ventas_has_producto (Ventas_idventas,producto_idproducto,cantidad,subtotal) values(?,?,?,?", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call procedure insintoventhprod(?,?,?,?", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setInt(1, pojo.getVentas_idventas());
             st.setInt(2, pojo.getProducto_idproducto());
             st.setDouble(3, pojo.getCantidad());

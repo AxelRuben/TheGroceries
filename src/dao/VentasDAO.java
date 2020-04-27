@@ -23,9 +23,8 @@ public class VentasDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("insert into ventas(idventas,total) values(?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            st.setInt(1, pojo.getIdventas());
-            st.setDouble(2, pojo.getTotal());
+            st = con.prepareStatement("call procedure insintovent(?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st.setDouble(1, pojo.getTotal());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {

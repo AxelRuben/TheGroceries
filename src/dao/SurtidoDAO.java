@@ -23,7 +23,7 @@ public class SurtidoDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("insert into surtido(total) values(?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call procedure insintosurt(?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setDouble(1, pojo.getTotal());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();

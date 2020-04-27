@@ -40,6 +40,14 @@ public class Producto {
         this.costo = costo;
     } 
 
+   public Producto( String nombre, int tipo, int stock, int proveedor_idProveedor, double costo) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.stock = stock;
+        this.proveedor_idProveedor = proveedor_idProveedor;
+        this.costo = costo;
+    } 
+
     public int getIdProducto() {
         return idProducto;
     }

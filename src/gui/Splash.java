@@ -20,6 +20,7 @@ import javax.swing.UIManager;
 public class Splash extends javax.swing.JFrame {
     private ActionListener al;
     private Timer t;
+    
     /**
      * Creates new form Splash
      */

@@ -24,9 +24,9 @@ public class EmpleadoDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("insert into empleados(nombreC,telefono,direccion,esturdios) values(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insintoempl(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setString(1, pojo.getNombre());
-            st.setInt(2, pojo.getTelefono());
+            st.setString(2, pojo.getTelefono());
             st.setString(3, pojo.getDireccion());
             st.setString(4, pojo.getEstudios());
             id = st.executeUpdate();
@@ -52,7 +52,7 @@ public class EmpleadoDAO {
             con = Conexion.getConnection();
             st = con.prepareStatement("update empleados set nombreC=?,telefono=?,direccion=?, estudios=? where idempleado=?");
             st.setString(1, pojo.getNombre());
-            st.setInt(2, pojo.getTelefono());
+            st.setString(2, pojo.getTelefono());
             st.setString(3, pojo.getDireccion());
             st.setString(4, pojo.getEstudios());
             st.setInt(5, pojo.getIdempleado());
@@ -85,9 +85,9 @@ public class EmpleadoDAO {
             while (rs.next()) {
                 Object ob[] = new Object[4];
                 Empleado pojo = inflaPOJO(rs);
-                ob[1] = pojo.getIdempleado();
-                ob[2] = pojo.getNombre().toUpperCase();
-                ob[3] = pojo.getTelefono();
+                ob[0] = pojo.getIdempleado();
+                ob[1] = pojo.getNombre().toUpperCase();
+                ob[2] = pojo.getTelefono();
                 dt.addRow(ob);
             }          
             rs.close();
@@ -125,7 +125,7 @@ public class EmpleadoDAO {
         try {
             POJO.setIdempleado(rs.getInt("idempleados"));
             POJO.setNombre(rs.getString("nombreC"));
-            POJO.setTelefono(rs.getInt("telefono"));
+            POJO.setTelefono(rs.getString("telefono"));
             POJO.setDireccion(rs.getString("direccion"));
             POJO.setEstudios(rs.getString("estudios"));
         } catch (SQLException ex) {

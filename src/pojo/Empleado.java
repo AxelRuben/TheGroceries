@@ -12,21 +12,21 @@ package pojo;
 public class Empleado {
     private int idempleado;
     private String nombre;
-    private int telefono;
+    private String telefono;
     private String direccion;
     private String estudios;
 
     public Empleado() {
     }
 
-    public Empleado(int idempleado, String nombre, int telefono, String direccion, String estudios) {
+    public Empleado(int idempleado, String nombre, String telefono, String direccion, String estudios) {
         this.idempleado = idempleado;
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
         this.estudios = estudios;
     }
-public Empleado( String nombre, int telefono, String direccion, String estudios) {
+public Empleado( String nombre, String telefono, String direccion, String estudios) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
@@ -49,11 +49,11 @@ public Empleado( String nombre, int telefono, String direccion, String estudios)
         this.nombre = nombre;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono (String telefono) {
         this.telefono = telefono;
     }
 

@@ -16,7 +16,7 @@ import pojo.Ventas_has_Producto;
  *
  * @author lizbe
  */
-public class Ventas_has_producto {
+public class Ventas_has_productoDAO {
      public int insertar( Ventas_has_Producto  pojo) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;

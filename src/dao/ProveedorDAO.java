@@ -69,7 +69,7 @@ public class ProveedorDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre","Telefono"};
+        String encabezados[] = {"Id", "Nombre","Teléfono"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("select*from proveedor");
@@ -93,6 +93,7 @@ public class ProveedorDAO {
         }
         return dt;
     }
+    
      public Proveedor selectedProveedor(int id) {
         Connection con = null;
         PreparedStatement st = null;
@@ -114,7 +115,7 @@ public class ProveedorDAO {
         return pojo;
     }
      
-     public DefaultComboBoxModel cargarCombo() {
+    public DefaultComboBoxModel cargarCombo() {
         Connection con = null;
         PreparedStatement st = null;
         DefaultComboBoxModel dt = null;

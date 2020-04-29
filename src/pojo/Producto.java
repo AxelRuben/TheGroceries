@@ -12,16 +12,16 @@ package pojo;
 public class Producto {
     private int idProducto;
      private String nombre;
-     private int tipo;
+     private String tipo;
      private String codigo_barra;
-     private int stock;
+     private double stock;
      private int proveedor_idProveedor;
      private double costo;
 
     public Producto() {
     }
 
-    public Producto(int idProducto, String nombre, int tipo, String codigo_barra, int stock, int proveedor_idProveedor, double costo) {
+    public Producto(int idProducto, String nombre, String tipo, String codigo_barra, int stock, int proveedor_idProveedor, double costo) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -31,7 +31,7 @@ public class Producto {
         this.costo = costo;
     }
 
-   public Producto( String nombre, int tipo, String codigo_barra, int stock, int proveedor_idProveedor, double costo) {
+   public Producto( String nombre, String tipo, String codigo_barra, double stock, int proveedor_idProveedor, double costo) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.codigo_barra = codigo_barra;
@@ -40,7 +40,7 @@ public class Producto {
         this.costo = costo;
     } 
 
-   public Producto( String nombre, int tipo, int stock, int proveedor_idProveedor, double costo) {
+   public Producto( String nombre, String tipo, double stock, int proveedor_idProveedor, double costo) {
         this.nombre = nombre;
         this.tipo = tipo;
         this.stock = stock;
@@ -64,11 +64,11 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public int getTipo() {
+    public String getTipo() {
         return tipo;
     }
 
-    public void setTipo(int tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 
@@ -80,11 +80,11 @@ public class Producto {
         this.codigo_barra = codigo_barra;
     }
 
-    public int getStock() {
+    public double getStock() {
         return stock;
     }
 
-    public void setStock(int stock) {
+    public void setStock(double stock) {
         this.stock = stock;
     }
 

@@ -28,16 +28,16 @@ public class ProductoDAO {
             if (ccd) {
                 st = con.prepareStatement("call insintoprod(?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
                 st.setString(1, pojo.getNombre());
-                st.setInt(2, pojo.getTipo());
+                st.setString(2, pojo.getTipo());
                 st.setString(3, pojo.getCodigo_barra());
-                st.setInt(4, pojo.getStock());
+                st.setDouble(4, pojo.getStock());
                 st.setInt(5, pojo.getProveedor_idProveedor());
                 st.setDouble(6, pojo.getCosto());
             } else {
                 st = con.prepareStatement("call insintoprodsc(?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
                 st.setString(1, pojo.getNombre());
-                st.setInt(2, pojo.getTipo());
-                st.setInt(3, pojo.getStock());
+                st.setString(2, pojo.getTipo());
+                st.setDouble(3, pojo.getStock());
                 st.setInt(4, pojo.getProveedor_idProveedor());
                 st.setDouble(5, pojo.getCosto());
             }
@@ -56,6 +56,31 @@ public class ProductoDAO {
         }
         return id;
     }
+    
+    public boolean actualizar_stock(int id, double cant) {
+        
+        Connection con = null;
+        PreparedStatement st = null;
+        int idd=0;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("update producto set stock=? where idproducto=?");
+            st.setDouble(1, cant);
+            st.setInt(2, id);
+            idd = st.executeUpdate();
+
+            int x = st.executeUpdate();
+            if (x == 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al actualizar empleado " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return true;
+    }
 
     public boolean actualizar_producto(Producto pojo) {
         Connection con = null;
@@ -65,9 +90,9 @@ public class ProductoDAO {
             con = Conexion.getConnection();
             st = con.prepareStatement("update producto set nombre=?,tipo=?,cod_bar=?, stock=?,proveedor_idproveedor=?, costo=?");
             st.setString(1, pojo.getNombre());
-            st.setInt(2, pojo.getTipo());
+            st.setString(2, pojo.getTipo());
             st.setString(3, pojo.getCodigo_barra());
-            st.setInt(4, pojo.getStock());
+            st.setDouble(4, pojo.getStock());
             st.setInt(5, pojo.getProveedor_idProveedor());
             st.setDouble(6, pojo.getCosto());
 
@@ -124,13 +149,13 @@ public class ProductoDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[4];
+                Object ob[] = new Object[5];
                 Producto pojo = inflaPOJO(rs);
-                ob[1] = pojo.getIdProducto();
-                ob[2] = pojo.getNombre().toUpperCase();
-                ob[3] = pojo.getTipo();
-                ob[4] = pojo.getStock();
-                ob[5] = pojo.getCosto();
+                ob[0] = pojo.getIdProducto();
+                ob[1] = pojo.getNombre().toUpperCase();
+                ob[2] = pojo.getTipo();
+                ob[3] = pojo.getStock();
+                ob[4] = pojo.getCosto();
                 dt.addRow(ob);
             }
             rs.close();
@@ -180,7 +205,7 @@ public class ProductoDAO {
         Producto pojo = new Producto();
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from producto where idprocucto==0");
+            st = con.prepareStatement("select * from producto where idproducto=?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -201,9 +226,9 @@ public class ProductoDAO {
         try {
             POJO.setIdProducto(rs.getInt("idproducto"));
             POJO.setNombre(rs.getString("nombre"));
-            POJO.setTipo(rs.getInt("tipo"));
+            POJO.setTipo(rs.getString("tipo"));
             POJO.setCodigo_barra(rs.getString("cod_bar"));
-            POJO.setStock(rs.getInt("stock"));
+            POJO.setStock(rs.getDouble("stock"));
             POJO.setProveedor_idProveedor(rs.getInt("proveedor_idproveedor"));
             POJO.setCosto(rs.getDouble("costo"));
         } catch (SQLException ex) {

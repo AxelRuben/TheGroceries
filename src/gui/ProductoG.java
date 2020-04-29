@@ -30,6 +30,7 @@ public class ProductoG extends javax.swing.JFrame {
     ProveedorDAO proveedorDAO;
     TableRowSorter<TableModel> sorter;
     DefaultComboBoxModel defaultComboBoxModel;
+
     /**
      * Creates new form Producto
      */
@@ -53,7 +54,7 @@ public class ProductoG extends javax.swing.JFrame {
         setVisible(true);
         this.setLocationRelativeTo(null);
     }
-    
+
     void cargarModelo(int op) {
         DefaultTableModel dt = productoDAO.cargarModeloA(op);
         sorter = new TableRowSorter<>(dt);
@@ -61,33 +62,60 @@ public class ProductoG extends javax.swing.JFrame {
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setRowSorter(sorter);
     }
-    
+
     public void loadComPro(JComboBox combokil) {
         defaultComboBoxModel = proveedorDAO.cargarCombo();
         combokil.setModel(defaultComboBoxModel);
     }
-    
+
     int AddProducto() throws SQLException {
         String nom = jTextField4.getText();
-        int tip = jComboBox5.getSelectedIndex();
-        int stock = Integer.parseInt(jTextField8.getText());
+        String tip = ((((jComboBox2.getSelectedItem().toString().replace(" ", "")).replace("á", "a")).replace("é", "e")).replace("í", "i")).replace("ó", "o");
+        double stock = Double.parseDouble(jTextField8.getText());
         proveedor = (Proveedor) jComboBox4.getSelectedItem();
         int idprov = proveedor.getIdproveedor();
         double cos = Double.parseDouble(jTextField10.getText());
         if (jCheckBox1.isSelected()) {
             String codbar = jTextField5.getText();
             producto = new Producto(nom, tip, codbar, stock, idprov, cos);
-        }else{
+            System.out.println(nom + " " + tip + " " + codbar + " " + stock + " " + idprov + " " + cos);
+        } else {
             producto = new Producto(nom, tip, stock, idprov, cos);
         }
-        int id = productoDAO.insertar(producto,jCheckBox1.isSelected());
-        if (id!=0) {
-            JOptionPane.showMessageDialog(null, "Insertado con exito");
+        int id = productoDAO.insertar(producto, jCheckBox1.isSelected());
+        if (id != 0) {
+            JOptionPane.showMessageDialog(null, "Insertado con éxito");
             this.setVisible(true);
             GuardarProducto.setVisible(false);
             cargarModelo(0);
         }
         return id;
+    }
+
+    String isDouble(String ps) {
+        String f = ps;
+        if (ps.length() != 0) {
+            try {
+                Double n = Double.parseDouble(ps);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "El campo ocupa únicamente caracteres numéricos");
+                f = ps.substring(0, ps.length() - 1);
+            }
+        }
+        return f;
+    }
+
+    String isInt(String ps) {
+        String f = ps;
+        if (ps.length() != 0) {
+            try {
+                long n = Long.parseLong(ps);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "El campo ocupa únicamente caracteres numéricos");
+                f = ps.substring(0, ps.length() - 1);
+            }
+        }
+        return f;
     }
 
     /**
@@ -167,15 +195,24 @@ public class ProductoG extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(0, 102, 204));
 
         jLabel5.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Nombre");
 
         jLabel7.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Código de Barras");
 
         jLabel8.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Tipo");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo", "Abarrotes", "Enlatados", "Lacteos", "Botanas", "Harinas", "FrutasyVerduras", "Bebidas", "BebidasAlcoholicas", "CarnesEmbutidos", "Automedicacion", "HigienePersonal", "UsoDometico", "Jarceria", "Otros" }));
+        jTextField5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField5KeyReleased(evt);
+            }
+        });
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo", "Abarrotes", "Enlatados", "Lácteos", "Botanas", "Harinas", "Frutas y Verduras", "Bebidas", "Bebidas Alcoholicás", "Carnes Embutidos", "Automedicación", "Higiene Personal", "Uso Doméstico", "Jarcería", "Otros" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
@@ -183,6 +220,7 @@ public class ProductoG extends javax.swing.JFrame {
         });
 
         jLabel1.setFont(new java.awt.Font("Harrington", 1, 50)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Guardar");
 
         jButton9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextin.png"))); // NOI18N
@@ -209,14 +247,29 @@ public class ProductoG extends javax.swing.JFrame {
             }
         });
 
+        jTextField8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField8KeyReleased(evt);
+            }
+        });
+
         jLabel17.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Stock");
 
         jLabel18.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setText("Proveedor");
 
         jLabel19.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setText("Costo");
+
+        jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField10KeyReleased(evt);
+            }
+        });
 
         jComboBox4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -346,6 +399,7 @@ public class ProductoG extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(0, 102, 204));
 
         jLabel2.setFont(new java.awt.Font("Harrington", 1, 50)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Modificar");
 
         jButton10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextin.png"))); // NOI18N
@@ -368,12 +422,14 @@ public class ProductoG extends javax.swing.JFrame {
         jButton11.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextdg.png"))); // NOI18N
 
         jLabel20.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setText("Nombre");
 
         jLabel21.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Tipo");
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo", "Abarrotes", "Enlatados", "Lacteos", "Botanas", "Harinas", "FrutasyVerduras", "Bebidas", "BebidasAlcoholicas", "CarnesEmbutidos", "Automedicacion", "HigienePersonal", "UsoDometico", "Jarceria", "Otros" }));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo", "Abarrotes", "Enlatados", "Lácteos", "Botanas", "Harinas", "Frutas y Verduras", "Bebidas", "Bebidas Alcoholicás", "Carnes Embutidos", "Automedicación", "Higiene Personal", "Uso Doméstico", "Jarcería", "Otros" }));
         jComboBox5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox5ActionPerformed(evt);
@@ -381,12 +437,15 @@ public class ProductoG extends javax.swing.JFrame {
         });
 
         jLabel22.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setText("Código de Barras");
 
         jLabel23.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
         jLabel23.setText("Stock");
 
         jLabel24.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel24.setForeground(new java.awt.Color(255, 255, 255));
         jLabel24.setText("Proveedor");
 
         jComboBox6.addActionListener(new java.awt.event.ActionListener() {
@@ -396,6 +455,7 @@ public class ProductoG extends javax.swing.JFrame {
         });
 
         jLabel25.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel25.setForeground(new java.awt.Color(255, 255, 255));
         jLabel25.setText("Costo");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -509,6 +569,7 @@ public class ProductoG extends javax.swing.JFrame {
         jPanel5.setBackground(new java.awt.Color(0, 102, 204));
 
         jLabel3.setFont(new java.awt.Font("Harrington", 1, 50)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Ver");
 
         jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextin.png"))); // NOI18N
@@ -524,21 +585,27 @@ public class ProductoG extends javax.swing.JFrame {
         });
 
         jLabel26.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel26.setForeground(new java.awt.Color(255, 255, 255));
         jLabel26.setText("Nombre");
 
         jLabel27.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel27.setForeground(new java.awt.Color(255, 255, 255));
         jLabel27.setText("Tipo");
 
         jLabel28.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel28.setForeground(new java.awt.Color(255, 255, 255));
         jLabel28.setText("Código de Barras");
 
         jLabel29.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel29.setForeground(new java.awt.Color(255, 255, 255));
         jLabel29.setText("Stock");
 
         jLabel30.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel30.setForeground(new java.awt.Color(255, 255, 255));
         jLabel30.setText("Proveedor");
 
         jLabel31.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel31.setForeground(new java.awt.Color(255, 255, 255));
         jLabel31.setText("Costo");
 
         jLabel32.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -669,6 +736,7 @@ public class ProductoG extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/addbn.png"))); // NOI18N
+        jButton1.setToolTipText("Agregar");
         jButton1.setBorderPainted(false);
         jButton1.setContentAreaFilled(false);
         jButton1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/addbc.png"))); // NOI18N
@@ -680,12 +748,14 @@ public class ProductoG extends javax.swing.JFrame {
         });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/eliminarbn.png"))); // NOI18N
+        jButton2.setToolTipText("Eliminar");
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
         jButton2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/eliminarbc.png"))); // NOI18N
         jButton2.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/eliminarbg.png"))); // NOI18N
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/modificarbn.png"))); // NOI18N
+        jButton3.setToolTipText("Modificar");
         jButton3.setBorderPainted(false);
         jButton3.setContentAreaFilled(false);
         jButton3.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/modificarbc.png"))); // NOI18N
@@ -712,9 +782,10 @@ public class ProductoG extends javax.swing.JFrame {
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Harrington", 1, 50)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Producto");
+        jLabel10.setText("Productos");
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/verbn.png"))); // NOI18N
+        jButton5.setToolTipText("Ver");
         jButton5.setBorderPainted(false);
         jButton5.setContentAreaFilled(false);
         jButton5.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/verbc.png"))); // NOI18N
@@ -846,7 +917,7 @@ public class ProductoG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        System.out.println("sa"+jComboBox2.getSelectedIndex());
+        System.out.println("sa" + jComboBox2.getSelectedIndex());
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -862,7 +933,7 @@ public class ProductoG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        VerProducto.setSize(321, 370);
+        VerProducto.setSize(360, 465);
         this.setVisible(false);
         VerProducto.setVisible(true);
         VerProducto.setResizable(true);
@@ -916,7 +987,7 @@ public class ProductoG extends javax.swing.JFrame {
         if (jCheckBox1.isSelected()) {
             jLabel7.setEnabled(true);
             jTextField5.setEnabled(true);
-        }else{
+        } else {
             jLabel7.setEnabled(false);
             jTextField5.setEnabled(false);
         }
@@ -924,15 +995,31 @@ public class ProductoG extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
-            if (jTextField4.getText().equals("")||jTextField5.getText().equals("")||jTextField8.getText().equals("")||jTextField10.getText().equals("")||jComboBox2.getSelectedIndex()==0||jComboBox4.getSelectedIndex()==0) {
-                JOptionPane.showMessageDialog(null, "Alguno de los campos esta vacio");
-            }else{
+            if (jTextField4.getText().equals("") || jTextField5.getText().equals("") || jTextField8.getText().equals("") || jTextField10.getText().equals("") || jComboBox2.getSelectedIndex() == 0 || jComboBox4.getSelectedIndex() == 0) {
+                JOptionPane.showMessageDialog(null, "Alguno de los campos están vacío");
+            } else {
                 AddProducto();
             }
         } catch (SQLException ex) {
-            System.out.println("Error: "+ex);;
+            System.out.println("Error: " + ex);;
         }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jTextField10KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField10KeyReleased
+        jTextField10.setText(isDouble(jTextField10.getText()));
+    }//GEN-LAST:event_jTextField10KeyReleased
+
+    private void jTextField8KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField8KeyReleased
+        jTextField8.setText(isDouble(jTextField8.getText()));
+    }//GEN-LAST:event_jTextField8KeyReleased
+
+    private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
+        if (jTextField5.getText().length() > 13) {
+            JOptionPane.showMessageDialog(null, "El campo unicamente debe contener 13 digitos");
+            jTextField5.setText(jTextField5.getText().substring(0,13));
+        }
+            jTextField5.setText(isInt(jTextField5.getText()));
+    }//GEN-LAST:event_jTextField5KeyReleased
 
     /**
      * @param args the command line arguments

@@ -76,7 +76,7 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setText("Contraseña:");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextdn.png"))); // NOI18N
-        jButton1.setToolTipText("ingresar");
+        jButton1.setToolTipText("Ingresar");
         jButton1.setBorderPainted(false);
         jButton1.setContentAreaFilled(false);
         jButton1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextdc.png"))); // NOI18N
@@ -165,7 +165,8 @@ public class Login extends javax.swing.JFrame {
         }else{
           try {
             usuario = usuarioDAO.selectedUsuario(jTextField1.getText());
-            if (usuario.getContrasena().equals(jPasswordField1.getText())) {
+         
+            if (usuario.getNombre().equals(jTextField1.getText())&&usuario.getContrasena().equals(jPasswordField1.getText())) {
             JOptionPane.showMessageDialog(null, "Acceso concedido");
             inicio.setVisible(true);
             this.dispose();

@@ -23,8 +23,11 @@ public class VentasDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call procedure insintovent(?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call procedure insintovent(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setDouble(1, pojo.getTotal());
+            st.setDouble(2, pojo.getPago());
+            st.setDouble(3, pojo.getCambio());
+            st.setInt(4, pojo.getEmpleado_idempleado());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -46,9 +49,12 @@ public class VentasDAO {
        Ventas ventas = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update ventas set idventas=?,total=?");
-            st.setInt(1, pojo.getIdventas());
-            st.setDouble(2, pojo.getTotal());
+            st = con.prepareStatement("update ventas set total=?, pago=?, cambio=?, Empleado_idEmpleado=? where idVentas=?");
+            st.setDouble(1, pojo.getTotal());
+            st.setDouble(2, pojo.getPago());
+            st.setDouble(3, pojo.getCambio());
+            st.setInt(4, pojo.getEmpleado_idempleado());
+            st.setInt(5, pojo.getIdventas());
             int x = st.executeUpdate();
             if (x == 0) {
                 return false;
@@ -75,10 +81,10 @@ public class VentasDAO {
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[4];
+                Object ob[] = new Object[2];
                 Ventas pojo = inflaPOJO(rs);
-                ob[1] = pojo.getIdventas();
-                ob[2] = pojo.getTotal();
+                ob[0] = pojo.getIdventas();
+                ob[1] = pojo.getTotal();
                 dt.addRow(ob);
             }          
             rs.close();
@@ -116,6 +122,9 @@ public class VentasDAO {
         try {
             POJO.setIdventas(rs.getInt("idVentas"));
             POJO.setTotal(rs.getDouble("Total"));
+            POJO.setPago(rs.getDouble("Pago"));
+            POJO.setCambio(rs.getDouble("Cambio"));
+            POJO.setEmpleado_idempleado(rs.getInt("Empleado_idEmpleado"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo VentasS: " + ex);
         }

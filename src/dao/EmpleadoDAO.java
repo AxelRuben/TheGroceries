@@ -9,9 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 import pojo.Empleado;
-import pojo.Producto;
 
 /**
  *
@@ -75,7 +75,7 @@ public class EmpleadoDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre","Telefono"};
+        String encabezados[] = {"Id", "Nombre","Teléfono"};
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("select*from empleados");
@@ -99,6 +99,31 @@ public class EmpleadoDAO {
         }
         return dt;
     }
+    
+    public DefaultComboBoxModel cargarCombo() {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultComboBoxModel dt = null;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("select * from empleados");
+            dt = new DefaultComboBoxModel();
+            ResultSet rs = st.executeQuery();
+            dt.addElement("Seleccione a su Empleado");
+            while (rs.next()) {
+                Empleado pojo = inflaPOJO(rs);
+                dt.addElement(pojo);
+            }
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar el modelo Empleado " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
+    
      public Empleado selectedEmpleado(int id) {
         Connection con = null;
         PreparedStatement st = null;

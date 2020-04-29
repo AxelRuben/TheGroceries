@@ -61,7 +61,7 @@ public class Inicio extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesInicio/surtidbn.png"))); // NOI18N
-        jButton1.setToolTipText("Productos");
+        jButton1.setToolTipText("Surtidos");
         jButton1.setBorderPainted(false);
         jButton1.setContentAreaFilled(false);
         jButton1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesInicio/surtidbc.png"))); // NOI18N

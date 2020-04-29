@@ -147,7 +147,7 @@
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
               <Image iconType="3" name="/img/BotonesMenu/nextdn.png"/>
             </Property>
-            <Property name="toolTipText" type="java.lang.String" value="ingresar"/>
+            <Property name="toolTipText" type="java.lang.String" value="Ingresar"/>
             <Property name="borderPainted" type="boolean" value="false"/>
             <Property name="contentAreaFilled" type="boolean" value="false"/>
             <Property name="pressedIcon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">

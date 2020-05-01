@@ -45,9 +45,9 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `Abarrotes`.`Producto` (
   `idProducto` INT NOT NULL AUTO_INCREMENT,
   `Nombre` VARCHAR(100) NOT NULL,
-  `Tipo` ENUM('Abarrotes', 'Enlatados', 'Lacteos', 'Botanas', 'Harinas', 'FrutasyVerduras', 'Bebidas', 'BebidasAlcoholicas', 'CarnesEmbutidos', 'Automedicacion', 'HigienePersonal', 'UsoDometico', 'Jarceria', 'Otros') NOT NULL,
+  `Tipo` ENUM('Abarrotes', 'Enlatados', 'Lacteos', 'Botanas', 'Harinas', 'FrutasyVerduras', 'Bebidas', 'BebidasAlcoholicas', 'CarnesEmbutidos', 'Automedicacion', 'HigienePersonal', 'UsoDomestico', 'Jarceria', 'Otros') NOT NULL,
   `Cod_Bar` VARCHAR(45) NULL,
-  `Stock` INT NOT NULL,
+  `Stock` DOUBLE NOT NULL,
   `Proveedor_idProveedor` INT NOT NULL,
   `Costo` DOUBLE NOT NULL,
   PRIMARY KEY (`idProducto`),
@@ -65,8 +65,10 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Abarrotes`.`Ventas` (
   `idVentas` INT NOT NULL AUTO_INCREMENT,
-  `Fecha` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  `Fecha` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Total` DOUBLE NOT NULL,
+  `Pago` DOUBLE NOT NULL,
+  `Cambio` DOUBLE NOT NULL,
   `Empleados_idEmpleados` INT NOT NULL,
   PRIMARY KEY (`idVentas`),
   INDEX `fk_Ventas_Empleados1_idx` (`Empleados_idEmpleados` ASC),
@@ -168,12 +170,12 @@ create procedure insintoempl(in nom varchar(100), in tel varchar(100), in dir va
 BEGIN
 insert into empleados(nombreC,telefono,direccion,estudios) values(nom,tel,dir,est);
 END//
-delimiter ; 
+delimiter ;
 
 DELIMITER //
-create procedure insintovent(in tot double, in idempl int)
+create procedure insintovent(in tot double, in pag double, in cam double,  in idempl int)
 BEGIN
-insert into ventas(total,Empleados_idEmpleado) values(tot,idempl);
+insert into ventas(total, pago, cambio, Empleados_idEmpleado) values(tot,pag,cam,idempl);
 END//
 delimiter ; 
 
@@ -185,12 +187,12 @@ END//
 delimiter ;
 
 DELIMITER //
-create procedure insintoprod(in nom varchar(100), in tip int, in codb varchar(100),in sto int, in pro int,in cos double)
+create procedure insintoprod(in nom varchar(100), in tip varchar(100), in codb varchar(100),in sto double, in pro int,in cos double)
 BEGIN
 insert into Producto(Nombre,Tipo,cod_bar,stock,proveedor_idproveedor,costo) values(nom,tip,codb,sto,pro,cos);
 END//
-delimiter ; 
-select * from producto;
+delimiter ;
+
 DELIMITER //
 create procedure insintoprodsc(in nom varchar(100), in tip varchar(100),in sto int, in pro int,in cos double)
 BEGIN

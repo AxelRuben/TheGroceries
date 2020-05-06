@@ -23,7 +23,7 @@ public class VentasDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call procedure insintovent(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insintovent(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setDouble(1, pojo.getTotal());
             st.setDouble(2, pojo.getPago());
             st.setDouble(3, pojo.getCambio());
@@ -35,7 +35,7 @@ public class VentasDAO {
                 System.out.println("ID insertada "+id);
             }
         } catch (Exception e) {
-            System.out.println("Error al insertar proveedor " + e);
+            System.out.println("Error al insertar ventas " + e);
 
         } finally {
             Conexion.close(con);
@@ -96,6 +96,33 @@ public class VentasDAO {
         }
         return dt;
     }
+    public DefaultTableModel cargarModeloVV() {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"Id", "Fecha", "Empleado"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("select v.idVentas,v.fecha,e.nombreC from ventas v, empleados e where v.empleados_idEmpleados=e.idEmpleados");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[3];
+                ob[0] = rs.getInt(1);
+                ob[1] = rs.getString(2);
+                ob[2] = rs.getString(3).toUpperCase();
+                dt.addRow(ob);
+            }          
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla ventas " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
      public Ventas selectedVentas(int id) {
         Connection con = null;
         PreparedStatement st = null;
@@ -124,7 +151,7 @@ public class VentasDAO {
             POJO.setTotal(rs.getDouble("Total"));
             POJO.setPago(rs.getDouble("Pago"));
             POJO.setCambio(rs.getDouble("Cambio"));
-            POJO.setEmpleado_idempleado(rs.getInt("Empleado_idEmpleado"));
+            POJO.setEmpleado_idempleado(rs.getInt("Empleado_idEmpleados"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo VentasS: " + ex);
         }

@@ -16,37 +16,43 @@ public class Producto {
      private String codigo_barra;
      private double stock;
      private int proveedor_idProveedor;
-     private double costo;
+     private double costoalcl;
+     private double costoaldu;
 
     public Producto() {
     }
 
-    public Producto(int idProducto, String nombre, String tipo, String codigo_barra, int stock, int proveedor_idProveedor, double costo) {
+    public Producto(int idProducto, String nombre, String tipo, String codigo_barra, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.tipo = tipo;
         this.codigo_barra = codigo_barra;
         this.stock = stock;
         this.proveedor_idProveedor = proveedor_idProveedor;
-        this.costo = costo;
+        this.costoalcl = costoalcl;
+        this.costoaldu = costoaldu;
     }
 
-   public Producto( String nombre, String tipo, String codigo_barra, double stock, int proveedor_idProveedor, double costo) {
+    public Producto(String nombre, String tipo, String codigo_barra, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu) {
+        this.idProducto = idProducto;
         this.nombre = nombre;
         this.tipo = tipo;
         this.codigo_barra = codigo_barra;
         this.stock = stock;
         this.proveedor_idProveedor = proveedor_idProveedor;
-        this.costo = costo;
-    } 
-
-   public Producto( String nombre, String tipo, double stock, int proveedor_idProveedor, double costo) {
+        this.costoalcl = costoalcl;
+        this.costoaldu = costoaldu;
+    }
+    public Producto(String nombre, String tipo, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu) {
+        this.idProducto = idProducto;
         this.nombre = nombre;
         this.tipo = tipo;
+        this.codigo_barra = codigo_barra;
         this.stock = stock;
         this.proveedor_idProveedor = proveedor_idProveedor;
-        this.costo = costo;
-    } 
+        this.costoalcl = costoalcl;
+        this.costoaldu = costoaldu;
+    }
 
     public int getIdProducto() {
         return idProducto;
@@ -96,12 +102,21 @@ public class Producto {
         this.proveedor_idProveedor = proveedor_idProveedor;
     }
 
-    public double getCosto() {
-        return costo;
+    public double getCostoalcl() {
+        return costoalcl;
     }
 
-    public void setCosto(double costo) {
-        this.costo = costo;
+    public void setCostoalcl(double costoalcl) {
+        this.costoalcl = costoalcl;
+    }
+
+    public double getCostoaldu() {
+        return costoaldu;
+    }
+
+    public void setCostoaldu(double costoaldu) {
+        this.costoaldu = costoaldu;
     }
    
+    
 }

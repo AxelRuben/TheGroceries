@@ -79,6 +79,8 @@ public class Login extends javax.swing.JFrame {
         jButton1.setToolTipText("Ingresar");
         jButton1.setBorderPainted(false);
         jButton1.setContentAreaFilled(false);
+        jButton1.setDefaultCapable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButton1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextdc.png"))); // NOI18N
         jButton1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextdg.png"))); // NOI18N
         jButton1.addActionListener(new java.awt.event.ActionListener() {

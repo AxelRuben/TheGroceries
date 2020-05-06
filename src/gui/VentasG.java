@@ -10,6 +10,7 @@ import dao.ProductoDAO;
 import dao.VentasDAO;
 import dao.Ventas_has_productoDAO;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -42,6 +43,7 @@ public class VentasG extends javax.swing.JFrame {
     DefaultComboBoxModel defCBM;
     TableRowSorter<TableModel> sorter;
     TableRowSorter<TableModel> sorter2;
+    DecimalFormat defo;
 
     /**
      * Creates new form Ventas
@@ -57,6 +59,7 @@ public class VentasG extends javax.swing.JFrame {
         empleado = new Empleado();
         empleadoDAO = new EmpleadoDAO();
         defCBM = new DefaultComboBoxModel();
+        defo = new DecimalFormat("0.00");
         loadComPro(jComboBox1);
         VentasIn();
         resetear();
@@ -74,14 +77,21 @@ public class VentasG extends javax.swing.JFrame {
     double calcularTotal() {
         double total = 0;
         for (int i = 0; i < jTable2.getRowCount(); i++) {
-            double subtotal = Double.parseDouble(jTable2.getValueAt(i, 2).toString());
+            double subtotal = Double.parseDouble(jTable2.getValueAt(i, 3).toString());
             total += subtotal;
         }
         return total;
     }
 
-    boolean verificarStock(double cantidad, double stock) {
-        double restante = stock - cantidad;
+    boolean verificarStock(double cantidad, double stock, int id) {
+        double stockirr = stock;
+        for (int i = 0; i < jTable2.getRowCount(); i++) {
+            int rowb = Integer.parseInt(jTable2.getValueAt(i, 0).toString());
+            if (rowb == id) {
+                stockirr = stockirr - Double.parseDouble(jTable2.getValueAt(i, 2).toString());
+            }
+        }
+        double restante = stockirr - cantidad;
         if (restante >= 0) {
             return true;
         } else {
@@ -91,71 +101,102 @@ public class VentasG extends javax.swing.JFrame {
 
     void agregarVenta() throws SQLException {
         DefaultTableModel table2 = (DefaultTableModel) jTable2.getModel();
-        DefaultTableModel tabla1 = (DefaultTableModel) jTable1.getModel();
         int row = jTable1.getSelectedRow();
         int id = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
-        System.out.println(""+id);
         producto = productoDAO.selectedProducto(id);
-        String nombre = jTable1.getValueAt(row, 1).toString();
-        double costoo = producto.getCosto();
+        String nombre = producto.getNombre();
+        double costoo = producto.getCostoalcl();
         double cantidad = Double.parseDouble(JOptionPane.showInputDialog("¿Cuántos desea llevar?"));
         double stock = producto.getStock();
         double subtotal = costoo * cantidad;
-        if (verificarStock(cantidad, stock)) {
-            Object producto[] = {id, nombre, cantidad, subtotal};
+        if (verificarStock(cantidad, stock, id)) {
+            Object producto[] = {id, nombre, cantidad, defo.format(subtotal)};
             table2.addRow(producto);
-            tabla1.removeRow(row);
             jLabel20.setText(calcularTotal() + "");
         } else {
             JOptionPane.showMessageDialog(null, "No hay existencias suficientes");
         }
     }
-    
-    void resetear(){
+
+    void resetear() {
         jTextField1.setText("");
         jLabel20.setText("");
         jLabel22.setText("");
         jComboBox1.setSelectedIndex(0);
-        Object iden[] = {"Id", "Nombre", "Cantidad", "Subtotal"};
-        ta2 = new DefaultTableModel(iden, 0);
-        jTable1.setModel(productoDAO.cargarModeloA(1));
-        sorter = new TableRowSorter<>(productoDAO.cargarModeloA(1));
+        jTable1.setModel(productoDAO.cargarModeloA(1,1));
+        sorter = new TableRowSorter<>(productoDAO.cargarModeloA(1,1));
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setRowSorter(sorter);
+        Object iden[] = {"Id", "Nombre", "Cantidad", "Subtotal"};
+        ta2 = new DefaultTableModel(iden, 0);
         jTable2.setModel(ta2);
         sorter2 = new TableRowSorter<>(ta2);
         jTable2.setAutoCreateRowSorter(true);
         jTable2.setRowSorter(sorter2);
     }
-    
+
+    void cargarTabla3() {
+        jTable3.setModel(ventasDAO.cargarModeloVV());
+        sorter = new TableRowSorter<>(ventasDAO.cargarModeloVV());
+        jTable3.setAutoCreateRowSorter(true);
+        jTable3.setRowSorter(sorter);
+    }
+
+    void cargarTabla4(int i) {
+        jTable4.setModel(ventas_has_productoDAO.cargarModelo(i));
+        sorter = new TableRowSorter<>(ventas_has_productoDAO.cargarModelo(i));
+        jTable4.setAutoCreateRowSorter(true);
+        jTable4.setRowSorter(sorter);
+    }
+
     void insertar_ven() throws SQLException {
         ventasDAO = new VentasDAO();
         ventas_has_productoDAO = new Ventas_has_productoDAO();
         ventas = new Ventas();
         ventas_has_producto = new Ventas_has_Producto();
-        empleado = (Empleado) jComboBox1.getSelectedItem();
+        empleado = (Empleado) empleadoDAO.selectedEmpleado(jComboBox1.getSelectedIndex());
         int idemp = empleado.getIdempleado();
         double to = Double.parseDouble(jLabel20.getText());
         double pa = Double.parseDouble(jTextField1.getText());
         double cam = Double.parseDouble(jLabel22.getText());
-        ventas = new Ventas(to, cam, pa, idemp);
+        ventas = new Ventas(to, pa, cam, idemp);
         int id = ventasDAO.insertar(ventas);
         for (int i = 0; i < jTable2.getRowCount(); i++) {
-            producto = productoDAO.selectedProducto(Integer.parseInt((String)jTable2.getValueAt(i, 1)));
-            ventas_has_producto = new Ventas_has_Producto(id, producto.getIdProducto(),Integer.parseInt(jTable2.getValueAt(i, 2).toString()), Integer.parseInt(jTable2.getValueAt(i, 3).toString()));
+            producto = productoDAO.selectedProducto(Integer.parseInt(jTable2.getValueAt(i, 0).toString()));
+            ventas_has_producto = new Ventas_has_Producto(id, producto.getIdProducto(), Double.parseDouble(jTable2.getValueAt(i, 2).toString()), Double.parseDouble(jTable2.getValueAt(i, 3).toString()));
             ventas_has_productoDAO.insertar(ventas_has_producto);
-            if (!productoDAO.actualizar_stock(producto.getIdProducto(), producto.getStock() - Integer.parseInt(jTable2.getValueAt(i, 2).toString()))) {
+            if (!productoDAO.actualizar_stock(producto.getIdProducto(), producto.getStock() - Double.parseDouble(jTable2.getValueAt(i, 2).toString()))) {
                 JOptionPane.showMessageDialog(null, "Error al actualizar Stock");
+            } else {
+                JOptionPane.showMessageDialog(null, "La venta se ha insertado con éxito");
                 resetear();
-            }else{
-                JOptionPane.showConfirmDialog(null, "La venta se ha insertado con éxito");
             }
         }
     }
-    
+
     public void loadComPro(JComboBox combokil) {
         defCBM = empleadoDAO.cargarCombo();
         combokil.setModel(defCBM);
+    }
+
+    String isDouble(String ps) {
+        String f = ps;
+        if (ps.length() != 0) {
+            try {
+                Double n = Double.parseDouble(ps);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "El campo ocupa únicamente caracteres numéricos");
+                f = ps.substring(0, ps.length() - 1);
+            }
+        }
+        return f;
+    }
+
+    double calcularCambio() {
+        double tot = Double.parseDouble(jLabel20.getText());
+        double pag = Double.parseDouble(jTextField1.getText());
+        double cambio = pag - tot;
+        return cambio;
     }
 
     /**
@@ -442,6 +483,11 @@ public class VentasG extends javax.swing.JFrame {
         jButton10.setContentAreaFilled(false);
         jButton10.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/izqc.png"))); // NOI18N
         jButton10.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/izqg.png"))); // NOI18N
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         jLabel17.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
@@ -458,6 +504,12 @@ public class VentasG extends javax.swing.JFrame {
         jLabel21.setText("Pago");
 
         jLabel22.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
 
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextdn.png"))); // NOI18N
         jButton6.setToolTipText("Guardar");
@@ -603,29 +655,30 @@ public class VentasG extends javax.swing.JFrame {
         VerVentas.setTitle("The Groceries - Ver Ventas");
         VerVentas.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         VerVentas.setLocationRelativeTo(null);
+        cargarTabla3();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
         Inicio inicio = new Inicio();
         VerVentas.dispose();
         VerVentas.setVisible(false);
-        inicio.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
-        inicio.setTitle("The Groceries - Inicio");
-        inicio.setSize(340, 450);
-        inicio.setResizable(false);
-        inicio.setLocationRelativeTo(null);
+        inicio.iniciop();
         inicio.setVisible(true);
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        Ver.setSize(569, 478);
-        VerVentas.dispose();
-        Ver.setResizable(true);
-        Ver.setTitle("The Groceries - Ver Venta");
-        Ver.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
-        Ver.setLocationRelativeTo(null);
-        Ver.setVisible(true);
-
+        if (jTable3.getSelectedRow() != -1) {
+            Ver.setSize(569, 478);
+            VerVentas.dispose();
+            Ver.setResizable(true);
+            Ver.setTitle("The Groceries - Ver Venta");
+            Ver.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
+            Ver.setLocationRelativeTo(null);
+            Ver.setVisible(true);
+            cargarTabla4(Integer.parseInt(jTable3.getValueAt(jTable3.getSelectedRow(), 0).toString()));
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione alguna venta");
+        }
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
@@ -644,28 +697,47 @@ public class VentasG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        try {
-            agregarVenta();
-        } catch (SQLException ex) {
-            JOptionPane.showConfirmDialog(null, "Error al agregar producto");
-            System.out.println(""+ex);
+        if (jTable1.getSelectedRow() != -1) {
+            try {
+                agregarVenta();
+            } catch (SQLException ex) {
+                JOptionPane.showConfirmDialog(null, "Error al agregar producto");
+                System.out.println("" + ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un producto a agregar");
         }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        if (jTable2.getRowCount() == 0||jComboBox1.getSelectedIndex()==0) {
+        if (jTable2.getRowCount() == 0 || jComboBox1.getSelectedIndex() == 0 || jTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Seleccione un dato");
-
         } else {
             try {
                 insertar_ven();
-                JOptionPane.showMessageDialog(null, "Éxito al guardar venta");
             } catch (SQLException ex) {
                 System.out.println("Error al insertar venta " + ex);;
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        jTextField1.setText(isDouble(jTextField1.getText()));
+        if (!jTextField1.getText().equals("") && !jLabel20.getText().equals("")) {
+            if (calcularCambio() >= 0) {
+                jLabel22.setText("" + calcularCambio());
+            }
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        if (jTable2.getSelectedRow() != -1) {
+            DefaultTableModel table2 = (DefaultTableModel) jTable2.getModel();
+            table2.removeRow(jTable2.getSelectedRow());
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un dato para retirar");
+        }
+    }//GEN-LAST:event_jButton10ActionPerformed
 
     /**
      * @param args the command line arguments

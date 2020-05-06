@@ -10,6 +10,7 @@ package pojo;
  * @author lizbe
  */
 public class Ventas_has_Producto {
+    private int idvhp;
     private int ventas_idventas;
     private int producto_idproducto;
     private double cantidad;
@@ -18,19 +19,27 @@ public class Ventas_has_Producto {
     public Ventas_has_Producto() {
     }
 
-    public Ventas_has_Producto(int ventas_idventas, int producto_idproducto, double cantidad, double subtotal) {
+    public Ventas_has_Producto(int idvhp, int ventas_idventas, int producto_idproducto, double cantidad, double subtotal) {
+        this.idvhp = idvhp;
+        this.ventas_idventas = ventas_idventas;
+        this.producto_idproducto = producto_idproducto;
+        this.cantidad = cantidad;
+        this.subtotal = subtotal;
+    }
+     public Ventas_has_Producto( int ventas_idventas, int producto_idproducto, double cantidad, double subtotal) {
         this.ventas_idventas = ventas_idventas;
         this.producto_idproducto = producto_idproducto;
         this.cantidad = cantidad;
         this.subtotal = subtotal;
     }
 
-    public double getSubtotal() {
-        return subtotal;
+
+    public int getIdvhp() {
+        return idvhp;
     }
 
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
+    public void setIdvhp(int idvhp) {
+        this.idvhp = idvhp;
     }
 
     public int getVentas_idventas() {
@@ -55,6 +64,14 @@ public class Ventas_has_Producto {
 
     public void setCantidad(double cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public double getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
     }
     
     

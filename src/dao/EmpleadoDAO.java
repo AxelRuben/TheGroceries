@@ -112,7 +112,7 @@ public class EmpleadoDAO {
             dt.addElement("Seleccione a su Empleado");
             while (rs.next()) {
                 Empleado pojo = inflaPOJO(rs);
-                dt.addElement(pojo);
+                dt.addElement(pojo.toString());
             }
             rs.close();
         } catch (Exception e) {
@@ -130,7 +130,7 @@ public class EmpleadoDAO {
          Empleado pojo = new Empleado();
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from empleados where idempleado==0");
+            st = con.prepareStatement("select * from empleados where idempleados=?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {

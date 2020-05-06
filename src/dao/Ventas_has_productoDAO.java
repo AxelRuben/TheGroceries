@@ -23,7 +23,7 @@ public class Ventas_has_productoDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call procedure insintoventhprod(?,?,?,?", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insintoventhprod(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setInt(1, pojo.getVentas_idventas());
             st.setInt(2, pojo.getProducto_idproducto());
             st.setDouble(3, pojo.getCantidad());
@@ -68,24 +68,24 @@ public class Ventas_has_productoDAO {
         return true;
     }
     
-    public DefaultTableModel cargarModelo() {
+    public DefaultTableModel cargarModelo(int idVentas) {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Subtotal","Cantidad"};
+        String encabezados[] = {"Nombre", "Costo","Cantidad","Subtotal"};
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from Ventas_has_Producto");
+            st = con.prepareStatement("select p.nombre,p.costoalcl,vhp.cantidadDP,vhp.subtotal from ventas_has_producto vhp,producto p where vhp.producto_idproducto=p.idProducto and vhp.ventas_idventas=?;");
+            st.setInt(1, idVentas);
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Object ob[] = new Object[4];
-                Ventas_has_Producto pojo = inflaPOJO(rs);
-                ob[1] = pojo.getVentas_idventas();
-                ob[2] = pojo.getProducto_idproducto();
-                ob[3] = pojo.getCantidad();
-                ob[4] = pojo.getCantidad();
+                ob[0] = rs.getString(1);
+                ob[1] = rs.getDouble(2);
+                ob[2] = rs.getDouble(3);
+                ob[3] = rs.getDouble(4);
                 dt.addRow(ob);
             }          
             rs.close();

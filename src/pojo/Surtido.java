@@ -12,17 +12,31 @@ package pojo;
 public class Surtido {
     private int idSurtido;
     private double total;
+    private double pago;
+    private double cambio;
 
     public Surtido() {
     }
 
-    public Surtido(int idSurtido, double total) {
+    public Surtido(int idSurtido, double total, double pago, double cambio) {
         this.idSurtido = idSurtido;
         this.total = total;
+        this.pago = pago;
+        this.cambio = cambio;
     }
     
-    public Surtido(double total) {
+    public Surtido(double total, double pago, double cambio) {
         this.total = total;
+        this.pago = pago;
+        this.cambio = cambio;
+    }
+
+    public int getIdSurtido() {
+        return idSurtido;
+    }
+
+    public void setIdSurtido(int idSurtido) {
+        this.idSurtido = idSurtido;
     }
 
     public double getTotal() {
@@ -33,12 +47,20 @@ public class Surtido {
         this.total = total;
     }
 
-    public int getIdSurtido() {
-        return idSurtido;
+    public double getPago() {
+        return pago;
     }
 
-    public void setIdSurtido(int idSurtido) {
-        this.idSurtido = idSurtido;
+    public void setPago(double pago) {
+        this.pago = pago;
+    }
+
+    public double getCambio() {
+        return cambio;
+    }
+
+    public void setCambio(double cambio) {
+        this.cambio = cambio;
     }
     
     

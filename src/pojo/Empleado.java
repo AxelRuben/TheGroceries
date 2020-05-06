@@ -73,5 +73,9 @@ public Empleado( String nombre, String telefono, String direccion, String estudi
         this.estudios = estudios;
     }
 
+    @Override
+    public String toString() {
+        return getNombre();
+    }
   
 }

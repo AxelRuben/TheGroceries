@@ -23,8 +23,10 @@ public class SurtidoDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call procedure insintosurt(?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insintosurt(?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setDouble(1, pojo.getTotal());
+            st.setDouble(2, pojo.getPago());
+            st.setDouble(3, pojo.getCambio());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -89,6 +91,34 @@ public class SurtidoDAO {
         }
         return dt;
     }
+    
+    public DefaultTableModel cargarModeloVS() {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"Id", "Total","Proveedor"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("select distinct s.idsurtido,s.fecha,pr.nombre from surtido s, producto_has_surtido phs, producto p, proveedor pr where pr.idProveedor=p.proveedor_idProveedor and p.idproducto=phs.producto_idproducto and phs.surtido_idSurtido=s.idsurtido");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[3];
+                ob[0] = rs.getInt(1);
+                ob[1] = rs.getString(2);
+                ob[2] = rs.getString(3).toUpperCase();
+                dt.addRow(ob);
+            }          
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla surtido " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
      public Surtido selectedSurtido(int id) {
         Connection con = null;
         PreparedStatement st = null;
@@ -115,6 +145,8 @@ public class SurtidoDAO {
         try {
             POJO.setIdSurtido(rs.getInt("idSurtido"));
             POJO.setTotal(rs.getDouble("Total"));
+            POJO.setPago(rs.getDouble("Pago"));
+            POJO.setCambio(rs.getDouble("Cambio"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo Surtido: " + ex);
         }

@@ -56,7 +56,7 @@ public class ProductoG extends javax.swing.JFrame {
     }
 
     void cargarModelo(int op) {
-        DefaultTableModel dt = productoDAO.cargarModeloA(op);
+        DefaultTableModel dt = productoDAO.cargarModeloA(op,0);
         sorter = new TableRowSorter<>(dt);
         jTable1.setModel(dt);
         jTable1.setAutoCreateRowSorter(true);
@@ -74,13 +74,13 @@ public class ProductoG extends javax.swing.JFrame {
         double stock = Double.parseDouble(jTextField8.getText());
         proveedor = (Proveedor) jComboBox4.getSelectedItem();
         int idprov = proveedor.getIdproveedor();
-        double cos = Double.parseDouble(jTextField10.getText());
+        double cosac = Double.parseDouble(jTextField10.getText());
+        double cosad = Double.parseDouble(jTextField14.getText());
         if (jCheckBox1.isSelected()) {
             String codbar = jTextField5.getText();
-            producto = new Producto(nom, tip, codbar, stock, idprov, cos);
-            System.out.println(nom + " " + tip + " " + codbar + " " + stock + " " + idprov + " " + cos);
+            producto = new Producto(nom, tip, codbar, stock, idprov, cosac, cosad);
         } else {
-            producto = new Producto(nom, tip, stock, idprov, cos);
+            producto = new Producto(nom, tip, stock, idprov, cosac, cosad);
         }
         int id = productoDAO.insertar(producto, jCheckBox1.isSelected());
         if (id != 0) {
@@ -145,6 +145,8 @@ public class ProductoG extends javax.swing.JFrame {
         jTextField10 = new javax.swing.JTextField();
         jComboBox4 = new javax.swing.JComboBox<>();
         jCheckBox1 = new javax.swing.JCheckBox();
+        jLabel38 = new javax.swing.JLabel();
+        jTextField14 = new javax.swing.JTextField();
         ModificarProducto = new javax.swing.JDialog();
         jPanel4 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -263,7 +265,7 @@ public class ProductoG extends javax.swing.JFrame {
 
         jLabel19.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel19.setText("Costo");
+        jLabel19.setText("Costo al Pùblico");
 
         jTextField10.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -283,6 +285,16 @@ public class ProductoG extends javax.swing.JFrame {
             }
         });
 
+        jLabel38.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel38.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel38.setText("Costo al Dueño");
+
+        jTextField14.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField14KeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -295,15 +307,19 @@ public class ProductoG extends javax.swing.JFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                 .addGroup(jPanel3Layout.createSequentialGroup()
                                     .addComponent(jLabel18)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(jPanel3Layout.createSequentialGroup()
                                     .addComponent(jLabel19)
-                                    .addGap(6, 6, 6)
-                                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel38)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jTextField14)))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -373,10 +389,14 @@ public class ProductoG extends javax.swing.JFrame {
                         .addComponent(jLabel19))
                     .addComponent(jTextField10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel38)
+                    .addComponent(jTextField14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout GuardarProductoLayout = new javax.swing.GroupLayout(GuardarProducto.getContentPane());
@@ -385,11 +405,13 @@ public class ProductoG extends javax.swing.JFrame {
             GuardarProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 377, Short.MAX_VALUE)
             .addGroup(GuardarProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(GuardarProductoLayout.createSequentialGroup()
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         GuardarProductoLayout.setVerticalGroup(
             GuardarProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 413, Short.MAX_VALUE)
+            .addGap(0, 457, Short.MAX_VALUE)
             .addGroup(GuardarProductoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(GuardarProductoLayout.createSequentialGroup()
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -798,6 +820,7 @@ public class ProductoG extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setText("Todos");
+        jRadioButton1.setContentAreaFilled(false);
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton1ActionPerformed(evt);
@@ -806,6 +829,7 @@ public class ProductoG extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("En existencia");
+        jRadioButton2.setContentAreaFilled(false);
         jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton2ActionPerformed(evt);
@@ -814,6 +838,7 @@ public class ProductoG extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton3);
         jRadioButton3.setText("Faltantes");
+        jRadioButton3.setContentAreaFilled(false);
         jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jRadioButton3ActionPerformed(evt);
@@ -898,7 +923,7 @@ public class ProductoG extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        GuardarProducto.setSize(390, 465);
+        GuardarProducto.setSize(385, 505);
         this.setVisible(false);
         GuardarProducto.setVisible(true);
         GuardarProducto.setResizable(true);
@@ -906,6 +931,13 @@ public class ProductoG extends javax.swing.JFrame {
         GuardarProducto.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         GuardarProducto.setLocationRelativeTo(null);
         loadComPro(jComboBox4);
+        jTextField4.setText("");
+        jTextField5.setText("");
+        jTextField8.setText("");
+        jTextField10.setText("");
+        jTextField14.setText("");
+        jComboBox2.setSelectedIndex(0);
+        jComboBox4.setSelectedIndex(0);
         jCheckBox1.setSelected(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -917,7 +949,7 @@ public class ProductoG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
-        System.out.println("sa" + jComboBox2.getSelectedIndex());
+        
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -996,7 +1028,7 @@ public class ProductoG extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
             if (jTextField4.getText().equals("") || jTextField5.getText().equals("") || jTextField8.getText().equals("") || jTextField10.getText().equals("") || jComboBox2.getSelectedIndex() == 0 || jComboBox4.getSelectedIndex() == 0) {
-                JOptionPane.showMessageDialog(null, "Alguno de los campos están vacío");
+                JOptionPane.showMessageDialog(null, "Alguno de los campos están vacíos");
             } else {
                 AddProducto();
             }
@@ -1015,11 +1047,15 @@ public class ProductoG extends javax.swing.JFrame {
 
     private void jTextField5KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField5KeyReleased
         if (jTextField5.getText().length() > 13) {
-            JOptionPane.showMessageDialog(null, "El campo unicamente debe contener 13 digitos");
+            JOptionPane.showMessageDialog(null, "El campo únicamente debe contener 13 digitos");
             jTextField5.setText(jTextField5.getText().substring(0,13));
         }
             jTextField5.setText(isInt(jTextField5.getText()));
     }//GEN-LAST:event_jTextField5KeyReleased
+
+    private void jTextField14KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField14KeyReleased
+        jTextField14.setText(isDouble(jTextField14.getText()));
+    }//GEN-LAST:event_jTextField14KeyReleased
 
     /**
      * @param args the command line arguments
@@ -1102,6 +1138,7 @@ public class ProductoG extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -1118,6 +1155,7 @@ public class ProductoG extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
     private javax.swing.JTextField jTextField13;
+    private javax.swing.JTextField jTextField14;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField8;

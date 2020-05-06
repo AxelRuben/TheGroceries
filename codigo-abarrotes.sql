@@ -49,7 +49,8 @@ CREATE TABLE IF NOT EXISTS `Abarrotes`.`Producto` (
   `Cod_Bar` VARCHAR(45) NULL,
   `Stock` DOUBLE NOT NULL,
   `Proveedor_idProveedor` INT NOT NULL,
-  `Costo` DOUBLE NOT NULL,
+  `CostoAlCl` DOUBLE NOT NULL,
+  `CostoAlDu` DOUBLE NOT NULL,
   PRIMARY KEY (`idProducto`),
   INDEX `fk_Producto_Proveedor_idx` (`Proveedor_idProveedor` ASC),
   CONSTRAINT `fk_Producto_Proveedor`
@@ -84,13 +85,14 @@ ENGINE = InnoDB;
 -- Table `Abarrotes`.`Ventas_has_Producto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Abarrotes`.`Ventas_has_Producto` (
+  `idvhp` INT NOT NULL AUTO_INCREMENT,
   `Ventas_idVentas` INT NOT NULL,
   `Producto_idProducto` INT NOT NULL,
   `CantidadDP` DOUBLE NOT NULL,
   `Subtotal` DOUBLE NOT NULL,
-  PRIMARY KEY (`Ventas_idVentas`, `Producto_idProducto`),
   INDEX `fk_Ventas_has_Producto_Producto1_idx` (`Producto_idProducto` ASC),
   INDEX `fk_Ventas_has_Producto_Ventas1_idx` (`Ventas_idVentas` ASC),
+  PRIMARY KEY (`idvhp`),
   CONSTRAINT `fk_Ventas_has_Producto_Ventas1`
     FOREIGN KEY (`Ventas_idVentas`)
     REFERENCES `Abarrotes`.`Ventas` (`idVentas`)
@@ -119,9 +121,11 @@ ENGINE = InnoDB;
 -- Table `Abarrotes`.`Surtido`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Abarrotes`.`Surtido` (
-  `idSurtido` INT NOT NULL,
-  `Total` DOUBLE NOT NULL,
+  `idSurtido` INT NOT NULL AUTO_INCREMENT,
   `Fecha` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Total` DOUBLE NOT NULL,
+  `Pago` DOUBLE NOT NULL,
+  `Cambio` DOUBLE NOT NULL,
   PRIMARY KEY (`idSurtido`))
 ENGINE = InnoDB;
 
@@ -130,20 +134,22 @@ ENGINE = InnoDB;
 -- Table `Abarrotes`.`Producto_has_Surtido`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `Abarrotes`.`Producto_has_Surtido` (
-  `Producto_idProducto` INT NOT NULL,
-  `Surtido_idSurtido` INT NOT NULL,
+  `idphs` INT NOT NULL AUTO_INCREMENT,
   `Cantidad` INT NOT NULL,
-  PRIMARY KEY (`Producto_idProducto`, `Surtido_idSurtido`),
+  `Subtotal` DOUBLE NOT NULL,
+  `Surtido_idSurtido` INT NOT NULL,
+  `Producto_idProducto` INT NOT NULL,
+  PRIMARY KEY (`idphs`),
   INDEX `fk_Producto_has_Surtido_Surtido1_idx` (`Surtido_idSurtido` ASC),
   INDEX `fk_Producto_has_Surtido_Producto1_idx` (`Producto_idProducto` ASC),
-  CONSTRAINT `fk_Producto_has_Surtido_Producto1`
-    FOREIGN KEY (`Producto_idProducto`)
-    REFERENCES `Abarrotes`.`Producto` (`idProducto`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_Producto_has_Surtido_Surtido1`
     FOREIGN KEY (`Surtido_idSurtido`)
     REFERENCES `Abarrotes`.`Surtido` (`idSurtido`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Producto_has_Surtido_Producto1`
+    FOREIGN KEY (`Producto_idProducto`)
+    REFERENCES `Abarrotes`.`Producto` (`idProducto`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -162,6 +168,8 @@ INSERT INTO `Abarrotes`.`Usuarios` (`idUsuarios`, `Nombre`, `Contrasenia`) VALUE
 
 COMMIT;
 
+
+
 /*--------------------Insert--------------------*/
 use abarrotes;
 
@@ -175,42 +183,43 @@ delimiter ;
 DELIMITER //
 create procedure insintovent(in tot double, in pag double, in cam double,  in idempl int)
 BEGIN
-insert into ventas(total, pago, cambio, Empleados_idEmpleado) values(tot,pag,cam,idempl);
+insert into ventas(total, pago, cambio, Empleados_idEmpleados) values(tot,pag,cam,idempl);
 END//
-delimiter ; 
+delimiter ;
 
 DELIMITER //
 create procedure insintoventhprod(in venidven int, in proidpro int, in cantdp double, in subtot double)
 BEGIN
-insert into Venta_has_Producto(Ventas_idVentas,Producto_idProducto,CantidadDP,Subtotal) values(venidven,proidpro,cantdp,subtot);
+insert into Ventas_has_Producto(Ventas_idVentas,Producto_idProducto,CantidadDP,Subtotal) values(venidven,proidpro,cantdp,subtot);
 END//
 delimiter ;
 
 DELIMITER //
-create procedure insintoprod(in nom varchar(100), in tip varchar(100), in codb varchar(100),in sto double, in pro int,in cos double)
+create procedure insintoprod(in nom varchar(100), in tip varchar(100), in codb varchar(100),in sto double, in pro int,in cosac double,in cosad double)
 BEGIN
-insert into Producto(Nombre,Tipo,cod_bar,stock,proveedor_idproveedor,costo) values(nom,tip,codb,sto,pro,cos);
+insert into Producto(Nombre,Tipo,cod_bar,stock,proveedor_idproveedor,costoalcl,costoaldu) values(nom,tip,codb,sto,pro,cosac,cosad);
 END//
 delimiter ;
 
 DELIMITER //
-create procedure insintoprodsc(in nom varchar(100), in tip varchar(100),in sto int, in pro int,in cos double)
+create procedure insintoprodsc(in nom varchar(100), in tip varchar(100),in sto int, in pro int,in cosac double,in cosad double)
 BEGIN
-insert into Producto(Nombre,Tipo,stock,proveedor_idproveedor,costo) values(nom,tip,sto,pro,cos);
+insert into Producto(Nombre,Tipo,stock,proveedor_idproveedor,costoalcl,costoaldu) values(nom,tip,sto,pro,cosac,cosad);
 END//
 delimiter ; 
 
 DELIMITER //
-create procedure insintoprodhsurt(in prodidprod int,in surtidsurt int,in cant double)
+create procedure insintoprodhsurt(in prodidprod int,in surtidsurt int,in cant double,in sub double)
 BEGIN
-insert into Producto_has_Surtido(producto_idproducto,surtido_idsurtido,cantidad) values(prodidprod,surtidsurt,cant);
+insert into Producto_has_Surtido(producto_idproducto,surtido_idsurtido,cantidad,subtotal) values(prodidprod,surtidsurt,cant,sub);
 END//
 delimiter ;
 
+
 DELIMITER //
-create procedure insintosurt(in tot int)
+create procedure insintosurt(in tot double,in pag double, in cam double)
 BEGIN
-insert into Surtido(total) values(tot);
+insert into Surtido(total,pago,cambio) values(tot,pag,cam);
 END//
 delimiter ;
 
@@ -221,6 +230,26 @@ insert into Proveedor(nombre,telefono) values(nom,tel);
 END//
 delimiter ;
 
+/*
+select distinct s.idsurtido,s.fecha,pr.nombre from surtido s, producto_has_surtido phs, producto p, proveedor pr where pr.idProveedor=p.proveedor_idProveedor and p.idproducto=phs.producto_idproducto and phs.surtido_idSurtido=s.idsurtido;
+
+select * from ventas_has_producto;
+select * from surtido;
+select * from Producto_has_Surtido;
+select * from ventas_has_producto;
+select * from Producto_has_Surtido;
+select * from surtido;
+
+
+call insintosurt(12.2,12.2,12.2);
+select * from surtido;
+delete from surtido where idSurtido=0;
+insert into Surtido(total,pago,cambio) values(12.2,12.2,12.2);
+
+select * from producto where proveedor_idproveedor=1;
+select v.idVentas,v.fecha,e.nombreC from ventas v, empleados e where v.empleados_idEmpleados=e.idEmpleados;
+select p.nombre,p.costo,vhp.cantidadDP,vhp.subtotal from ventas_has_producto vhp,producto p where vhp.producto_idproducto=p.idProducto and vhp.ventas_idventas=3;
+select * from ventas_has_producto;*/
 /*--------------------Delete--------------------*/
 /*--------------------Update--------------------*/
 /*--------------------SelectAll-----------------*/

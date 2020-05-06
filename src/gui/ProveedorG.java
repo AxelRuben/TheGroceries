@@ -50,7 +50,7 @@ public class ProveedorG extends javax.swing.JFrame {
         proveedor = new Proveedor(nom, tel);
         int id = proveedorDAO.insertar(proveedor);
         if (id != 0) {
-            JOptionPane.showMessageDialog(null, "Insertado con exito");
+            JOptionPane.showMessageDialog(null, "Insertado con éxito");
             this.setVisible(true);
             GuardarProveedor.setVisible(false);
             cargarModelo();
@@ -72,7 +72,7 @@ public class ProveedorG extends javax.swing.JFrame {
             try {
                 long n = Long.parseLong(ps);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "El campo ocupa unicamente caracteres numéricos");
+                JOptionPane.showMessageDialog(null, "El campo ocupa únicamente caracteres numéricos");
                 f = ps.substring(0, ps.length() - 1);
             }
         }
@@ -507,14 +507,14 @@ public class ProveedorG extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -523,20 +523,20 @@ public class ProveedorG extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(jLabel9)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(19, Short.MAX_VALUE))
         );
@@ -565,6 +565,8 @@ public class ProveedorG extends javax.swing.JFrame {
         GuardarProveedor.setTitle("The Groceries - Guardar Proveedor");
         GuardarProveedor.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         GuardarProveedor.setLocationRelativeTo(null);
+        jTextField4.setText("");
+        jTextField6.setText("");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -582,12 +584,9 @@ public class ProveedorG extends javax.swing.JFrame {
         ModificarProveedor.setTitle("The Groceries - Modificar Proveedor");
         ModificarProveedor.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         ModificarProveedor.setLocationRelativeTo(null);
-
-
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-
         VerProveedor.setSize(370, 295);
         this.setVisible(false);
         VerProveedor.setVisible(true);
@@ -595,7 +594,6 @@ public class ProveedorG extends javax.swing.JFrame {
         VerProveedor.setTitle("The Groceries - Ver Proveedor");
         VerProveedor.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         VerProveedor.setLocationRelativeTo(null);
-
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -616,7 +614,7 @@ public class ProveedorG extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
             if (jTextField4.getText().equals("") || jTextField6.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Alguno de los campos esta vacio");
+                JOptionPane.showMessageDialog(null, "Alguno de los campos están vacíos");
             } else {
                 AddProveedor();
             }
@@ -627,7 +625,7 @@ public class ProveedorG extends javax.swing.JFrame {
 
     private void jTextField6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyReleased
         if (jTextField6.getText().length() > 10) {
-            JOptionPane.showMessageDialog(null, "El campo unicamente debe contener 10 digitos");
+            JOptionPane.showMessageDialog(null, "El campo únicamente debe contener 10 digitos");
             jTextField6.setText(jTextField6.getText().substring(0, 10));
 
         }

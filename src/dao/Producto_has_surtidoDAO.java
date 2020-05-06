@@ -24,10 +24,11 @@ public class Producto_has_surtidoDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call procedure insintoprodhsurt(?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("call insintoprodhsurt(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setInt(1, pojo.getProducto_idProducto());
             st.setInt(2, pojo.getSurtido_idSurtido());
-            st.setInt(3, pojo.getCantidad());
+            st.setDouble(3, pojo.getCantidad());
+            st.setDouble(4, pojo.getSubtotal());
             id = st.executeUpdate();
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
@@ -49,10 +50,11 @@ public class Producto_has_surtidoDAO {
         Producto_has_Surtido producto_has_Surtido = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update Producto_has_Surtido set producto_idproducto=?,surtido_idsurtido=?,cantidad=?");
+            st = con.prepareStatement("update Producto_has_Surtido set producto_idproducto=?,surtido_idsurtido=?,cantidad=?,subtotal=?");
             st.setInt(1, pojo.getProducto_idProducto());
             st.setInt(2, pojo.getSurtido_idSurtido());
-            st.setInt(3, pojo.getCantidad());
+            st.setDouble(3, pojo.getCantidad());
+            st.setDouble(4, pojo.getSubtotal());
             int x = st.executeUpdate();
             if (x == 0) {
                 return false;
@@ -122,6 +124,7 @@ public class Producto_has_surtidoDAO {
             POJO.setProducto_idProducto(rs.getInt("Producto_idproducto"));
             POJO.setSurtido_idSurtido(rs.getInt("surtido_idsurtido"));
             POJO.setCantidad(rs.getInt("cantidad"));
+            POJO.setSubtotal(rs.getDouble("subtotal"));
  
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo Producto_has_Surtido: " + ex);

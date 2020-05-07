@@ -23,7 +23,7 @@ public class VentasDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call insintovent(?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("insert into ventas(total, pago, cambio, Empleados_idEmpleados) values(?,?,?,?);", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setDouble(1, pojo.getTotal());
             st.setDouble(2, pojo.getPago());
             st.setDouble(3, pojo.getCambio());
@@ -129,7 +129,7 @@ public class VentasDAO {
          Ventas pojo = new Ventas();
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from ventas where idventas==0");
+            st = con.prepareStatement("select*from ventas where idventas=?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
@@ -151,7 +151,7 @@ public class VentasDAO {
             POJO.setTotal(rs.getDouble("Total"));
             POJO.setPago(rs.getDouble("Pago"));
             POJO.setCambio(rs.getDouble("Cambio"));
-            POJO.setEmpleado_idempleado(rs.getInt("Empleado_idEmpleados"));
+            POJO.setEmpleado_idempleado(rs.getInt("Empleados_idEmpleados"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo VentasS: " + ex);
         }

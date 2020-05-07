@@ -28,7 +28,7 @@ public class Splash extends javax.swing.JFrame {
         initComponents();
         setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         Login login = new Login();
-        UIManager.put("nimbusOrange", new Color(94, 33, 41));
+        UIManager.put("nimbusOrange", new Color(255, 102, 0));
         al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -67,6 +67,7 @@ public class Splash extends javax.swing.JFrame {
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel2.setFont(new java.awt.Font("Harrington", 1, 60)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("The Groceries");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

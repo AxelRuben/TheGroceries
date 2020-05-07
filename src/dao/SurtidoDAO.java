@@ -23,7 +23,7 @@ public class SurtidoDAO {
         int id = 0;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("call insintosurt(?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            st = con.prepareStatement("insert into Surtido(total,pago,cambio) values(?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             st.setDouble(1, pojo.getTotal());
             st.setDouble(2, pojo.getPago());
             st.setDouble(3, pojo.getCambio());
@@ -119,13 +119,42 @@ public class SurtidoDAO {
         }
         return dt;
     }
+    public DefaultTableModel cargarModeloVPS(int id) {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"Id", "Nombre","Costo","Cantidad"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("select distinct p.nombre, p.costoalcl, phs.cantidad, phs.subtotal from surtido s,producto_has_surtido phs, producto p where phs.producto_idproducto=p.idproducto and phs.surtido_idsurtido=?");
+            st.setInt(1, id);
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[4];
+                ob[0] = rs.getString(1).toUpperCase();
+                ob[1] = rs.getDouble(2);
+                ob[2] = rs.getDouble(3);
+                ob[3] = rs.getDouble(4);
+                dt.addRow(ob);
+            }          
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla surtido " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
      public Surtido selectedSurtido(int id) {
         Connection con = null;
         PreparedStatement st = null;
          Surtido pojo = new Surtido();
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from surtido where idsurtido==0");
+            st = con.prepareStatement("select*from surtido where idsurtido=?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {

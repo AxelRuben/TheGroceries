@@ -169,7 +169,6 @@ INSERT INTO `Abarrotes`.`Usuarios` (`idUsuarios`, `Nombre`, `Contrasenia`) VALUE
 COMMIT;
 
 
-
 /*--------------------Insert--------------------*/
 use abarrotes;
 
@@ -177,13 +176,6 @@ DELIMITER //
 create procedure insintoempl(in nom varchar(100), in tel varchar(100), in dir varchar(100), in est varchar(255))
 BEGIN
 insert into empleados(nombreC,telefono,direccion,estudios) values(nom,tel,dir,est);
-END//
-delimiter ;
-
-DELIMITER //
-create procedure insintovent(in tot double, in pag double, in cam double,  in idempl int)
-BEGIN
-insert into ventas(total, pago, cambio, Empleados_idEmpleados) values(tot,pag,cam,idempl);
 END//
 delimiter ;
 
@@ -215,22 +207,29 @@ insert into Producto_has_Surtido(producto_idproducto,surtido_idsurtido,cantidad,
 END//
 delimiter ;
 
-
-DELIMITER //
-create procedure insintosurt(in tot double,in pag double, in cam double)
-BEGIN
-insert into Surtido(total,pago,cambio) values(tot,pag,cam);
-END//
-delimiter ;
-
 DELIMITER //
 create procedure insintoprov(in nom varchar(100),in tel varchar(10))
 BEGIN
 insert into Proveedor(nombre,telefono) values(nom,tel);
 END//
 delimiter ;
-
 /*
+SELECT * FROM surtido;
+SELECT * FROM producto_has_surtido;
+SELECT * FROM producto;
+DESCRIBE surtido;
+select distinct p.nombre, p.costoalcl, phs.cantidad, phs.subtotal from surtido s,producto_has_surtido phs, producto p where phs.producto_idproducto=p.idproducto and phs.surtido_idsurtido=4;
+
+select s.idsurtido, s.fecha,pr.nombre from surtido s, producto_has_surtido phs, producto p, proveedor pr 
+where phs.surtido_idSurtido=s.idsurtido 
+and p.idproducto=phs.producto_idproducto 
+and pr.idProveedor=p.proveedor_idProveedor;
+
+select p.nombre, p.costoalcl, phs.cantidad, phs.subtotal from surtido s,producto_has_surtido phs, producto p where phs.producto_idproducto=p.idproducto and phs.surtido_idsurtido=1;
+
+select * from producto_has_surtido;
+select * from ventas_has_producto;
+select * from surtido;
 select distinct s.idsurtido,s.fecha,pr.nombre from surtido s, producto_has_surtido phs, producto p, proveedor pr where pr.idProveedor=p.proveedor_idProveedor and p.idproducto=phs.producto_idproducto and phs.surtido_idSurtido=s.idsurtido;
 
 select * from ventas_has_producto;

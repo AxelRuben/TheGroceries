@@ -79,6 +79,12 @@ public class ProveedorG extends javax.swing.JFrame {
         return f;
     }
 
+    void wachar(int id) {
+        proveedor = proveedorDAO.selectedProveedor(id);
+        jLabel12.setText("" + proveedor.getNombre());
+        jLabel4.setText("" + proveedor.getTelefono());
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -341,8 +347,12 @@ public class ProveedorG extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Ver");
 
+        jLabel4.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jLabel12.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextin.png"))); // NOI18N
@@ -587,13 +597,18 @@ public class ProveedorG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        VerProveedor.setSize(370, 295);
-        this.setVisible(false);
-        VerProveedor.setVisible(true);
-        VerProveedor.setResizable(true);
-        VerProveedor.setTitle("The Groceries - Ver Proveedor");
-        VerProveedor.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
-        VerProveedor.setLocationRelativeTo(null);
+        if (jTable1.getSelectedRow() != -1) {
+            VerProveedor.setSize(370, 295);
+            this.setVisible(false);
+            VerProveedor.setVisible(true);
+            VerProveedor.setResizable(true);
+            VerProveedor.setTitle("The Groceries - Ver Proveedor");
+            VerProveedor.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
+            VerProveedor.setLocationRelativeTo(null);
+            wachar(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un Proveedor");
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed

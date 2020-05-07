@@ -100,7 +100,7 @@ public class ProveedorDAO {
          Proveedor pojo = new Proveedor();
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from proveedor where idproveedor==0");
+            st = con.prepareStatement("select*from proveedor where idproveedor=?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {

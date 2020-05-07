@@ -25,6 +25,7 @@ public class EmpleadoG extends javax.swing.JFrame {
     EmpleadoDAO empleadoDAO;
     Empleado empleado;
     TableRowSorter<TableModel> sorter;
+
     /**
      * Creates new form Empleado
      */
@@ -44,7 +45,7 @@ public class EmpleadoG extends javax.swing.JFrame {
         setVisible(true);
         this.setLocationRelativeTo(null);
     }
-    
+
     int AddEmpleado() throws SQLException {
         String nom = jTextField4.getText();
         String tel = jTextField6.getText();
@@ -52,7 +53,7 @@ public class EmpleadoG extends javax.swing.JFrame {
         String est = jComboBox2.getItemAt(jComboBox2.getSelectedIndex());
         empleado = new Empleado(nom, tel, dir, est);
         int id = empleadoDAO.insertar(empleado);
-        if (id!=0) {
+        if (id != 0) {
             JOptionPane.showMessageDialog(null, "Insertado con éxito");
             this.setVisible(true);
             GuardarEmpleado.setVisible(false);
@@ -60,7 +61,7 @@ public class EmpleadoG extends javax.swing.JFrame {
         }
         return id;
     }
-    
+
     void cargarModelo() {
         DefaultTableModel dt = empleadoDAO.cargarModelo();
         sorter = new TableRowSorter<>(dt);
@@ -68,7 +69,15 @@ public class EmpleadoG extends javax.swing.JFrame {
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setRowSorter(sorter);
     }
-    
+
+    void wachar(int id) {
+        empleado = empleadoDAO.selectedEmpleado(id);
+        jLabel20.setText("" + empleado.getNombre());
+        jLabel19.setText("" + empleado.getTelefono());
+        jLabel21.setText("" + empleado.getDireccion());
+        jLabel22.setText("" + empleado.getEstudios());
+    }
+
     String isInt(String ps) {
         String f = ps;
         if (ps.length() != 0) {
@@ -416,12 +425,20 @@ public class EmpleadoG extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Ver");
 
+        jLabel19.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jLabel20.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
         jLabel20.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jLabel21.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        jLabel22.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel22.setForeground(new java.awt.Color(255, 255, 255));
         jLabel22.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextin.png"))); // NOI18N
@@ -678,16 +695,18 @@ public class EmpleadoG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-
-        VerEmpleado.setSize(384, 420);
-        this.setVisible(false);
-        VerEmpleado.setVisible(true);
-        VerEmpleado.setResizable(true);
-        VerEmpleado.setTitle("The Groceries - Ver Empleado");
-        VerEmpleado.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
-        VerEmpleado.setLocationRelativeTo(null);
-
-
+        if (jTable1.getSelectedRow() != -1) {
+            VerEmpleado.setSize(384, 420);
+            this.setVisible(false);
+            VerEmpleado.setVisible(true);
+            VerEmpleado.setResizable(true);
+            VerEmpleado.setTitle("The Groceries - Ver Empleado");
+            VerEmpleado.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
+            VerEmpleado.setLocationRelativeTo(null);
+            wachar(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
+        }else{
+            JOptionPane.showMessageDialog(null, "Seleccione un Empleado");
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -711,13 +730,13 @@ public class EmpleadoG extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
-            if (jTextField4.getText().equals("")||jTextField5.getText().equals("")||jTextField6.getText().equals("")||jComboBox2.getSelectedIndex()==0) {
+            if (jTextField4.getText().equals("") || jTextField5.getText().equals("") || jTextField6.getText().equals("") || jComboBox2.getSelectedIndex() == 0) {
                 JOptionPane.showMessageDialog(null, "Alguno de los campos están vacíos");
-            }else{
+            } else {
                 AddEmpleado();
             }
         } catch (SQLException ex) {
-            System.out.println("Error: "+ex);;
+            System.out.println("Error: " + ex);;
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 

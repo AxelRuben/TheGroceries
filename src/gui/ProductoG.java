@@ -1015,7 +1015,7 @@ public class ProductoG extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (jTable1.getSelectedRow() != -1) {
-            VerProducto.setSize(360, 480);
+            VerProducto.setSize(360, 510);
             this.setVisible(false);
             VerProducto.setVisible(true);
             VerProducto.setResizable(true);

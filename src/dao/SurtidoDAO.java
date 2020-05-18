@@ -96,10 +96,10 @@ public class SurtidoDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Total","Proveedor"};
+        String encabezados[] = {"Id", "Fecha","Total"};
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select distinct s.idsurtido,s.fecha,pr.nombre from surtido s, producto_has_surtido phs, producto p, proveedor pr where pr.idProveedor=p.proveedor_idProveedor and p.idproducto=phs.producto_idproducto and phs.surtido_idSurtido=s.idsurtido");
+            st = con.prepareStatement("select idSurtido,fecha,total from surtido");
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
@@ -107,7 +107,7 @@ public class SurtidoDAO {
                 Object ob[] = new Object[3];
                 ob[0] = rs.getInt(1);
                 ob[1] = rs.getString(2);
-                ob[2] = rs.getString(3).toUpperCase();
+                ob[2] = rs.getInt(3);
                 dt.addRow(ob);
             }          
             rs.close();
@@ -123,20 +123,21 @@ public class SurtidoDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre","Costo","Cantidad"};
+        String encabezados[] = {"Nombre", "Proveedor","Costo","Cantidad","Subtotal"};
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select distinct p.nombre, p.costoalcl, phs.cantidad, phs.subtotal from surtido s,producto_has_surtido phs, producto p where phs.producto_idproducto=p.idproducto and phs.surtido_idsurtido=?");
+            st = con.prepareStatement("select distinct p.nombre, pr.nombre, p.costoalcl, phs.cantidad, phs.subtotal from surtido s,producto_has_surtido phs, producto p, proveedor pr where p.proveedor_idproveedor=pr.idproveedor and phs.producto_idproducto=p.idproducto and phs.surtido_idsurtido=?");
             st.setInt(1, id);
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
-                Object ob[] = new Object[4];
+                Object ob[] = new Object[5];
                 ob[0] = rs.getString(1).toUpperCase();
-                ob[1] = rs.getDouble(2);
+                ob[1] = rs.getString(2).toUpperCase();
                 ob[2] = rs.getDouble(3);
                 ob[3] = rs.getDouble(4);
+                ob[4] = rs.getDouble(5);
                 dt.addRow(ob);
             }          
             rs.close();

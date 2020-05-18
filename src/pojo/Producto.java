@@ -32,6 +32,15 @@ public class Producto {
         this.costoalcl = costoalcl;
         this.costoaldu = costoaldu;
     }
+    public Producto(int idProducto, String nombre, String tipo, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.stock = stock;
+        this.proveedor_idProveedor = proveedor_idProveedor;
+        this.costoalcl = costoalcl;
+        this.costoaldu = costoaldu;
+    }
 
     public Producto(String nombre, String tipo, String codigo_barra, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu) {
         this.idProducto = idProducto;

@@ -84,25 +84,35 @@ public class ProductoDAO {
         return true;
     }
 
-    public boolean actualizar_producto(Producto pojo) {
+    public boolean actualizar_producto(Producto pojo, boolean ccdb) {
         Connection con = null;
         PreparedStatement st = null;
-        Producto producto = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update producto set nombre=?,tipo=?,cod_bar=?, stock=?,proveedor_idproveedor=?, costoalcl=?, costoaldu=? where idproducto=?");
-            st.setString(1, pojo.getNombre());
-            st.setString(2, pojo.getTipo());
-            st.setString(3, pojo.getCodigo_barra());
-            st.setDouble(4, pojo.getStock());
-            st.setInt(5, pojo.getProveedor_idProveedor());
-            st.setDouble(6, pojo.getCostoalcl());
-            st.setDouble(7, pojo.getCostoaldu());
-            st.setInt(8, pojo.getIdProducto());
+            if (ccdb) {
+                st = con.prepareStatement("update producto set nombre=?,tipo=?,cod_bar=?, stock=?,proveedor_idproveedor=?, costoalcl=?, costoaldu=? where idproducto=?");
+                st.setString(1, pojo.getNombre());
+                st.setString(2, pojo.getTipo());
+                st.setString(3, pojo.getCodigo_barra());
+                st.setDouble(4, pojo.getStock());
+                st.setInt(5, pojo.getProveedor_idProveedor());
+                st.setDouble(6, pojo.getCostoalcl());
+                st.setDouble(7, pojo.getCostoaldu());
+                st.setInt(8, pojo.getIdProducto());
+            } else {
+                st = con.prepareStatement("update producto set nombre=?,tipo=?, stock=?,proveedor_idproveedor=?, costoalcl=?, costoaldu=? where idproducto=?");
+                st.setString(1, pojo.getNombre());
+                st.setString(2, pojo.getTipo());
+                st.setDouble(3, pojo.getStock());
+                st.setInt(4, pojo.getProveedor_idProveedor());
+                st.setDouble(5, pojo.getCostoalcl());
+                st.setDouble(6, pojo.getCostoaldu());
+                st.setInt(7, pojo.getIdProducto());
+            }
 
             int x = st.executeUpdate();
-            if (x == 0) {
-                return false;
+            if (x != 0) {
+                return true;
             }
         } catch (Exception e) {
             System.out.println("Error al actualizar producto " + e);
@@ -111,7 +121,7 @@ public class ProductoDAO {
             Conexion.close(con);
             Conexion.close(st);
         }
-        return true;
+        return false;
     }
 
     public boolean delete_producto(int id) {

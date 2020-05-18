@@ -218,7 +218,11 @@ SELECT * FROM surtido;
 SELECT * FROM producto_has_surtido;
 SELECT * FROM producto;
 DESCRIBE surtido;
-select distinct p.nombre, p.costoalcl, phs.cantidad, phs.subtotal from surtido s,producto_has_surtido phs, producto p where phs.producto_idproducto=p.idproducto and phs.surtido_idsurtido=4;
+describe empleados;
+use abarrotes;
+select idSurtido,fecha,total from surtido;
+select distinct p.nombre, pr.nombre, p.costoalcl, phs.cantidad, phs.subtotal from surtido s,producto_has_surtido phs, producto p, proveedor pr where p.proveedor_idproveedor=pr.idproveedor and phs.producto_idproducto=p.idproducto and phs.surtido_idsurtido=3;
+
 
 select s.idsurtido, s.fecha,pr.nombre from surtido s, producto_has_surtido phs, producto p, proveedor pr 
 where phs.surtido_idSurtido=s.idsurtido 
@@ -230,7 +234,7 @@ select p.nombre, p.costoalcl, phs.cantidad, phs.subtotal from surtido s,producto
 select * from producto_has_surtido;
 select * from ventas_has_producto;
 select * from surtido;
-select distinct s.idsurtido,s.fecha,pr.nombre from surtido s, producto_has_surtido phs, producto p, proveedor pr where pr.idProveedor=p.proveedor_idProveedor and p.idproducto=phs.producto_idproducto and phs.surtido_idSurtido=s.idsurtido;
+
 
 select * from ventas_has_producto;
 select * from surtido;

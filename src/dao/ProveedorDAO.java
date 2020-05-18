@@ -48,12 +48,13 @@ public class ProveedorDAO {
         Proveedor proveedor = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update proveedor set nombre=?,telefono=?");
+            st = con.prepareStatement("update proveedor set nombre=?,telefono=? where idproveedor=?");
             st.setString(1, pojo.getNombre());
             st.setString(2, pojo.getTelefono());
+            st.setInt(3, pojo.getIdproveedor());
             int x = st.executeUpdate();
-            if (x == 0) {
-                return false;
+            if (x != 0) {
+                return true;
             }
         } catch (Exception e) {
             System.out.println("Error al actualizar Proveedor " + e);
@@ -62,7 +63,7 @@ public class ProveedorDAO {
             Conexion.close(con);
             Conexion.close(st);
         }
-        return true;
+        return false;
     }
     
     public DefaultTableModel cargarModelo() {

@@ -23,6 +23,7 @@ public class ProveedorG extends javax.swing.JFrame {
     TableRowSorter<TableModel> sorter;
     Proveedor proveedor;
     ProveedorDAO proveedorDAO;
+    int idd;
 
     /**
      * Creates new form Proveedor
@@ -32,7 +33,6 @@ public class ProveedorG extends javax.swing.JFrame {
         proveedor = new Proveedor();
         proveedorDAO = new ProveedorDAO();
         ProveedorIn();
-        cargarModelo();
     }
 
     void ProveedorIn() {
@@ -42,6 +42,7 @@ public class ProveedorG extends javax.swing.JFrame {
         this.setResizable(false);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
+        cargarModelo();
     }
 
     int AddProveedor() throws SQLException {
@@ -83,6 +84,12 @@ public class ProveedorG extends javax.swing.JFrame {
         proveedor = proveedorDAO.selectedProveedor(id);
         jLabel12.setText("" + proveedor.getNombre());
         jLabel4.setText("" + proveedor.getTelefono());
+    }
+
+    void wacharMod(int id) {
+        proveedor = proveedorDAO.selectedProveedor(id);
+        jTextField5.setText("" + proveedor.getNombre());
+        jTextField7.setText("" + proveedor.getTelefono());
     }
 
     /**
@@ -246,6 +253,11 @@ public class ProveedorG extends javax.swing.JFrame {
         jButton11.setContentAreaFilled(false);
         jButton11.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextdc.png"))); // NOI18N
         jButton11.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextdg.png"))); // NOI18N
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
@@ -569,10 +581,9 @@ public class ProveedorG extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         GuardarProveedor.setSize(404, 330);
-        this.setVisible(false);
         GuardarProveedor.setVisible(true);
         GuardarProveedor.setResizable(true);
-        GuardarProveedor.setTitle("The Groceries - Guardar Proveedor");
+        GuardarProveedor.setTitle("The Groceries - Guardar proveedor");
         GuardarProveedor.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         GuardarProveedor.setLocationRelativeTo(null);
         jTextField4.setText("");
@@ -587,27 +598,31 @@ public class ProveedorG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        ModificarProveedor.setSize(394, 315);
-        this.setVisible(false);
-        ModificarProveedor.setVisible(true);
-        ModificarProveedor.setResizable(true);
-        ModificarProveedor.setTitle("The Groceries - Modificar Proveedor");
-        ModificarProveedor.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
-        ModificarProveedor.setLocationRelativeTo(null);
+        if (jTable1.getSelectedRow() != -1) {
+            idd=Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+            ModificarProveedor.setSize(394, 315);
+            ModificarProveedor.setVisible(true);
+            ModificarProveedor.setResizable(true);
+            ModificarProveedor.setTitle("The Groceries - Modificar proveedor");
+            ModificarProveedor.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
+            ModificarProveedor.setLocationRelativeTo(null);
+            wacharMod(idd);
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un proveedor");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (jTable1.getSelectedRow() != -1) {
             VerProveedor.setSize(370, 295);
-            this.setVisible(false);
             VerProveedor.setVisible(true);
             VerProveedor.setResizable(true);
-            VerProveedor.setTitle("The Groceries - Ver Proveedor");
+            VerProveedor.setTitle("The Groceries - Ver proveedor");
             VerProveedor.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
             VerProveedor.setLocationRelativeTo(null);
             wachar(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
-        }else{
-            JOptionPane.showMessageDialog(null, "Seleccione un Proveedor");
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un proveedor");
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -629,7 +644,7 @@ public class ProveedorG extends javax.swing.JFrame {
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
             if (jTextField4.getText().equals("") || jTextField6.getText().equals("")) {
-                JOptionPane.showMessageDialog(null, "Alguno de los campos están vacíos");
+                JOptionPane.showMessageDialog(null, "Alguno de los campos está vacío");
             } else {
                 AddProveedor();
             }
@@ -640,12 +655,26 @@ public class ProveedorG extends javax.swing.JFrame {
 
     private void jTextField6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyReleased
         if (jTextField6.getText().length() > 10) {
-            JOptionPane.showMessageDialog(null, "El campo únicamente debe contener 10 digitos");
+            JOptionPane.showMessageDialog(null, "El campo únicamente debe contener 10 dígitos");
             jTextField6.setText(jTextField6.getText().substring(0, 10));
-
         }
         jTextField6.setText(isInt(jTextField6.getText()));
     }//GEN-LAST:event_jTextField6KeyReleased
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        if (!jTextField5.getText().equals("")||!jTextField7.getText().equals("")) {
+            proveedor = new Proveedor(idd,jTextField5.getText(), jTextField7.getText());
+            if (proveedorDAO.actualizar_proveedor(proveedor)) {
+                JOptionPane.showMessageDialog(null, "El proveedor se ha modificado exitosamente");
+                ModificarProveedor.dispose();
+                ProveedorIn();
+            }else{
+                JOptionPane.showMessageDialog(null, "Hubo un error al modificar el proveedor");
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Alguno de los datos está vacío");
+        }
+    }//GEN-LAST:event_jButton11ActionPerformed
 
     /**
      * @param args the command line arguments

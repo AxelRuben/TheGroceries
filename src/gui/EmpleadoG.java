@@ -25,6 +25,7 @@ public class EmpleadoG extends javax.swing.JFrame {
     EmpleadoDAO empleadoDAO;
     Empleado empleado;
     TableRowSorter<TableModel> sorter;
+    int idd;
 
     /**
      * Creates new form Empleado
@@ -34,7 +35,6 @@ public class EmpleadoG extends javax.swing.JFrame {
         empleadoDAO = new EmpleadoDAO();
         empleado = new Empleado();
         EmpleadoIn();
-        cargarModelo();
     }
 
     void EmpleadoIn() {
@@ -44,6 +44,7 @@ public class EmpleadoG extends javax.swing.JFrame {
         setResizable(false);
         setVisible(true);
         this.setLocationRelativeTo(null);
+        cargarModelo();
     }
 
     int AddEmpleado() throws SQLException {
@@ -76,6 +77,29 @@ public class EmpleadoG extends javax.swing.JFrame {
         jLabel19.setText("" + empleado.getTelefono());
         jLabel21.setText("" + empleado.getDireccion());
         jLabel22.setText("" + empleado.getEstudios());
+    }
+
+    void wacharMod(int id) {
+        empleado = empleadoDAO.selectedEmpleado(id);
+        jTextField7.setText("" + empleado.getNombre());
+        jTextField9.setText("" + empleado.getTelefono());
+        jTextField8.setText("" + empleado.getDireccion());
+        switch (empleado.getEstudios()) {
+            case "Primaria":
+                jComboBox3.setSelectedIndex(0);
+                break;
+            case "Secundaria":
+                jComboBox3.setSelectedIndex(1);
+                break;
+            case "Bachillerato":
+                jComboBox3.setSelectedIndex(2);
+                break;
+            case "Universidad":
+                jComboBox3.setSelectedIndex(3);
+                break;
+            default:
+                break;
+        }
     }
 
     String isInt(String ps) {
@@ -664,9 +688,8 @@ public class EmpleadoG extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         GuardarEmpleado.setSize(371, 410);
         GuardarEmpleado.setVisible(true);
-        this.setVisible(false);
         GuardarEmpleado.setResizable(true);
-        GuardarEmpleado.setTitle("The Groceries - Guardar Empleado");
+        GuardarEmpleado.setTitle("The Groceries - Guardar empleado");
         GuardarEmpleado.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         GuardarEmpleado.setLocationRelativeTo(null);
         jTextField4.setText("");
@@ -683,29 +706,31 @@ public class EmpleadoG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        ModificarEmpleado.setSize(394, 420);
-        this.setVisible(false);
-        ModificarEmpleado.setVisible(true);
-        ModificarEmpleado.setResizable(true);
-        ModificarEmpleado.setTitle("The Groceries - Modificar Empleado");
-        ModificarEmpleado.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
-        ModificarEmpleado.setLocationRelativeTo(null);
-
-
+        if (jTable1.getSelectedRow() != -1) {
+            idd = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+            ModificarEmpleado.setSize(394, 420);
+            ModificarEmpleado.setVisible(true);
+            ModificarEmpleado.setResizable(true);
+            ModificarEmpleado.setTitle("The Groceries - Modificar empleado");
+            ModificarEmpleado.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
+            ModificarEmpleado.setLocationRelativeTo(null);
+            wacharMod(idd);
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un empleado");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (jTable1.getSelectedRow() != -1) {
             VerEmpleado.setSize(384, 420);
-            this.setVisible(false);
             VerEmpleado.setVisible(true);
             VerEmpleado.setResizable(true);
-            VerEmpleado.setTitle("The Groceries - Ver Empleado");
+            VerEmpleado.setTitle("The Groceries - Ver empleado");
             VerEmpleado.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
             VerEmpleado.setLocationRelativeTo(null);
             wachar(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
-        }else{
-            JOptionPane.showMessageDialog(null, "Seleccione un Empleado");
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un empleado");
         }
     }//GEN-LAST:event_jButton5ActionPerformed
 
@@ -720,7 +745,16 @@ public class EmpleadoG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        // TODO add your handling code here:
+        if (!jTextField7.getText().equals("") || !jTextField9.getText().equals("") || !jTextField8.getText().equals("")) {
+            empleado = new Empleado(idd, jTextField7.getText(), jTextField9.getText(), jTextField8.getText(), jComboBox3.getSelectedItem().toString());
+            if (empleadoDAO.actualizar_producto(empleado)) {
+                JOptionPane.showMessageDialog(null, "El empleado ha sido actualizado correctamente");
+                ModificarEmpleado.dispose();
+                EmpleadoIn();
+            }
+        }else{
+            JOptionPane.showMessageDialog(null, "Alguno de los campos está vacío");
+        }
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
@@ -742,7 +776,7 @@ public class EmpleadoG extends javax.swing.JFrame {
 
     private void jTextField6KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField6KeyReleased
         if (jTextField6.getText().length() > 10) {
-            JOptionPane.showMessageDialog(null, "El campo únicamente debe contener 10 digitos");
+            JOptionPane.showMessageDialog(null, "El campo únicamente debe contener 10 dígitos");
             jTextField6.setText(jTextField6.getText().substring(0, 10));
 
         }

@@ -47,10 +47,9 @@ public class EmpleadoDAO {
     public boolean actualizar_producto(Empleado pojo) {
         Connection con = null;
         PreparedStatement st = null;
-        Empleado empleado = pojo;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update empleados set nombreC=?,telefono=?,direccion=?, estudios=? where idempleado=?");
+            st = con.prepareStatement("update empleados set nombreC=?,telefono=?,direccion=?, estudios=? where idempleados=?");
             st.setString(1, pojo.getNombre());
             st.setString(2, pojo.getTelefono());
             st.setString(3, pojo.getDireccion());
@@ -58,8 +57,8 @@ public class EmpleadoDAO {
             st.setInt(5, pojo.getIdempleado());
 
             int x = st.executeUpdate();
-            if (x == 0) {
-                return false;
+            if (x != 0) {
+                return true;
             }
         } catch (Exception e) {
             System.out.println("Error al actualizar Empleado " + e);
@@ -68,7 +67,7 @@ public class EmpleadoDAO {
             Conexion.close(con);
             Conexion.close(st);
         }
-        return true;
+        return false;
     }
     
     public DefaultTableModel cargarModelo() {
@@ -112,7 +111,7 @@ public class EmpleadoDAO {
             dt.addElement("Seleccione a su Empleado");
             while (rs.next()) {
                 Empleado pojo = inflaPOJO(rs);
-                dt.addElement(pojo.toString());
+                dt.addElement(pojo.toString().toUpperCase());
             }
             rs.close();
         } catch (Exception e) {

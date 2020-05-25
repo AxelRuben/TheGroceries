@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS `Abarrotes`.`Empleados` (
   `Telefono` VARCHAR(100) NOT NULL,
   `Direccion` VARCHAR(100) NOT NULL,
   `Estudios` VARCHAR(255) NOT NULL,
+  `Activo` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`idEmpleados`))
 ENGINE = InnoDB;
 
@@ -35,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `Abarrotes`.`Proveedor` (
   `idProveedor` INT NOT NULL AUTO_INCREMENT,
   `Nombre` VARCHAR(45) NOT NULL,
   `Telefono` VARCHAR(45) NOT NULL,
+  `Activo` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`idProveedor`))
 ENGINE = InnoDB;
 
@@ -51,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `Abarrotes`.`Producto` (
   `Proveedor_idProveedor` INT NOT NULL,
   `CostoAlCl` DOUBLE NOT NULL,
   `CostoAlDu` DOUBLE NOT NULL,
+  `Activo` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`idProducto`),
   INDEX `fk_Producto_Proveedor_idx` (`Proveedor_idProveedor` ASC),
   CONSTRAINT `fk_Producto_Proveedor`
@@ -165,6 +168,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 START TRANSACTION;
 USE `Abarrotes`;
 INSERT INTO `Abarrotes`.`Usuarios` (`idUsuarios`, `Nombre`, `Contrasenia`) VALUES (DEFAULT, 'Administrador', '123456789');
+INSERT INTO `Abarrotes`.`Usuarios` (`idUsuarios`, `Nombre`, `Contrasenia`) VALUES (DEFAULT, 'Vendedor', '444444444');
 
 COMMIT;
 

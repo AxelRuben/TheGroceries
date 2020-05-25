@@ -18,6 +18,7 @@ import pojo.Empleado;
  * @author lizbe
  */
 public class EmpleadoDAO {
+
     public int insertar(Empleado pojo) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
@@ -33,7 +34,7 @@ public class EmpleadoDAO {
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
                 id = rs.getInt(1);
-                System.out.println("ID insertada "+id);
+                System.out.println("ID insertada " + id);
             }
         } catch (Exception e) {
             System.out.println("Error al insertar producto " + e);
@@ -43,8 +44,9 @@ public class EmpleadoDAO {
             Conexion.close(st);
         }
         return id;
-       }
-    public boolean actualizar_producto(Empleado pojo) {
+    }
+
+    public boolean actualizar_emopleado(Empleado pojo) {
         Connection con = null;
         PreparedStatement st = null;
         try {
@@ -69,15 +71,44 @@ public class EmpleadoDAO {
         }
         return false;
     }
-    
-    public DefaultTableModel cargarModelo() {
+
+    public boolean setEmpleadoAct(boolean op, int id) {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("update empleados set activo=? where idempleados=?");
+            st.setBoolean(1, op);
+            st.setInt(2, id);
+
+            int x = st.executeUpdate();
+            if (x != 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al actualizar Empleado " + e);
+
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return false;
+    }
+
+    public DefaultTableModel cargarModelo(int op) {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre","Teléfono"};
+        String encabezados[] = {"Id", "Nombre", "Teléfono"};
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from empleados");
+            if (op == 0) {
+                st = con.prepareStatement("select*from empleados");
+            }else if (op == 1) {
+                st = con.prepareStatement("select*from empleados where activo=1");
+            }else if (op == 2) {
+                st = con.prepareStatement("select*from empleados where activo=0");
+            }
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
@@ -88,7 +119,7 @@ public class EmpleadoDAO {
                 ob[1] = pojo.getNombre().toUpperCase();
                 ob[2] = pojo.getTelefono();
                 dt.addRow(ob);
-            }          
+            }
             rs.close();
         } catch (Exception e) {
             System.out.println("Error al cargar la tabla empleado " + e);
@@ -98,7 +129,7 @@ public class EmpleadoDAO {
         }
         return dt;
     }
-    
+
     public DefaultComboBoxModel cargarCombo() {
         Connection con = null;
         PreparedStatement st = null;
@@ -122,11 +153,11 @@ public class EmpleadoDAO {
         }
         return dt;
     }
-    
-     public Empleado selectedEmpleado(int id) {
+
+    public Empleado selectedEmpleado(int id) {
         Connection con = null;
         PreparedStatement st = null;
-         Empleado pojo = new Empleado();
+        Empleado pojo = new Empleado();
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("select * from empleados where idempleados=?");
@@ -143,9 +174,10 @@ public class EmpleadoDAO {
         }
         return pojo;
     }
+
     private static Empleado inflaPOJO(ResultSet rs) {
 
-        Empleado POJO= new Empleado();
+        Empleado POJO = new Empleado();
         try {
             POJO.setIdempleado(rs.getInt("idempleados"));
             POJO.setNombre(rs.getString("nombreC"));

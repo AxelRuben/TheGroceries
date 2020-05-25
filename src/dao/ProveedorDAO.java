@@ -18,7 +18,8 @@ import pojo.Proveedor;
  * @author lizbe
  */
 public class ProveedorDAO {
-      public int insertar(Proveedor pojo) throws SQLException {
+
+    public int insertar(Proveedor pojo) throws SQLException {
         Connection con = null;
         PreparedStatement st = null;
         int id = 0;
@@ -31,7 +32,7 @@ public class ProveedorDAO {
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()) {
                 id = rs.getInt(1);
-                System.out.println("ID insertada "+id);
+                System.out.println("ID insertada " + id);
             }
         } catch (Exception e) {
             System.out.println("Error al insertar proveedor " + e);
@@ -41,7 +42,8 @@ public class ProveedorDAO {
             Conexion.close(st);
         }
         return id;
-       }
+    }
+
     public boolean actualizar_proveedor(Proveedor pojo) {
         Connection con = null;
         PreparedStatement st = null;
@@ -65,15 +67,21 @@ public class ProveedorDAO {
         }
         return false;
     }
-    
-    public DefaultTableModel cargarModelo() {
+
+    public DefaultTableModel cargarModelo(int op) {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre","Teléfono"};
+        String encabezados[] = {"Id", "Nombre", "Teléfono"};
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select*from proveedor");
+            if (op == 0) {
+                st = con.prepareStatement("select*from proveedor");
+            }else if (op == 1) {
+                st = con.prepareStatement("select*from proveedor where activo=1");
+            }else if (op == 2) {
+                st = con.prepareStatement("select*from proveedor where activo=0");
+            }
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
             ResultSet rs = st.executeQuery();
@@ -84,7 +92,7 @@ public class ProveedorDAO {
                 ob[1] = pojo.getNombre().toUpperCase();
                 ob[2] = pojo.getTelefono();
                 dt.addRow(ob);
-            }          
+            }
             rs.close();
         } catch (Exception e) {
             System.out.println("Error al cargar la tabla proveedor " + e);
@@ -94,11 +102,11 @@ public class ProveedorDAO {
         }
         return dt;
     }
-    
-     public Proveedor selectedProveedor(int id) {
+
+    public Proveedor selectedProveedor(int id) {
         Connection con = null;
         PreparedStatement st = null;
-         Proveedor pojo = new Proveedor();
+        Proveedor pojo = new Proveedor();
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("select*from proveedor where idproveedor=?");
@@ -115,7 +123,7 @@ public class ProveedorDAO {
         }
         return pojo;
     }
-     
+
     public DefaultComboBoxModel cargarCombo() {
         Connection con = null;
         PreparedStatement st = null;
@@ -139,10 +147,10 @@ public class ProveedorDAO {
         }
         return dt;
     }
-     
+
     private static Proveedor inflaPOJO(ResultSet rs) {
 
-        Proveedor POJO= new Proveedor();
+        Proveedor POJO = new Proveedor();
         try {
             POJO.setIdproveedor(rs.getInt("idproveedor"));
             POJO.setNombre(rs.getString("nombre"));
@@ -152,5 +160,5 @@ public class ProveedorDAO {
         }
         return POJO;
     }
-    
+
 }

@@ -44,6 +44,7 @@ public class VentasG extends javax.swing.JFrame {
     TableRowSorter<TableModel> sorter;
     TableRowSorter<TableModel> sorter2;
     DecimalFormat defo;
+    int idusuV = 1;
 
     /**
      * Creates new form Ventas
@@ -65,10 +66,28 @@ public class VentasG extends javax.swing.JFrame {
         resetear();
     }
 
+    public VentasG(int id) {
+        initComponents();
+        producto = new Producto();
+        productoDAO = new ProductoDAO();
+        ventasDAO = new VentasDAO();
+        ventas_has_productoDAO = new Ventas_has_productoDAO();
+        ventas = new Ventas();
+        ventas_has_producto = new Ventas_has_Producto();
+        empleado = new Empleado();
+        empleadoDAO = new EmpleadoDAO();
+        defCBM = new DefaultComboBoxModel();
+        defo = new DecimalFormat("0.00");
+        loadComPro(jComboBox1);
+        VentasIn();
+        resetear();
+        idusuV = id;
+    }
+
     void VentasIn() {
         setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         setTitle("The Groceries - Ventas");
-        setSize(741, 560);
+        setSize(770, 560);
         setResizable(false);
         setVisible(true);
         this.setLocationRelativeTo(null);
@@ -551,17 +570,17 @@ public class VentasG extends javax.swing.JFrame {
             }
         });
 
-        jLabel17.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Total");
 
-        jLabel19.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setText("Cambio");
 
         jLabel20.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel21.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Pago");
 
@@ -608,17 +627,12 @@ public class VentasG extends javax.swing.JFrame {
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGap(262, 262, 262)
-                                    .addComponent(jLabel17)
-                                    .addGap(12, 12, 12))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(jLabel21)
-                                        .addComponent(jLabel19))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addGap(254, 254, 254)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel17)
+                                .addComponent(jLabel21)
+                                .addComponent(jLabel19))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -674,7 +688,7 @@ public class VentasG extends javax.swing.JFrame {
                             .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(7, 7, 7)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel17))
                         .addGap(15, 15, 15)
@@ -683,8 +697,8 @@ public class VentasG extends javax.swing.JFrame {
                             .addComponent(jLabel21))
                         .addGap(15, 15, 15)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel19)
-                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19))))
                 .addGap(1, 1, 1))
         );
 
@@ -703,27 +717,30 @@ public class VentasG extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Inicio inicio = new Inicio();
-        this.dispose();
-        this.setVisible(false);
-        inicio.setVisible(true);
+        if (!VerVentas.isVisible() && !Ver.isVisible()) {
+            Inicio inicio = new Inicio(idusuV);
+            this.dispose();
+            this.setVisible(false);
+            inicio.setVisible(true);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        VerVentas.setSize(582, 550);
-        this.dispose();
-        VerVentas.setVisible(true);
-        VerVentas.setResizable(true);
-        VerVentas.setTitle("The Groceries - Ver ventas");
-        VerVentas.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
-        VerVentas.setLocationRelativeTo(null);
-        cargarTabla3();
+        if (!Ver.isVisible()) {
+            VerVentas.setSize(582, 550);
+            VerVentas.setVisible(true);
+            VerVentas.setResizable(true);
+            VerVentas.setTitle("The Groceries - Ver ventas");
+            VerVentas.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
+            VerVentas.setLocationRelativeTo(null);
+            cargarTabla3();
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        Inicio inicio = new Inicio();
+        Inicio inicio = new Inicio(idusuV);
+        this.dispose();
         VerVentas.dispose();
-        VerVentas.setVisible(false);
         inicio.iniciop();
         inicio.setVisible(true);
     }//GEN-LAST:event_jButton11ActionPerformed
@@ -772,6 +789,7 @@ public class VentasG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        if (!VerVentas.isVisible()&&!Ver.isVisible()) {
         if (jTable2.getRowCount() == 0 || jComboBox1.getSelectedIndex() == 0 || jTextField1.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Alguno de los datos está vacío");
         } else {
@@ -780,6 +798,7 @@ public class VentasG extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 System.out.println("Error al insertar venta " + ex);;
             }
+        }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
 

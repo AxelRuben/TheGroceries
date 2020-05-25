@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
  * @author lizbe
  */
 public class Inicio extends javax.swing.JFrame {
-
+    int idusuIn=1;
     /**
      * Creates new form Inicio
      */
@@ -20,9 +20,13 @@ public class Inicio extends javax.swing.JFrame {
         initComponents();
         iniciop();
     }
+    public Inicio(int id) {
+        initComponents();
+        iniciop();
+        idusuIn=id;
+    }
 
     public void iniciop() {
-//        360, 449
         setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         setTitle("The Groceries - Inicio");
         setSize(430, 480);
@@ -255,28 +259,26 @@ public class Inicio extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         this.dispose();
-        SurtidoG surtidoG = new SurtidoG();
+        SurtidoG surtidoG = new SurtidoG(idusuIn);
         surtidoG.setVisible(true);
-
-
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         this.dispose();
-        EmpleadoG empleado = new EmpleadoG();
+        EmpleadoG empleado = new EmpleadoG(idusuIn);
         empleado.EmpleadoIn();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         this.dispose();
-        ProveedorG proveedor = new ProveedorG();
+        ProveedorG proveedor = new ProveedorG(idusuIn);
         proveedor.ProveedorIn();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        VentasG ventas = new VentasG();
+        VentasG ventas = new VentasG(idusuIn);
         ventas.VentasIn();
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -289,7 +291,7 @@ public class Inicio extends javax.swing.JFrame {
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         this.dispose();
-        ProductoG productoG = new ProductoG();
+        ProductoG productoG = new ProductoG(idusuIn);
         productoG.setVisible(true);
     }//GEN-LAST:event_jButton6ActionPerformed
 

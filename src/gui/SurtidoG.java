@@ -42,6 +42,7 @@ public class SurtidoG extends javax.swing.JFrame {
     TableRowSorter<TableModel> sorter;
     TableRowSorter<TableModel> sorter2;
     DecimalFormat defo;
+    int idusuS = 1;
 
     /**
      * Creates new form Surtido
@@ -67,6 +68,24 @@ public class SurtidoG extends javax.swing.JFrame {
         jTable2.setAutoCreateRowSorter(true);
         jTable2.setRowSorter(sorter2);
         SurtidoIn();
+    }
+
+    public SurtidoG(int id) {
+        initComponents();
+        proveedor = new Proveedor();
+        producto = new Producto();
+        surtido = new Surtido();
+        producto_has_surtido = new Producto_has_Surtido();
+        proveedorDAO = new ProveedorDAO();
+        productoDAO = new ProductoDAO();
+        surtidoDAO = new SurtidoDAO();
+        producto_has_surtidoDAO = new Producto_has_surtidoDAO();
+        defaultComboBoxModel = new DefaultComboBoxModel();
+        defo = new DecimalFormat("0.00");
+        loadComPro(jComboBox1);
+        SurtidoIn();
+        resetear();
+        idusuS = id;
     }
 
     void SurtidoIn() {
@@ -142,19 +161,19 @@ public class SurtidoG extends javax.swing.JFrame {
     void agregarSurtido() throws SQLException {
         String pedido = JOptionPane.showInputDialog("¿Qué cantidad va a agregar?");
         try {
-        if (!pedido.equals("0")) {
-            DefaultTableModel table2 = (DefaultTableModel) jTable2.getModel();
-            int row = jTable1.getSelectedRow();
-            int id = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
-            producto = productoDAO.selectedProducto(id);
-            String nombre = producto.getNombre();
-            double costoo = producto.getCostoaldu();
-            double cantidad = Double.parseDouble(pedido);
-            double subtotal = costoo * cantidad;
-            Object producto[] = {id, nombre, cantidad, defo.format(subtotal)};
-            table2.addRow(producto);
-            jLabel20.setText(calcularTotal() + "");
-        }
+            if (!pedido.equals("0")) {
+                DefaultTableModel table2 = (DefaultTableModel) jTable2.getModel();
+                int row = jTable1.getSelectedRow();
+                int id = Integer.parseInt(jTable1.getValueAt(row, 0).toString());
+                producto = productoDAO.selectedProducto(id);
+                String nombre = producto.getNombre();
+                double costoo = producto.getCostoaldu();
+                double cantidad = Double.parseDouble(pedido);
+                double subtotal = costoo * cantidad;
+                Object producto[] = {id, nombre, cantidad, defo.format(subtotal)};
+                table2.addRow(producto);
+                jLabel20.setText(calcularTotal() + "");
+            }
         } catch (Exception e) {
         }
     }
@@ -178,16 +197,16 @@ public class SurtidoG extends javax.swing.JFrame {
         double cambio = pag - tot;
         return cambio;
     }
-    
+
     void cargarTabla4(int i) {
         jTable4.setModel(surtidoDAO.cargarModeloVPS(i));
         sorter = new TableRowSorter<>(surtidoDAO.cargarModeloVPS(i));
         jTable4.setAutoCreateRowSorter(true);
         jTable4.setRowSorter(sorter);
         surtido = surtidoDAO.selectedSurtido(i);
-        jLabel4.setText(""+surtido.getTotal());
-        jLabel6.setText(""+surtido.getPago());
-        jLabel8.setText(""+surtido.getCambio());
+        jLabel4.setText("" + surtido.getTotal());
+        jLabel6.setText("" + surtido.getPago());
+        jLabel8.setText("" + surtido.getCambio());
     }
 
     /**
@@ -344,7 +363,7 @@ public class SurtidoG extends javax.swing.JFrame {
         VerSurtidosLayout.setVerticalGroup(
             VerSurtidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VerSurtidosLayout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -505,11 +524,11 @@ public class SurtidoG extends javax.swing.JFrame {
 
         jLabel20.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel17.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("Total");
 
-        jLabel21.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Pago");
 
@@ -519,7 +538,7 @@ public class SurtidoG extends javax.swing.JFrame {
             }
         });
 
-        jLabel19.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(255, 255, 255));
         jLabel19.setText("Cambio");
 
@@ -547,7 +566,7 @@ public class SurtidoG extends javax.swing.JFrame {
         });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/verbn.png"))); // NOI18N
-        jButton5.setToolTipText("Ver ventas");
+        jButton5.setToolTipText("Ver surtidos");
         jButton5.setBorderPainted(false);
         jButton5.setContentAreaFilled(false);
         jButton5.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/verbc.png"))); // NOI18N
@@ -608,15 +627,16 @@ public class SurtidoG extends javax.swing.JFrame {
                         .addGap(6, 6, 6)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 310, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(240, 240, 240)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel19)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(10, 10, 10)
+                                .addGap(227, 227, 227)
+                                .addComponent(jLabel19))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel17)
-                                    .addComponent(jLabel21))))
-                        .addGap(5, 5, 5)
+                                    .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -625,7 +645,7 @@ public class SurtidoG extends javax.swing.JFrame {
                         .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(5, 5, 5)
                         .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -650,28 +670,26 @@ public class SurtidoG extends javax.swing.JFrame {
                         .addGap(12, 12, 12)
                         .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                .addGap(26, 26, 26)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel17)
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel21)
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel19))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel17))
                         .addGap(15, 15, 15)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel21))
                         .addGap(15, 15, 15)
-                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel19)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(22, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -702,9 +720,9 @@ public class SurtidoG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        Inicio inicio = new Inicio();
+        Inicio inicio = new Inicio(idusuS);
+        this.dispose();
         VerSurtidos.dispose();
-        VerSurtidos.setVisible(false);
         inicio.iniciop();
         inicio.setVisible(true);
     }//GEN-LAST:event_jButton11ActionPerformed
@@ -744,21 +762,25 @@ public class SurtidoG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        Inicio inicio = new Inicio();
-        this.dispose();
-        this.setVisible(false);
-        inicio.setVisible(true);
+        if (!VerSurtidos.isVisible() && !Ver.isVisible()) {
+            Inicio inicio = new Inicio(idusuS);
+            this.dispose();
+            this.setVisible(false);
+            inicio.setVisible(true);
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        if (jTable2.getRowCount() == 0 || jTextField1.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, "Alguno de los campos está vacío");
-        } else {
-            try {
-                insertar_surtido();
-            } catch (SQLException ex) {
-                JOptionPane.showMessageDialog(null, "Error al insertar El surtido");
-                System.out.println("" + ex);
+        if (!VerSurtidos.isVisible() && !Ver.isVisible()) {
+            if (jTable2.getRowCount() == 0 || jTextField1.getText().equals("")) {
+                JOptionPane.showMessageDialog(null, "Alguno de los campos está vacío");
+            } else {
+                try {
+                    insertar_surtido();
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error al insertar El surtido");
+                    System.out.println("" + ex);
+                }
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed

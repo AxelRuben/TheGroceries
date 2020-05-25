@@ -15,9 +15,11 @@ import pojo.Usuario;
  * @author lizbe
  */
 public class Login extends javax.swing.JFrame {
+
     UsuarioDAO usuarioDAO;
     Usuario usuario;
     Inicio inicio;
+
     /**
      * Creates new form Login
      */
@@ -25,6 +27,7 @@ public class Login extends javax.swing.JFrame {
         initComponents();
         LoginIn();
     }
+
     public void LoginIn() {
         setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         setTitle("The Groceries");
@@ -162,23 +165,24 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (jTextField1.getText().equals("")||jPasswordField1.getText().equals("")) {
+        if (jTextField1.getText().equals("") || jPasswordField1.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Porfavor escriba un nombre y/o contraseña");
-        }else{
-          try {
-            usuario = usuarioDAO.selectedUsuario(jTextField1.getText());
-         
-            if (usuario.getNombre().equals(jTextField1.getText())&&usuario.getContrasena().equals(jPasswordField1.getText())) {
-            JOptionPane.showMessageDialog(null, "Acceso concedido");
-            inicio.setVisible(true);
-            this.dispose();
-            }else{
-            JOptionPane.showMessageDialog(null, "El usuario o contraseña son incorrectos");
+        } else {
+            try {
+                usuario = usuarioDAO.selectedUsuario(jTextField1.getText());
+
+                if (usuario.getNombre().equals(jTextField1.getText()) && usuario.getContrasena().equals(jPasswordField1.getText())) {
+                    JOptionPane.showMessageDialog(null, "Acceso concedido");
+                    inicio = new Inicio(usuario.getIdUsuario());
+                    inicio.setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "El usuario o contraseña son incorrectos");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "El usuario o contraseña son incorrectos");
+                System.out.println("Error " + e);
             }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "El usuario o contraseña son incorrectos");
-              System.out.println("Error "+e);
-        }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

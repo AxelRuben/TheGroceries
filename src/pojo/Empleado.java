@@ -10,13 +10,24 @@ package pojo;
  * @author lizbe
  */
 public class Empleado {
+
     private int idempleado;
     private String nombre;
     private String telefono;
     private String direccion;
     private String estudios;
+    private boolean activo;
 
     public Empleado() {
+    }
+
+    public Empleado(int idempleado, String nombre, String telefono, String direccion, String estudios, boolean activo) {
+        this.idempleado = idempleado;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.estudios = estudios;
+        this.activo = activo;
     }
 
     public Empleado(int idempleado, String nombre, String telefono, String direccion, String estudios) {
@@ -26,7 +37,16 @@ public class Empleado {
         this.direccion = direccion;
         this.estudios = estudios;
     }
-public Empleado( String nombre, String telefono, String direccion, String estudios) {
+
+    public Empleado(String nombre, String telefono, String direccion, String estudios, boolean activo) {
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.estudios = estudios;
+        this.activo = activo;
+    }
+
+    public Empleado(String nombre, String telefono, String direccion, String estudios) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
@@ -53,7 +73,7 @@ public Empleado( String nombre, String telefono, String direccion, String estudi
         return telefono;
     }
 
-    public void setTelefono (String telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
@@ -73,9 +93,16 @@ public Empleado( String nombre, String telefono, String direccion, String estudi
         this.estudios = estudios;
     }
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
     @Override
     public String toString() {
         return getNombre();
     }
-  
 }

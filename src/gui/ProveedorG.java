@@ -5,6 +5,7 @@
  */
 package gui;
 
+import dao.ProductoDAO;
 import dao.ProveedorDAO;
 import java.sql.SQLException;
 import javax.swing.ImageIcon;
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import pojo.Producto;
 import pojo.Proveedor;
 
 /**
@@ -23,6 +25,8 @@ public class ProveedorG extends javax.swing.JFrame {
     TableRowSorter<TableModel> sorter;
     Proveedor proveedor;
     ProveedorDAO proveedorDAO;
+    Producto producto;
+    ProductoDAO productoDAO;
     int idd;
     int idusuPr = 1;
 
@@ -33,6 +37,8 @@ public class ProveedorG extends javax.swing.JFrame {
         initComponents();
         proveedor = new Proveedor();
         proveedorDAO = new ProveedorDAO();
+        producto = new Producto();
+        productoDAO = new ProductoDAO();
         ProveedorIn();
         if (idusuPr == 1) {
             jButton1.setEnabled(true);
@@ -65,7 +71,7 @@ public class ProveedorG extends javax.swing.JFrame {
     void ProveedorIn() {
         this.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         this.setTitle("The Groceries - Proveedor");
-        this.setSize(550, 565);
+        this.setSize(570, 565);
         this.setResizable(false);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
@@ -107,12 +113,6 @@ public class ProveedorG extends javax.swing.JFrame {
         return f;
     }
 
-    void wachar(int id) {
-        proveedor = proveedorDAO.selectedProveedor(id);
-        jLabel12.setText("" + proveedor.getNombre());
-        jLabel4.setText("" + proveedor.getTelefono());
-    }
-
     void wacharMod(int id) {
         proveedor = proveedorDAO.selectedProveedor(id);
         jTextField5.setText("" + proveedor.getNombre());
@@ -146,14 +146,6 @@ public class ProveedorG extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jButton10 = new javax.swing.JButton();
-        VerProveedor = new javax.swing.JDialog();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        jButton12 = new javax.swing.JButton();
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -163,7 +155,6 @@ public class ProveedorG extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
         jRadioButton3 = new javax.swing.JRadioButton();
@@ -380,103 +371,6 @@ public class ProveedorG extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jPanel5.setBackground(new java.awt.Color(0, 102, 204));
-
-        jLabel10.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setText("Nombre");
-
-        jLabel11.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel11.setText("Teléfono");
-
-        jLabel3.setFont(new java.awt.Font("Harrington", 1, 50)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("Ver");
-
-        jLabel4.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jLabel12.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
-        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextin.png"))); // NOI18N
-        jButton12.setToolTipText("Volver");
-        jButton12.setBorderPainted(false);
-        jButton12.setContentAreaFilled(false);
-        jButton12.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextic.png"))); // NOI18N
-        jButton12.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextig.png"))); // NOI18N
-        jButton12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton12ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel10)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(20, 20, 20))))
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(128, 128, 128)
-                .addComponent(jLabel3))
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(24, 24, 24)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout VerProveedorLayout = new javax.swing.GroupLayout(VerProveedor.getContentPane());
-        VerProveedor.getContentPane().setLayout(VerProveedorLayout);
-        VerProveedorLayout.setHorizontalGroup(
-            VerProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 364, Short.MAX_VALUE)
-            .addGroup(VerProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(VerProveedorLayout.createSequentialGroup()
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-        VerProveedorLayout.setVerticalGroup(
-            VerProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 253, Short.MAX_VALUE)
-            .addGroup(VerProveedorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(VerProveedorLayout.createSequentialGroup()
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
-        );
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 204));
@@ -506,12 +400,17 @@ public class ProveedorG extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/eliminarbn.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/switchn.png"))); // NOI18N
         jButton2.setToolTipText("Dar de baja");
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
-        jButton2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/eliminarbc.png"))); // NOI18N
-        jButton2.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/eliminarbg.png"))); // NOI18N
+        jButton2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/switchc.png"))); // NOI18N
+        jButton2.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/switchg.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/modificarbn.png"))); // NOI18N
         jButton3.setToolTipText("Modificar");
@@ -543,20 +442,9 @@ public class ProveedorG extends javax.swing.JFrame {
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Proveedores");
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/verbn.png"))); // NOI18N
-        jButton5.setToolTipText("Ver");
-        jButton5.setBorderPainted(false);
-        jButton5.setContentAreaFilled(false);
-        jButton5.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/verbc.png"))); // NOI18N
-        jButton5.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/verbg.png"))); // NOI18N
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
+        jRadioButton1.setSelected(true);
         jRadioButton1.setText("Todos");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -595,8 +483,7 @@ public class ProveedorG extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel9)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -631,15 +518,14 @@ public class ProveedorG extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(50, 50, 50)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(50, 50, 50)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 412, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -659,7 +545,7 @@ public class ProveedorG extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if (!ModificarProveedor.isVisible() && !VerProveedor.isVisible()) {
+        if (!ModificarProveedor.isVisible()) {
             GuardarProveedor.setSize(404, 330);
             GuardarProveedor.setVisible(true);
             GuardarProveedor.setResizable(true);
@@ -672,7 +558,7 @@ public class ProveedorG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if (!GuardarProveedor.isVisible() && !ModificarProveedor.isVisible() && !VerProveedor.isVisible()) {
+        if (!GuardarProveedor.isVisible() && !ModificarProveedor.isVisible()) {
             Inicio inicio = new Inicio(idusuPr);
             this.dispose();
             this.setVisible(false);
@@ -681,7 +567,7 @@ public class ProveedorG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        if (!GuardarProveedor.isVisible() && !VerProveedor.isVisible()) {
+        if (!GuardarProveedor.isVisible()) {
             if (jTable1.getSelectedRow() != -1) {
                 idd = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
                 ModificarProveedor.setSize(394, 315);
@@ -697,22 +583,6 @@ public class ProveedorG extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        if (!GuardarProveedor.isVisible() && !ModificarProveedor.isVisible()) {
-            if (jTable1.getSelectedRow() != -1) {
-                VerProveedor.setSize(370, 300);
-                VerProveedor.setVisible(true);
-                VerProveedor.setResizable(true);
-                VerProveedor.setTitle("The Groceries - Ver proveedor");
-                VerProveedor.setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
-                VerProveedor.setLocationRelativeTo(null);
-                wachar(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
-            } else {
-                JOptionPane.showMessageDialog(null, "Seleccione un proveedor");
-            }
-        }
-    }//GEN-LAST:event_jButton5ActionPerformed
-
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         GuardarProveedor.dispose();
         ProveedorIn();
@@ -722,11 +592,6 @@ public class ProveedorG extends javax.swing.JFrame {
         ModificarProveedor.dispose();
         ProveedorIn();
     }//GEN-LAST:event_jButton10ActionPerformed
-
-    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
-        VerProveedor.dispose();
-        ProveedorIn();
-    }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         try {
@@ -783,6 +648,20 @@ public class ProveedorG extends javax.swing.JFrame {
         cargarModelo(2);
     }//GEN-LAST:event_jRadioButton3ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (jTable1.getSelectedRow()!=-1) {
+            int id = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+            proveedor = proveedorDAO.selectedProveedor(id);
+            if (proveedorDAO.setProveedorAct(!proveedor.isActivo(), id)&&productoDAO.setProductofProvAct(!proveedor.isActivo(), id)){
+                JOptionPane.showMessageDialog(null, "El Proveedor y sus productos se han modificado exitosamente");
+            }else{
+                JOptionPane.showMessageDialog(null, "Error al Activar o desactivar el proveedor");
+            }
+        }else{
+            
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -822,25 +701,17 @@ public class ProveedorG extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog GuardarProveedor;
     private javax.swing.JDialog ModificarProveedor;
-    private javax.swing.JDialog VerProveedor;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -849,7 +720,6 @@ public class ProveedorG extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JRadioButton jRadioButton3;

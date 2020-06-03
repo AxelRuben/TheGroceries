@@ -60,7 +60,6 @@ public class SurtidoG extends javax.swing.JFrame {
         defo = new DecimalFormat("0.00");
         loadComPro(jComboBox1);
         defaultComboBoxModel = new DefaultComboBoxModel();
-        sorter = new TableRowSorter<>(productoDAO.cargarModeloA(1, 2));
         Object iden[] = {"Id", "Nombre", "Cantidad", "Subtotal"};
         ta2 = new DefaultTableModel(iden, 0);
         jTable2.setModel(ta2);
@@ -72,6 +71,7 @@ public class SurtidoG extends javax.swing.JFrame {
 
     public SurtidoG(int id) {
         initComponents();
+        System.out.println("Entro2");
         proveedor = new Proveedor();
         producto = new Producto();
         surtido = new Surtido();
@@ -99,15 +99,15 @@ public class SurtidoG extends javax.swing.JFrame {
     }
 
     public void loadComPro(JComboBox combokil) {
-        defaultComboBoxModel = proveedorDAO.cargarCombo();
+        defaultComboBoxModel = proveedorDAO.cargarCombo(1);
         combokil.setModel(defaultComboBoxModel);
     }
 
     void cargarTabla1() {
-        sorter = new TableRowSorter<>(productoDAO.cargarModeloA(1, 2));
+        sorter = new TableRowSorter<>(productoDAO.cargarModeloA(3,2));
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setRowSorter(sorter);
-        jTable1.setModel(productoDAO.cargarModeloA(1, 2));
+        jTable1.setModel(productoDAO.cargarModeloA(3, 2));
     }
 
     double calcularTotal() {
@@ -124,10 +124,7 @@ public class SurtidoG extends javax.swing.JFrame {
         jLabel20.setText("");
         jLabel22.setText("");
         jComboBox1.setSelectedIndex(0);
-        jTable1.setModel(productoDAO.cargarModeloA(1, 1));
-        sorter = new TableRowSorter<>(productoDAO.cargarModeloA(1, 1));
-        jTable1.setAutoCreateRowSorter(true);
-        jTable1.setRowSorter(sorter);
+        cargarTabla1();
         Object iden[] = {"Id", "Nombre", "Cantidad", "Subtotal"};
         ta2 = new DefaultTableModel(iden, 0);
         jTable2.setModel(ta2);
@@ -363,7 +360,7 @@ public class SurtidoG extends javax.swing.JFrame {
         VerSurtidosLayout.setVerticalGroup(
             VerSurtidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VerSurtidosLayout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -790,11 +787,10 @@ public class SurtidoG extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1MouseClicked
 
     private void jComboBox1ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox1ItemStateChanged
-        System.out.println("" + jComboBox1.getSelectedIndex());
         if (jComboBox1.getSelectedIndex() != 0) {
             jTable1.setModel(productoDAO.cargarModeloP(jComboBox1.getSelectedIndex(), 1));
         } else {
-            jTable1.setModel(productoDAO.cargarModeloA(1, 2));
+            jTable1.setModel(productoDAO.cargarModeloA(0, 3));
         }
     }//GEN-LAST:event_jComboBox1ItemStateChanged
 

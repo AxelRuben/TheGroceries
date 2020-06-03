@@ -10,19 +10,21 @@ package pojo;
  * @author lizbe
  */
 public class Producto {
+
     private int idProducto;
-     private String nombre;
-     private String tipo;
-     private String codigo_barra;
-     private double stock;
-     private int proveedor_idProveedor;
-     private double costoalcl;
-     private double costoaldu;
+    private String nombre;
+    private String tipo;
+    private String codigo_barra;
+    private double stock;
+    private int proveedor_idProveedor;
+    private double costoalcl;
+    private double costoaldu;
+    private boolean activo;
 
     public Producto() {
     }
 
-    public Producto(int idProducto, String nombre, String tipo, String codigo_barra, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu) {
+    public Producto(int idProducto, String nombre, String tipo, String codigo_barra, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu, boolean activo) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.tipo = tipo;
@@ -31,32 +33,73 @@ public class Producto {
         this.proveedor_idProveedor = proveedor_idProveedor;
         this.costoalcl = costoalcl;
         this.costoaldu = costoaldu;
+        this.activo = activo;
     }
-    public Producto(int idProducto, String nombre, String tipo, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu) {
+
+    public Producto(int idProducto, String nombre, String tipo, String codigo_barra, int proveedor_idProveedor, double costoalcl, double costoaldu) {
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.tipo = tipo;
+        this.codigo_barra = codigo_barra;
+        this.proveedor_idProveedor = proveedor_idProveedor;
+        this.costoalcl = costoalcl;
+        this.costoaldu = costoaldu;
+    }
+
+    public Producto(int idProducto, String nombre, String tipo, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu, boolean activo) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.stock = stock;
+        this.proveedor_idProveedor = proveedor_idProveedor;
+        this.costoalcl = costoalcl;
+        this.costoaldu = costoaldu;
+        this.activo = activo;
+    }
+
+    public Producto(int idProducto, String nombre, String tipo, int proveedor_idProveedor, double costoalcl, double costoaldu) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.proveedor_idProveedor = proveedor_idProveedor;
+        this.costoalcl = costoalcl;
+        this.costoaldu = costoaldu;
+    }
+
+    public Producto(String nombre, String tipo, String codigo_barra, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu, boolean activo) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.codigo_barra = codigo_barra;
+        this.stock = stock;
+        this.proveedor_idProveedor = proveedor_idProveedor;
+        this.costoalcl = costoalcl;
+        this.costoaldu = costoaldu;
+        this.activo = activo;
+    }
+
+    public Producto(String nombre, String tipo, String codigo_barra, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu) {
+        this.nombre = nombre;
+        this.tipo = tipo;
+        this.codigo_barra = codigo_barra;
         this.stock = stock;
         this.proveedor_idProveedor = proveedor_idProveedor;
         this.costoalcl = costoalcl;
         this.costoaldu = costoaldu;
     }
 
-    public Producto(String nombre, String tipo, String codigo_barra, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu) {
-        this.idProducto = idProducto;
+    public Producto(String nombre, String tipo, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu, boolean activo) {
         this.nombre = nombre;
         this.tipo = tipo;
-        this.codigo_barra = codigo_barra;
         this.stock = stock;
         this.proveedor_idProveedor = proveedor_idProveedor;
         this.costoalcl = costoalcl;
         this.costoaldu = costoaldu;
+        this.activo = activo;
     }
+
     public Producto(String nombre, String tipo, double stock, int proveedor_idProveedor, double costoalcl, double costoaldu) {
-        this.idProducto = idProducto;
         this.nombre = nombre;
         this.tipo = tipo;
-        this.codigo_barra = codigo_barra;
         this.stock = stock;
         this.proveedor_idProveedor = proveedor_idProveedor;
         this.costoalcl = costoalcl;
@@ -126,6 +169,13 @@ public class Producto {
     public void setCostoaldu(double costoaldu) {
         this.costoaldu = costoaldu;
     }
-   
-    
+
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
 }

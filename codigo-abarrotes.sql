@@ -168,7 +168,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 START TRANSACTION;
 USE `Abarrotes`;
 INSERT INTO `Abarrotes`.`Usuarios` (`idUsuarios`, `Nombre`, `Contrasenia`) VALUES (DEFAULT, 'Administrador', '123456789');
-INSERT INTO `Abarrotes`.`Usuarios` (`idUsuarios`, `Nombre`, `Contrasenia`) VALUES (DEFAULT, 'Vendedor', '444444444');
+INSERT INTO `Abarrotes`.`Usuarios` (`idUsuarios`, `Nombre`, `Contrasenia`) VALUES (DEFAULT, 'Vendedor', 'vendedor21');
 
 COMMIT;
 
@@ -227,6 +227,8 @@ use abarrotes;
 select idSurtido,fecha,total from surtido;
 select distinct p.nombre, pr.nombre, p.costoalcl, phs.cantidad, phs.subtotal from surtido s,producto_has_surtido phs, producto p, proveedor pr where p.proveedor_idproveedor=pr.idproveedor and phs.producto_idproducto=p.idproducto and phs.surtido_idsurtido=3;
 
+use abarrotes;
+update producto set activo=true where proveedor_idproveedor=2;
 
 select s.idsurtido, s.fecha,pr.nombre from surtido s, producto_has_surtido phs, producto p, proveedor pr 
 where phs.surtido_idSurtido=s.idsurtido 

@@ -68,18 +68,41 @@ public class ProveedorDAO {
         return false;
     }
 
+    public boolean setProveedorAct(boolean op, int id) {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("update proveedor set activo=? where idproveedor=?");
+            st.setBoolean(1, op);
+            st.setInt(2, id);
+
+            int x = st.executeUpdate();
+            if (x != 0) {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al activar o desactivar el Proveedor " + e);
+
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return false;
+    }
+
     public DefaultTableModel cargarModelo(int op) {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre", "Teléfono"};
+        String encabezados[] = {"Id", "Nombre", "Teléfono", "Activo"};
         try {
             con = Conexion.getConnection();
             if (op == 0) {
                 st = con.prepareStatement("select*from proveedor");
-            }else if (op == 1) {
+            } else if (op == 1) {
                 st = con.prepareStatement("select*from proveedor where activo=1");
-            }else if (op == 2) {
+            } else if (op == 2) {
                 st = con.prepareStatement("select*from proveedor where activo=0");
             }
             dt = new DefaultTableModel();
@@ -91,6 +114,11 @@ public class ProveedorDAO {
                 ob[0] = pojo.getIdproveedor();
                 ob[1] = pojo.getNombre().toUpperCase();
                 ob[2] = pojo.getTelefono();
+                if (pojo.isActivo()) {
+                    ob[3] = "Activo";
+                } else {
+                    ob[3] = "Inactivo";
+                }
                 dt.addRow(ob);
             }
             rs.close();
@@ -124,13 +152,17 @@ public class ProveedorDAO {
         return pojo;
     }
 
-    public DefaultComboBoxModel cargarCombo() {
+    public DefaultComboBoxModel cargarCombo(int op) {
         Connection con = null;
         PreparedStatement st = null;
         DefaultComboBoxModel dt = null;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select * from proveedor");
+            if (op == 0) {
+                st = con.prepareStatement("select * from proveedor");
+            } else if (op == 1) {
+                st = con.prepareStatement("select * from proveedor where activo=1");
+            }
             dt = new DefaultComboBoxModel();
             ResultSet rs = st.executeQuery();
             dt.addElement("Seleccione a su Proveedor");
@@ -155,6 +187,7 @@ public class ProveedorDAO {
             POJO.setIdproveedor(rs.getInt("idproveedor"));
             POJO.setNombre(rs.getString("nombre"));
             POJO.setTelefono(rs.getString("telefono"));
+            POJO.setActivo(rs.getBoolean("activo"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo Proveedor: " + ex);
         }

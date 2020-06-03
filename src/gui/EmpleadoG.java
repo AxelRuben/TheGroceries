@@ -21,7 +21,7 @@ import javax.swing.table.TableRowSorter;
  * @author lizbe
  */
 public class EmpleadoG extends javax.swing.JFrame {
-
+    
     EmpleadoDAO empleadoDAO;
     Empleado empleado;
     TableRowSorter<TableModel> sorter;
@@ -46,7 +46,7 @@ public class EmpleadoG extends javax.swing.JFrame {
             jButton3.setEnabled(false);
         }
     }
-
+    
     public EmpleadoG(int id) {
         initComponents();
         empleadoDAO = new EmpleadoDAO();
@@ -63,7 +63,7 @@ public class EmpleadoG extends javax.swing.JFrame {
             jButton3.setEnabled(false);
         }
     }
-
+    
     void EmpleadoIn() {
         setIconImage(new ImageIcon(this.getClass().getResource("/img/groceries.png")).getImage());
         setTitle("The Groceries - Empleados");
@@ -73,7 +73,7 @@ public class EmpleadoG extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         cargarModelo(0);
     }
-
+    
     int AddEmpleado() throws SQLException {
         String nom = jTextField4.getText();
         String tel = jTextField6.getText();
@@ -89,7 +89,7 @@ public class EmpleadoG extends javax.swing.JFrame {
         }
         return id;
     }
-
+    
     void cargarModelo(int op) {
         DefaultTableModel dt = empleadoDAO.cargarModelo(op);
         sorter = new TableRowSorter<>(dt);
@@ -97,15 +97,20 @@ public class EmpleadoG extends javax.swing.JFrame {
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setRowSorter(sorter);
     }
-
+    
     void wachar(int id) {
         empleado = empleadoDAO.selectedEmpleado(id);
         jLabel20.setText("" + empleado.getNombre());
         jLabel19.setText("" + empleado.getTelefono());
         jLabel21.setText("" + empleado.getDireccion());
         jLabel22.setText("" + empleado.getEstudios());
+        if (empleado.isActivo()) {
+            jLabel23.setText("Activo");
+        } else {
+            jLabel23.setText("Inactivo");
+        }
     }
-
+    
     void wacharMod(int id) {
         empleado = empleadoDAO.selectedEmpleado(id);
         jTextField7.setText("" + empleado.getNombre());
@@ -128,7 +133,7 @@ public class EmpleadoG extends javax.swing.JFrame {
                 break;
         }
     }
-
+    
     String isInt(String ps) {
         String f = ps;
         if (ps.length() != 0) {
@@ -189,6 +194,8 @@ public class EmpleadoG extends javax.swing.JFrame {
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jButton12 = new javax.swing.JButton();
+        jLabel18 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -513,6 +520,14 @@ public class EmpleadoG extends javax.swing.JFrame {
             }
         });
 
+        jLabel18.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
+        jLabel18.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel18.setText("Activo");
+
+        jLabel23.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
+        jLabel23.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel23.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -523,28 +538,32 @@ public class EmpleadoG extends javax.swing.JFrame {
                         .addGap(14, 14, 14)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel14)
+                                .addComponent(jLabel18)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel16)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel17)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel16)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                                 .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 271, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel19, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addComponent(jLabel14)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(135, 135, 135)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -567,7 +586,11 @@ public class EmpleadoG extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel17)
                     .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGap(28, 28, 28)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel18)
+                    .addComponent(jLabel23, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -612,12 +635,12 @@ public class EmpleadoG extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/eliminarbn.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/switchn.png"))); // NOI18N
         jButton2.setToolTipText("Dar de baja");
         jButton2.setBorderPainted(false);
         jButton2.setContentAreaFilled(false);
-        jButton2.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/eliminarbg.png"))); // NOI18N
-        jButton2.setSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/eliminarbc.png"))); // NOI18N
+        jButton2.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/switchc.png"))); // NOI18N
+        jButton2.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/switchg.png"))); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -668,6 +691,7 @@ public class EmpleadoG extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
+        jRadioButton1.setSelected(true);
         jRadioButton1.setText("Todos");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -810,7 +834,7 @@ public class EmpleadoG extends javax.swing.JFrame {
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         if (!GuardarEmpleado.isVisible() && !ModificarEmpleado.isVisible()) {
             if (jTable1.getSelectedRow() != -1) {
-                VerEmpleado.setSize(384, 420);
+                VerEmpleado.setSize(384, 465);
                 VerEmpleado.setVisible(true);
                 VerEmpleado.setResizable(true);
                 VerEmpleado.setTitle("The Groceries - Ver empleado");
@@ -850,7 +874,7 @@ public class EmpleadoG extends javax.swing.JFrame {
         if (jTextField9.getText().length() > 10) {
             JOptionPane.showMessageDialog(null, "El campo únicamente debe contener 10 dígitos");
             jTextField9.setText(jTextField9.getText().substring(0, 10));
-
+            
         }
         jTextField9.setText(isInt(jTextField6.getText()));
     }//GEN-LAST:event_jTextField9KeyReleased
@@ -876,13 +900,23 @@ public class EmpleadoG extends javax.swing.JFrame {
         if (jTextField6.getText().length() > 10) {
             JOptionPane.showMessageDialog(null, "El campo únicamente debe contener 10 dígitos");
             jTextField6.setText(jTextField6.getText().substring(0, 10));
-
+            
         }
         jTextField6.setText(isInt(jTextField6.getText()));
     }//GEN-LAST:event_jTextField6KeyReleased
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        if (jTable1.getSelectedRow() != -1) {
+            empleado = empleadoDAO.selectedEmpleado(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString()));
+            if (empleadoDAO.setEmpleadoAct(!empleado.isActivo(), empleado.getIdempleado())) {
+                JOptionPane.showMessageDialog(null, "El empleado ha sido actualizado exitosamente");
+                cargarModelo(0);
+            } else {
+                JOptionPane.showMessageDialog(null, "Error al actualizar el empleado");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Seleccione un empleado");
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
@@ -958,11 +992,13 @@ public class EmpleadoG extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

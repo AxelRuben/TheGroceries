@@ -143,12 +143,12 @@ public class Inicio extends javax.swing.JFrame {
         jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel16.setText("Proveedores");
 
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextin.png"))); // NOI18N
+        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesInicio/signoutN.png"))); // NOI18N
         jButton5.setToolTipText("Salir");
         jButton5.setBorderPainted(false);
         jButton5.setContentAreaFilled(false);
-        jButton5.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextic.png"))); // NOI18N
-        jButton5.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesMenu/nextig.png"))); // NOI18N
+        jButton5.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesInicio/signoutC.png"))); // NOI18N
+        jButton5.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/BotonesInicio/signoutG.png"))); // NOI18N
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton5ActionPerformed(evt);

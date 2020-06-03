@@ -10,15 +10,16 @@ package pojo;
  * @author lizbe
  */
 public class Producto_has_Surtido {
+
     private int idphs;
     private int Producto_idProducto;
     private int Surtido_idSurtido;
     private double cantidad;
     private double subtotal;
-   
+
     public Producto_has_Surtido() {
-    
-} 
+
+    }
 
     public Producto_has_Surtido(int idphs, int Producto_idProducto, int Surtido_idSurtido, double cantidad, double subtotal) {
         this.idphs = idphs;
@@ -27,7 +28,8 @@ public class Producto_has_Surtido {
         this.cantidad = cantidad;
         this.subtotal = subtotal;
     }
-     public Producto_has_Surtido( int Producto_idProducto, int Surtido_idSurtido, double cantidad, double subtotal) {
+
+    public Producto_has_Surtido(int Producto_idProducto, int Surtido_idSurtido, double cantidad, double subtotal) {
         this.Producto_idProducto = Producto_idProducto;
         this.Surtido_idSurtido = Surtido_idSurtido;
         this.cantidad = cantidad;
@@ -73,10 +75,5 @@ public class Producto_has_Surtido {
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
     }
-     
-   
-    
-}
-    
 
-    
+}

@@ -86,7 +86,7 @@ public class EmpleadoDAO {
                 return true;
             }
         } catch (Exception e) {
-            System.out.println("Error al actualizar Empleado " + e);
+            System.out.println("Error al activar o desactivar el Empleado " + e);
 
         } finally {
             Conexion.close(con);
@@ -99,7 +99,7 @@ public class EmpleadoDAO {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = {"Id", "Nombre", "Teléfono"};
+        String encabezados[] = {"Id", "Nombre", "Teléfono","Activo"};
         try {
             con = Conexion.getConnection();
             if (op == 0) {
@@ -118,6 +118,11 @@ public class EmpleadoDAO {
                 ob[0] = pojo.getIdempleado();
                 ob[1] = pojo.getNombre().toUpperCase();
                 ob[2] = pojo.getTelefono();
+                if (pojo.isActivo()) {
+                ob[3] = "Activo";
+                }else{
+                ob[3] = "Inactivo";
+                }
                 dt.addRow(ob);
             }
             rs.close();
@@ -184,6 +189,7 @@ public class EmpleadoDAO {
             POJO.setTelefono(rs.getString("telefono"));
             POJO.setDireccion(rs.getString("direccion"));
             POJO.setEstudios(rs.getString("estudios"));
+            POJO.setActivo(rs.getBoolean("activo"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo Empleado: " + ex);
         }

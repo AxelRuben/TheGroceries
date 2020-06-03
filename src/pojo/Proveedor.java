@@ -13,16 +13,31 @@ public class Proveedor {
     private int idproveedor;
     private String nombre;
     private String telefono;
+    private boolean activo;
 
     public Proveedor() {
     }
 
+    public Proveedor(int idproveedor, String nombre, String telefono, boolean activo) {
+        this.idproveedor = idproveedor;
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.activo = activo;
+    }
+    
     public Proveedor(int idproveedor, String nombre, String telefono) {
         this.idproveedor = idproveedor;
         this.nombre = nombre;
         this.telefono = telefono;
     }
-     public Proveedor( String nombre, String telefono) {
+    
+    public Proveedor(String nombre, String telefono, boolean activo) {
+        this.nombre = nombre;
+        this.telefono = telefono;
+        this.activo = activo;
+    }
+    
+    public Proveedor(String nombre, String telefono) {
         this.nombre = nombre;
         this.telefono = telefono;
     }
@@ -51,10 +66,17 @@ public class Proveedor {
         this.telefono = telefono;
     }
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+
     @Override
     public String toString() {
         return nombre;
     }
-
   
 }

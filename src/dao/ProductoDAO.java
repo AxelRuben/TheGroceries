@@ -84,30 +84,74 @@ public class ProductoDAO {
         return true;
     }
 
+    public boolean setProductAct(boolean op, int id) {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("update producto set activo=? where idproducto=?");
+            st.setBoolean(1, op);
+            st.setInt(2, id);
+
+            int x = st.executeUpdate();
+            if (x == 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al activar o desactivar el Empleado " + e);
+
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return true;
+    }
+
+    public boolean setProductofProvAct(boolean op, int id) {
+        Connection con = null;
+        PreparedStatement st = null;
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("update producto set activo=? where proveedor_idproveedor=?");
+            st.setBoolean(1, op);
+            st.setInt(2, id);
+
+            int x = st.executeUpdate();
+            if (x == 0) {
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al activar o desactivar el Empleado " + e);
+
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return true;
+    }
+
     public boolean actualizar_producto(Producto pojo, boolean ccdb) {
         Connection con = null;
         PreparedStatement st = null;
         try {
             con = Conexion.getConnection();
             if (ccdb) {
-                st = con.prepareStatement("update producto set nombre=?,tipo=?,cod_bar=?, stock=?,proveedor_idproveedor=?, costoalcl=?, costoaldu=? where idproducto=?");
+                st = con.prepareStatement("update producto set nombre=?,tipo=?,cod_bar=?,proveedor_idproveedor=?, costoalcl=?, costoaldu=? where idproducto=?");
                 st.setString(1, pojo.getNombre());
                 st.setString(2, pojo.getTipo());
                 st.setString(3, pojo.getCodigo_barra());
-                st.setDouble(4, pojo.getStock());
-                st.setInt(5, pojo.getProveedor_idProveedor());
-                st.setDouble(6, pojo.getCostoalcl());
-                st.setDouble(7, pojo.getCostoaldu());
-                st.setInt(8, pojo.getIdProducto());
-            } else {
-                st = con.prepareStatement("update producto set nombre=?,tipo=?, stock=?,proveedor_idproveedor=?, costoalcl=?, costoaldu=? where idproducto=?");
-                st.setString(1, pojo.getNombre());
-                st.setString(2, pojo.getTipo());
-                st.setDouble(3, pojo.getStock());
                 st.setInt(4, pojo.getProveedor_idProveedor());
                 st.setDouble(5, pojo.getCostoalcl());
                 st.setDouble(6, pojo.getCostoaldu());
                 st.setInt(7, pojo.getIdProducto());
+            } else {
+                st = con.prepareStatement("update producto set nombre=?,tipo=?,proveedor_idproveedor=?, costoalcl=?, costoaldu=? where idproducto=?");
+                st.setString(1, pojo.getNombre());
+                st.setString(2, pojo.getTipo());
+                st.setInt(3, pojo.getProveedor_idProveedor());
+                st.setDouble(4, pojo.getCostoalcl());
+                st.setDouble(5, pojo.getCostoaldu());
+                st.setInt(6, pojo.getIdProducto());
             }
 
             int x = st.executeUpdate();
@@ -124,32 +168,11 @@ public class ProductoDAO {
         return false;
     }
 
-    public boolean delete_producto(int id) {
-        Connection con = null;
-        PreparedStatement st = null;
-        try {
-            con = Conexion.getConnection();
-            st = con.prepareStatement("CALL desactive_cliente(?)");
-            st.setInt(1, id);
-            int num = st.executeUpdate();
-            if (num == 0) {
-                return false;
-            }
-        } catch (Exception e) {
-            System.out.println("Error al eliminar producto: " + e);
-            return false;
-        } finally {
-            Conexion.close(con);
-            Conexion.close(st);
-        }
-        return true;
-    }
-
     public DefaultTableModel cargarModeloA(int op, int op2) {
         Connection con = null;
         PreparedStatement st = null;
         DefaultTableModel dt = null;
-        String encabezados[] = new String[6];
+        String encabezados[] = new String[7];
         String encabezados2[] = new String[5];
         if (op2 == 0) {
             encabezados[0] = "Id";
@@ -158,6 +181,7 @@ public class ProductoDAO {
             encabezados[3] = "Stock";
             encabezados[4] = "Costo Al Cliente";
             encabezados[5] = "Costo al Dueño";
+            encabezados[6] = "Activo";
         } else if (op2 == 1 || op2 == 2) {
             encabezados2[0] = "Id";
             encabezados2[1] = "Nombre";
@@ -173,6 +197,8 @@ public class ProductoDAO {
                 st = con.prepareStatement("select*from producto where stock!=0");
             } else if (op == 2) {
                 st = con.prepareStatement("select*from producto where stock=0");
+            } else if (op == 3) {
+                st = con.prepareStatement("select*from producto where activo=1");
             }
             dt = new DefaultTableModel();
             if (op2 == 0) {
@@ -183,7 +209,7 @@ public class ProductoDAO {
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 if (op2 == 0) {
-                    Object ob[] = new Object[6];
+                    Object ob[] = new Object[7];
                     Producto pojo = inflaPOJO(rs);
                     ob[0] = pojo.getIdProducto();
                     ob[1] = pojo.getNombre().toUpperCase();
@@ -191,6 +217,11 @@ public class ProductoDAO {
                     ob[3] = pojo.getStock();
                     ob[4] = pojo.getCostoalcl();
                     ob[5] = pojo.getCostoaldu();
+                    if (pojo.isActivo()) {
+                        ob[6] = "Activo";
+                    } else {
+                        ob[6] = "Inactivo";
+                    }
                     dt.addRow(ob);
                 } else if (op2 == 1 || op2 == 2) {
                     Object ob[] = new Object[5];
@@ -224,7 +255,11 @@ public class ProductoDAO {
         String encabezados[] = {"Id", "Nombre", "Tipo", "Stock", "Costo"};
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("select * from producto where proveedor_idproveedor=? and stock!=0");
+            if (op == 0) {
+                st = con.prepareStatement("select * from producto where proveedor_idproveedor=? and stock!=0");
+            } else if (op == 1) {
+                st = con.prepareStatement("select * from producto where proveedor_idproveedor=?");
+            }
             st.setInt(1, idproveedor);
             dt = new DefaultTableModel();
             dt.setColumnIdentifiers(encabezados);
@@ -288,6 +323,7 @@ public class ProductoDAO {
             POJO.setProveedor_idProveedor(rs.getInt("proveedor_idproveedor"));
             POJO.setCostoalcl(rs.getDouble("costoalcl"));
             POJO.setCostoaldu(rs.getDouble("costoaldu"));
+            POJO.setActivo(rs.getBoolean("activo"));
         } catch (SQLException ex) {
             System.out.println("Error al inflar pojo producto: " + ex);
         }

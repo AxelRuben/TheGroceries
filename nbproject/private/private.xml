@@ -6,15 +6,6 @@
             <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/gui/SurtidoG.java</file>
             <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/gui/ProductoG.java</file>
             <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/gui/EmpleadoG.java</file>
-            <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/gui/VentasG.java</file>
-            <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/pojo/Empleado.java</file>
-            <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/gui/Splash.java</file>
-            <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/dao/ProveedorDAO.java</file>
-        </group>
-        <group>
-            <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/gui/SurtidoG.java</file>
-            <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/gui/ProductoG.java</file>
-            <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/gui/EmpleadoG.java</file>
             <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/dao/VentasDAO.java</file>
             <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/gui/VentasG.java</file>
             <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/pojo/Empleado.java</file>
@@ -22,5 +13,6 @@
             <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/gui/Splash.java</file>
             <file>file:/C:/Users/lizbe/Documents/TheGroceries/src/dao/ProveedorDAO.java</file>
         </group>
+        <group/>
     </open-files>
 </project-private>

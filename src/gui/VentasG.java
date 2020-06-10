@@ -101,6 +101,7 @@ public class VentasG extends javax.swing.JFrame {
         setResizable(false);
         setVisible(true);
         this.setLocationRelativeTo(null);
+        jTable1.setDefaultEditor(Object.class, null);
     }
 
     double calcularTotal() {

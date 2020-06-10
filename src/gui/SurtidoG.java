@@ -96,6 +96,7 @@ public class SurtidoG extends javax.swing.JFrame {
         setVisible(true);
         cargarTabla1();
         this.setLocationRelativeTo(null);
+        jTable1.setDefaultEditor(Object.class, null);
     }
 
     public void loadComPro(JComboBox combokil) {

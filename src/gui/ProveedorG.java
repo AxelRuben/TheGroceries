@@ -76,6 +76,7 @@ public class ProveedorG extends javax.swing.JFrame {
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         cargarModelo(0);
+        jTable1.setDefaultEditor(Object.class, null);
     }
 
     int AddProveedor() throws SQLException {
@@ -444,6 +445,7 @@ public class ProveedorG extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton1);
         jRadioButton1.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
+        jRadioButton1.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton1.setSelected(true);
         jRadioButton1.setText("Todos");
         jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -454,6 +456,7 @@ public class ProveedorG extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
+        jRadioButton2.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton2.setText("Activos");
         jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -463,6 +466,7 @@ public class ProveedorG extends javax.swing.JFrame {
 
         buttonGroup1.add(jRadioButton3);
         jRadioButton3.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
+        jRadioButton3.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton3.setText("Inactivos");
         jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

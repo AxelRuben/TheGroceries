@@ -84,6 +84,7 @@ public class ProductoG extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         cargarModelo(0);
         jRadioButton1.setSelected(true);
+        jTable1.setDefaultEditor(Object.class, null);
     }
 
     void cargarModelo(int op) {
@@ -342,7 +343,7 @@ public class ProductoG extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo", "Abarrotes", "Enlatados", "Lácteos", "Botanas", "Harinas", "Frutas y Verduras", "Bebidas", "Bebidas Alcoholicás", "Carnes Embutidos", "Automedicación", "Higiene Personal", "Uso Doméstico", "Jarcería", "Otros" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo", "Abarrotes", "Enlatados", "Lácteos", "Botanas", "Harinas", "Frutas y Verduras", "Bebidas", "Bebidas Alcohólicas", "Carnes Embutidos", "Automedicación", "Higiene Personal", "Uso Doméstico", "Jarcería", "Otros" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);

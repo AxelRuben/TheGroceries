@@ -662,7 +662,7 @@ public class ProveedorG extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Error al Activar o desactivar el proveedor");
             }
         }else{
-            
+            JOptionPane.showMessageDialog(null, "Seleccione un proveedor");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

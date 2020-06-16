@@ -365,7 +365,7 @@ public class EmpleadoG extends javax.swing.JFrame {
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setText("Estudios");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Primaria", "Secundaria", "Bachillerato", "Universidad", " " }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Primaria", "Secundaria", "Bachillerato", "Universidad" }));
 
         jLabel2.setFont(new java.awt.Font("Harrington", 1, 50)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -858,7 +858,7 @@ public class EmpleadoG extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        if (!jTextField7.getText().equals("") || !jTextField9.getText().equals("") || !jTextField8.getText().equals("")) {
+        if (!jTextField7.getText().equals("") && !jTextField9.getText().equals("") && !jTextField8.getText().equals("")) {
             empleado = new Empleado(idd, jTextField7.getText(), jTextField9.getText(), jTextField8.getText(), jComboBox3.getSelectedItem().toString());
             if (empleadoDAO.actualizar_emopleado(empleado)) {
                 JOptionPane.showMessageDialog(null, "El empleado ha sido actualizado correctamente");
@@ -881,7 +881,7 @@ public class EmpleadoG extends javax.swing.JFrame {
             jTextField9.setText(jTextField9.getText().substring(0, 10));
             
         }
-        jTextField9.setText(isInt(jTextField6.getText()));
+        jTextField9.setText(isInt(jTextField9.getText()));
     }//GEN-LAST:event_jTextField9KeyReleased
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed

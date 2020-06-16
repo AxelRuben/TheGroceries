@@ -343,7 +343,7 @@ public class ProductoG extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo", "Abarrotes", "Enlatados", "Lácteos", "Botanas", "Harinas", "Frutas y Verduras", "Bebidas", "Bebidas Alcohólicas", "Carnes Embutidos", "Automedicación", "Higiene Personal", "Uso Doméstico", "Jarcería", "Otros" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo", "Abarrotes", "Enlatados", "Lácteos", "Botanas", "Harinas", "Frutas y verduras", "Bebidas", "Bebidas alcohólicas", "Carnes embutidos", "Automedicación", "Higiene personal", "Uso doméstico", "Jarcería", "Otros" }));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
@@ -574,7 +574,7 @@ public class ProductoG extends javax.swing.JFrame {
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setText("Tipo");
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo", "Abarrotes", "Enlatados", "Lácteos", "Botanas", "Harinas", "Frutas y Verduras", "Bebidas", "Bebidas Alcoholicás", "Carnes Embutidos", "Automedicación", "Higiene Personal", "Uso Doméstico", "Jarcería", "Otros" }));
+        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccione el tipo", "Abarrotes", "Enlatados", "Lácteos", "Botanas", "Harinas", "Frutas y verduras", "Bebidas", "Bebidas alcohólicas", "Carnes embutidos", "Automedicación", "Higiene personal", "Uso doméstico", "Jarcería", "Otros" }));
         jComboBox5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox5ActionPerformed(evt);

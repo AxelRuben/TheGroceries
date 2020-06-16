@@ -620,7 +620,7 @@ public class ProveedorG extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField6KeyReleased
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        if (!jTextField5.getText().equals("") || !jTextField7.getText().equals("")) {
+        if (!jTextField5.getText().equals("") && !jTextField7.getText().equals("")) {
             proveedor = new Proveedor(idd, jTextField5.getText(), jTextField7.getText());
             if (proveedorDAO.actualizar_proveedor(proveedor)) {
                 JOptionPane.showMessageDialog(null, "El proveedor se ha modificado exitosamente");

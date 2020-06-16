@@ -81,11 +81,16 @@ public class SurtidoG extends javax.swing.JFrame {
         productoDAO = new ProductoDAO();
         surtidoDAO = new SurtidoDAO();
         producto_has_surtidoDAO = new Producto_has_surtidoDAO();
-        defaultComboBoxModel = new DefaultComboBoxModel();
         defo = new DecimalFormat("0.00");
         loadComPro(jComboBox1);
+        defaultComboBoxModel = new DefaultComboBoxModel();
+        Object iden[] = {"Id", "Nombre", "Cantidad", "Subtotal"};
+        ta2 = new DefaultTableModel(iden, 0);
+        jTable2.setModel(ta2);
+        sorter2 = new TableRowSorter<>(ta2);
+        jTable2.setAutoCreateRowSorter(true);
+        jTable2.setRowSorter(sorter2);
         SurtidoIn();
-        resetear();
         idusuS = id;
     }
 
@@ -331,6 +336,7 @@ public class SurtidoG extends javax.swing.JFrame {
         });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/searchn.png"))); // NOI18N
+        jButton1.setToolTipText("Buscar surtidos por fecha");
         jButton1.setBorderPainted(false);
         jButton1.setContentAreaFilled(false);
         jButton1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/searchc.png"))); // NOI18N
@@ -396,7 +402,7 @@ public class SurtidoG extends javax.swing.JFrame {
         VerSurtidosLayout.setVerticalGroup(
             VerSurtidosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VerSurtidosLayout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 509, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 

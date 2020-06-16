@@ -55,6 +55,8 @@ public class ProveedorG extends javax.swing.JFrame {
         initComponents();
         proveedor = new Proveedor();
         proveedorDAO = new ProveedorDAO();
+        producto = new Producto();
+        productoDAO = new ProductoDAO();
         ProveedorIn();
         idusuPr = id;
         if (idusuPr == 1) {

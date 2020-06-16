@@ -144,7 +144,7 @@ public class EmpleadoDAO {
             st = con.prepareStatement("select * from empleados");
             dt = new DefaultComboBoxModel();
             ResultSet rs = st.executeQuery();
-            dt.addElement("Seleccione a su Empleado");
+            dt.addElement("Seleccione a su empleado");
             while (rs.next()) {
                 Empleado pojo = inflaPOJO(rs);
                 dt.addElement(pojo.toString());

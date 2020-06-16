@@ -165,7 +165,7 @@ public class ProveedorDAO {
             }
             dt = new DefaultComboBoxModel();
             ResultSet rs = st.executeQuery();
-            dt.addElement("Seleccione a su Proveedor");
+            dt.addElement("Seleccione a su proveedor");
             while (rs.next()) {
                 Proveedor pojo = inflaPOJO(rs);
                 dt.addElement(pojo);

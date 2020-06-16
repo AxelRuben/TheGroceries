@@ -6,6 +6,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -80,6 +81,34 @@ public class SurtidoDAO {
                 Surtido pojo = inflaPOJO(rs);
                 ob[1] = pojo.getIdSurtido();
                 ob[2] = pojo.getTotal();
+                dt.addRow(ob);
+            }          
+            rs.close();
+        } catch (Exception e) {
+            System.out.println("Error al cargar la tabla surtido " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return dt;
+    }
+    
+    public DefaultTableModel cargarModeloFech(String fec) {
+        Connection con = null;
+        PreparedStatement st = null;
+        DefaultTableModel dt = null;
+        String encabezados[] = {"Id", "Fecha","Total"};
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("select idSurtido,fecha,total from surtido WHERE fecha BETWEEN '"+fec+" 00:00:00' AND '"+fec+" 23:59:59'");
+            dt = new DefaultTableModel();
+            dt.setColumnIdentifiers(encabezados);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Object ob[] = new Object[3];
+                ob[0] = rs.getInt(1);
+                ob[1] = rs.getString(2);
+                ob[2] = rs.getInt(3);
                 dt.addRow(ob);
             }          
             rs.close();

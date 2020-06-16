@@ -10,6 +10,7 @@ import dao.ProductoDAO;
 import dao.ProveedorDAO;
 import dao.VentasDAO;
 import dao.Ventas_has_productoDAO;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.logging.Level;
@@ -101,7 +102,6 @@ public class VentasG extends javax.swing.JFrame {
         setResizable(false);
         setVisible(true);
         this.setLocationRelativeTo(null);
-        jTable1.setDefaultEditor(Object.class, null);
     }
 
     double calcularTotal() {
@@ -157,12 +157,14 @@ public class VentasG extends javax.swing.JFrame {
         sorter = new TableRowSorter<>(productoDAO.cargarModeloA(1, 1));
         jTable1.setAutoCreateRowSorter(true);
         jTable1.setRowSorter(sorter);
+        jTable1.setDefaultEditor(Object.class, null);
         Object iden[] = {"Id", "Nombre", "Cantidad", "Subtotal"};
         ta2 = new DefaultTableModel(iden, 0);
         jTable2.setModel(ta2);
         sorter2 = new TableRowSorter<>(ta2);
         jTable2.setAutoCreateRowSorter(true);
         jTable2.setRowSorter(sorter2);
+        jTable2.setDefaultEditor(Object.class, null);
     }
 
     void cargarTabla3() {
@@ -170,6 +172,7 @@ public class VentasG extends javax.swing.JFrame {
         sorter = new TableRowSorter<>(ventasDAO.cargarModeloVV());
         jTable3.setAutoCreateRowSorter(true);
         jTable3.setRowSorter(sorter);
+        jTable3.setDefaultEditor(Object.class, null);
     }
 
     void cargarTabla4(int i) {
@@ -177,6 +180,7 @@ public class VentasG extends javax.swing.JFrame {
         sorter = new TableRowSorter<>(ventas_has_productoDAO.cargarModelo(i));
         jTable4.setAutoCreateRowSorter(true);
         jTable4.setRowSorter(sorter);
+        jTable4.setDefaultEditor(Object.class, null);
         ventas = ventasDAO.selectedVentas(i);
         jLabel4.setText("" + ventas.getTotal());
         jLabel6.setText("" + ventas.getPago());
@@ -254,6 +258,8 @@ public class VentasG extends javax.swing.JFrame {
         jButton13 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         Ver = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -343,18 +349,47 @@ public class VentasG extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(jTable3);
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/searchn.png"))); // NOI18N
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
+        jButton1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/img/searchc.png"))); // NOI18N
+        jButton1.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/img/searchg.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jDateChooser1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jDateChooser1MouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jDateChooser1MousePressed(evt);
+            }
+        });
+        jDateChooser1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jDateChooser1PropertyChange(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jLabel3)))
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -374,8 +409,11 @@ public class VentasG extends javax.swing.JFrame {
                         .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap(12, Short.MAX_VALUE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(8, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -507,7 +545,7 @@ public class VentasG extends javax.swing.JFrame {
         );
         VerLayout.setVerticalGroup(
             VerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -881,6 +919,35 @@ public class VentasG extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jComboBox2MouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            Date fecha = new java.sql.Date(jDateChooser1.getDate().getTime());
+            jTable3.setModel(ventasDAO.cargarModeloFech(fecha.toString()));
+            sorter = new TableRowSorter<>(ventasDAO.cargarModeloFech(fecha.toString()));
+            jTable3.setAutoCreateRowSorter(true);
+            jTable3.setRowSorter(sorter);
+            jTable3.setDefaultEditor(Object.class, null);
+        } catch (Exception e) {
+            jTable3.setModel(ventasDAO.cargarModeloVV());
+            sorter = new TableRowSorter<>(ventasDAO.cargarModeloVV());
+            jTable3.setAutoCreateRowSorter(true);
+            jTable3.setRowSorter(sorter);
+            jTable3.setDefaultEditor(Object.class, null);
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jDateChooser1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser1MouseClicked
+
+    }//GEN-LAST:event_jDateChooser1MouseClicked
+
+    private void jDateChooser1MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jDateChooser1MousePressed
+
+    }//GEN-LAST:event_jDateChooser1MousePressed
+
+    private void jDateChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser1PropertyChange
+
+    }//GEN-LAST:event_jDateChooser1PropertyChange
+
     /**
      * @param args the command line arguments
      */
@@ -928,6 +995,7 @@ public class VentasG extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDialog Ver;
     private javax.swing.JDialog VerVentas;
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
@@ -939,6 +1007,7 @@ public class VentasG extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBox2;
+    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel19;

@@ -116,7 +116,7 @@ public class EmpleadoDAO {
                 Object ob[] = new Object[4];
                 Empleado pojo = inflaPOJO(rs);
                 ob[0] = pojo.getIdempleado();
-                ob[1] = pojo.getNombre().toUpperCase();
+                ob[1] = pojo.getNombre();
                 ob[2] = pojo.getTelefono();
                 if (pojo.isActivo()) {
                 ob[3] = "Activo";
@@ -147,7 +147,7 @@ public class EmpleadoDAO {
             dt.addElement("Seleccione a su Empleado");
             while (rs.next()) {
                 Empleado pojo = inflaPOJO(rs);
-                dt.addElement(pojo.toString().toUpperCase());
+                dt.addElement(pojo.toString());
             }
             rs.close();
         } catch (Exception e) {

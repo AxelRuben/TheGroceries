@@ -110,15 +110,23 @@ public class ProductoDAO {
     public boolean setProductofProvAct(boolean op, int id) {
         Connection con = null;
         PreparedStatement st = null;
+        PreparedStatement stt = null;
         try {
             con = Conexion.getConnection();
-            st = con.prepareStatement("update producto set activo=? where proveedor_idproveedor=?");
-            st.setBoolean(1, op);
-            st.setInt(2, id);
+            stt = con.prepareStatement("select * from producto where proveedor_idproveedor=?");
+            stt.setInt(1, id);
+            stt.execute();
+            if (stt.getMaxRows() != 0) {
+                st = con.prepareStatement("update producto set activo=? where proveedor_idproveedor=?");
+                st.setBoolean(1, op);
+                st.setInt(2, id);
 
-            int x = st.executeUpdate();
-            if (x == 0) {
-                return false;
+                int x = st.executeUpdate();
+                if (x == 0) {
+                    return false;
+                }
+            }else{
+                return true;
             }
         } catch (Exception e) {
             System.out.println("Error al activar o desactivar el Empleado " + e);
@@ -179,8 +187,8 @@ public class ProductoDAO {
             encabezados[1] = "Nombre";
             encabezados[2] = "Tipo";
             encabezados[3] = "Stock";
-            encabezados[4] = "Costo Al Cliente";
-            encabezados[5] = "Costo al Dueño";
+            encabezados[4] = "Costo al cliente";
+            encabezados[5] = "Costo al dueño";
             encabezados[6] = "Activo";
         } else if (op2 == 1 || op2 == 2) {
             encabezados2[0] = "Id";
@@ -212,7 +220,7 @@ public class ProductoDAO {
                     Object ob[] = new Object[7];
                     Producto pojo = inflaPOJO(rs);
                     ob[0] = pojo.getIdProducto();
-                    ob[1] = pojo.getNombre().toUpperCase();
+                    ob[1] = pojo.getNombre();
                     ob[2] = pojo.getTipo();
                     ob[3] = pojo.getStock();
                     ob[4] = pojo.getCostoalcl();
@@ -297,6 +305,27 @@ public class ProductoDAO {
         try {
             con = Conexion.getConnection();
             st = con.prepareStatement("select * from producto where idproducto=?");
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                pojo = inflaPOJO(rs);
+            }
+        } catch (Exception e) {
+            System.out.println("Error al consultar producto " + e);
+        } finally {
+            Conexion.close(con);
+            Conexion.close(st);
+        }
+        return pojo;
+    }
+
+    public Producto selectedProsDProv(int id) {
+        Connection con = null;
+        PreparedStatement st = null;
+        Producto pojo = new Producto();
+        try {
+            con = Conexion.getConnection();
+            st = con.prepareStatement("select * from producto where proveedor_idproveedor=?");
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {

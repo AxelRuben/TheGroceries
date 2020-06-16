@@ -416,7 +416,7 @@ public class ProductoG extends javax.swing.JFrame {
 
         jLabel38.setFont(new java.awt.Font("Harrington", 1, 18)); // NOI18N
         jLabel38.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel38.setText("Costo al Dueño");
+        jLabel38.setText("Costo al dueño");
 
         jTextField14.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {

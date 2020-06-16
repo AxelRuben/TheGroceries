@@ -112,7 +112,7 @@ public class ProveedorDAO {
                 Object ob[] = new Object[4];
                 Proveedor pojo = inflaPOJO(rs);
                 ob[0] = pojo.getIdproveedor();
-                ob[1] = pojo.getNombre().toUpperCase();
+                ob[1] = pojo.getNombre();
                 ob[2] = pojo.getTelefono();
                 if (pojo.isActivo()) {
                     ob[3] = "Activo";

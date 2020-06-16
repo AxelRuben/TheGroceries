@@ -656,10 +656,14 @@ public class ProveedorG extends javax.swing.JFrame {
         if (jTable1.getSelectedRow()!=-1) {
             int id = Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
             proveedor = proveedorDAO.selectedProveedor(id);
-            if (proveedorDAO.setProveedorAct(!proveedor.isActivo(), id)&&productoDAO.setProductofProvAct(!proveedor.isActivo(), id)){
+            boolean prm= proveedorDAO.setProveedorAct(!proveedor.isActivo(), id);
+            boolean sgm= productoDAO.setProductofProvAct(!proveedor.isActivo(), id);
+            if (prm&&sgm){
                 JOptionPane.showMessageDialog(null, "El Proveedor y sus productos se han modificado exitosamente");
+                cargarModelo(0);
             }else{
                 JOptionPane.showMessageDialog(null, "Error al Activar o desactivar el proveedor");
+                cargarModelo(0);
             }
         }else{
             JOptionPane.showMessageDialog(null, "Seleccione un proveedor");
